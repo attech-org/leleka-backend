@@ -14,10 +14,10 @@ app.use(express.json());
 app.use("/api", apiRoutes);
 
 const server = app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.warn(`Server is running on port ${PORT}`);
 });
 
 process.on("unhandledRejection", (error) => {
-  console.log(`Logged Error: ${error}`);
+  console.error(`Logged Error: ${error}`);
   server.close(() => process.exit(1));
 });

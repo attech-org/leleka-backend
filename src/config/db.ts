@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 export const connectDB = async () => {
-  await mongoose.connect(process.env.MONGO_URI!);
-  console.log("MongoDB Connected");
+  if (process.env.MONGO_URI) {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.warn("MongoDB Connected");
+  } else {
+    console.error("MONGO_URI is not provided");
+  }
 };

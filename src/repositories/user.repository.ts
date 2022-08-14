@@ -1,9 +1,9 @@
-import { UserModel } from '../models/User';
+import { UserModel } from "../models/User";
 
 export const getAdminUser = () => {
   return UserModel.find({
-    username: 'admin'
-  })
-}
+    username: "admin",
+  });
+};
 
 export default UserModel;

@@ -5,12 +5,12 @@ export interface User extends Document {
   password: string;
   email: string;
   profile: {
-    firstName: String;
-    lastName: String;
-    avatar: String;
-    bio: String;
-    phone: String;
-    gender: String;
+    firstName: string;
+    lastName: string;
+    avatar: string;
+    bio: string;
+    phone: string;
+    gender: string;
   };
 }
 
