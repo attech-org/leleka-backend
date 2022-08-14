@@ -17,7 +17,7 @@ const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-process.on("unhandledRejection", (error, promise) => {
+process.on("unhandledRejection", (error) => {
   console.log(`Logged Error: ${error}`);
   server.close(() => process.exit(1));
 });
