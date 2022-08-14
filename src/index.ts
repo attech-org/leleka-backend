@@ -1,4 +1,5 @@
 import express from "express";
+
 import { connectDB } from "./config/db";
 import apiRoutes from "./routes/index.route";
 
