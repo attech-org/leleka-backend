@@ -7,6 +7,7 @@ import morgan from "morgan";
 import { json } from "body-parser";
 import mongoose from "mongoose";
 import { connectDB } from "./config/db";
+import apiRoutes from "./routes/index.route";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 
 app.use(express.json());
-app.use("/api/auth", require("./routes/auth"));
+app.use("/api", apiRoutes);
 
 const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
