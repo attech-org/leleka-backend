@@ -33,7 +33,7 @@ authRouter.route("/register").post(async (req: Request, res: Response) => {
       message = String(error);
     }
     console.error(error);
-    res.status(400).send(JSON.stringify(message));
+    res.status(400).send(message);
   }
 });
 
