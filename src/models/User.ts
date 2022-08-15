@@ -15,36 +15,48 @@ export interface User extends Document {
 }
 
 // define user schema
-const UserSchema: Schema = new Schema<User>({
-  username: {
-    type: String,
-    lowercase: true,
-    unique: true,
-    required: [true, "Can't be blank"],
-    index: true,
+const UserSchema: Schema = new Schema<User>(
+  {
+    username: {
+      type: String,
+      lowercase: true,
+      unique: true,
+      required: [true, "Can't be blank"],
+      index: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      select: false,
+      minlength: [8, "Please use minimum of 8 characters"],
+    },
+    email: {
+      type: String,
+      lowercase: true,
+      required: [true, "Can't be blank"],
+      match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Please use a valid address"],
+      unique: true,
+      index: true,
+    },
+    profile: {
+      firstName: String,
+      lastName: String,
+      avatar: String,
+      bio: String,
+      phone: String,
+      gender: String,
+    },
   },
-  password: {
-    type: String,
-    required: true,
-    select: false,
-    minlength: [8, "Please use minimum of 8 characters"],
-  },
-  email: {
-    type: String,
-    lowercase: true,
-    required: [true, "Can't be blank"],
-    match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Please use a valid address"],
-    unique: true,
-    index: true,
-  },
-  profile: {
-    firstName: String,
-    lastName: String,
-    avatar: String,
-    bio: String,
-    phone: String,
-    gender: String,
-  },
-});
+  {
+    toJSON: {
+      virtuals: true,
+      transform: (doc, ret) => {
+        delete ret._id;
+        delete ret.password;
+        return ret;
+      },
+    },
+  }
+);
 
 export const UserModel = model<User>("User", UserSchema);
