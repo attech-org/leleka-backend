@@ -1,3 +1,4 @@
+import { hashPassword } from "../helpers/password";
 import { User, UserModel } from "../models/User";
 
 export const getAdminUser = () => {
@@ -13,8 +14,12 @@ export const findUserByUserName = async (username: string) => {
 export const addUserData = async (user: User) => {
   try {
     if (user && user.username) {
-      const dbUser = new UserModel(user);
+      const { password } = user;
+      const encryptedPassword = hashPassword(password);
+      const dbUser = new UserModel({ ...user, password: encryptedPassword });
+
       const userInDatabase = await dbUser.save();
+
       return userInDatabase;
     } else {
       throw new Error("Error: 'username' is absent!!!");
