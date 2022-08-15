@@ -24,9 +24,16 @@ authRouter.route("/register").post(async (req: Request, res: Response) => {
     const data = req.body;
     const result = await register(data);
     res.send(result);
-  } catch (error: unknown) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    let message;
+    if (error instanceof Error) {
+      message = error.message;
+    } else {
+      message = String(error);
+    }
     console.error(error);
-    res.sendStatus(400);
+    res.status(400).send(message);
   }
 });
 
