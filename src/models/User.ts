@@ -7,10 +7,10 @@ export interface User extends Document {
   profile: {
     firstName: string;
     lastName: string;
-    avatar: string;
-    bio: string;
-    phone: string;
-    gender: string;
+    avatar?: string;
+    bio?: string;
+    phone?: string;
+    gender?: string;
   };
 }
 
@@ -22,7 +22,10 @@ const UserSchema: Schema = new Schema<User>(
       lowercase: true,
       unique: true,
       required: [true, "Can't be blank"],
-      index: true,
+      index: {
+        unique: true,
+        collation: { locale: "en", strength: 1 },
+      },
     },
     password: {
       type: String,
