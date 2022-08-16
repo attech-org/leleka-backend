@@ -1,4 +1,4 @@
-import { hashPassword } from "../helpers/password";
+import { comparePassword, hashPassword } from "../helpers/password";
 import { User, UserModel } from "../models/User";
 
 export const getAdminUser = () => {
@@ -8,7 +8,7 @@ export const getAdminUser = () => {
 };
 
 export const findUserByUserName = async (username: string) => {
-  return UserModel.findOne({ userName: username });
+  return UserModel.findOne({ username: username });
 };
 
 export const addUserData = async (user: User) => {
@@ -47,34 +47,40 @@ export const addUserData = async (user: User) => {
 };
 
 export const findUserData = async (user: User) => {
-  try {
-    if (user && user.username) {
-      const dbUser = new UserModel(user);
-      const userInDatabase = await dbUser.save();
-      return userInDatabase;
-    } else {
-      throw new Error("Error: 'username' is absent!!!");
+  const { username, password } = user;
+  if (user && username && password) {
+    const userInDatabase = await findUserByUserName(username);
+    if (!userInDatabase) {
+      throw new Error("Login / password combination is incorrect");
     }
-  } catch (error) {
-    if (
-      error.code === 11000 &&
-      error.message.includes("duplicate key error collection")
-    ) {
-      const key: string = Object.keys(error.keyPattern)[0];
-      switch (key) {
-        case "username":
-          throw new Error(
-            "Error! A user with the same username already exists"
-          );
-        case "email":
-          throw new Error("Error! A user with the same email already exists");
-        default:
-          throw error;
-      }
-    } else {
-      throw error;
+    if (!comparePassword(userInDatabase.password, password)) {
+      throw new Error("Password is incorrect");
     }
+    return userInDatabase;
+  } else {
+    throw new Error("Smth is wrong");
   }
+
+  // } catch (error) {
+  //   if (
+  //     error.code === 11000 &&
+  //     error.message.includes("duplicate key error collection")
+  //   ) {
+  //     const key: string = Object.keys(error.keyPattern)[0];
+  //     switch (key) {
+  //       case "username":
+  //         throw new Error(
+  //           "Error! A user with the same username already exists"
+  //         );
+  //       case "email":
+  //         throw new Error("Error! A user with the same email already exists");
+  //       default:
+  //         throw error;
+  //     }
+  //   } else {
+  //     throw error;
+  //   }
+  // }
 };
 
 export default UserModel;

@@ -14,6 +14,6 @@ export const login = async (data: User) => {
   // process input data
   // call repository method
   const userInDataBase: User = await findUserData(data);
-  // const token = generateJWT(userInDataBase);
-  return { user: userInDataBase };
+  const token = generateJWT(userInDataBase);
+  return { user: userInDataBase, token: token };
 };
