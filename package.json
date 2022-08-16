@@ -7,8 +7,8 @@
     "build": "npx tsc",
     "start": "node dist/index.js",
     "dev": "nodemon",
-    "lint": "tsc --noEmit && eslint src/**/*.ts{,x}",
-    "lint:fix": "prettier --write src/**/*.ts{,x} && eslint --fix src/**/*.ts{,x}",
+    "lint": "tsc --noEmit && eslint src/**/*.ts",
+    "lint:fix": "prettier --write src/**/*.ts && eslint --fix src/**/*.ts",
     "prepare": "husky install",
     "lint-staged": "lint-staged"
   },
