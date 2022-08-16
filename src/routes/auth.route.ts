@@ -24,8 +24,7 @@ authRouter.route("/register").post(async (req: Request, res: Response) => {
     const data = req.body;
     const result = await register(data);
     res.send(result);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
+  } catch (error: unknown) {
     let message;
     if (error instanceof Error) {
       message = error.message;
@@ -44,8 +43,7 @@ authRouter.route("/login").post(async (req: Request, res: Response) => {
     const data = req.body;
     const result = await login(data);
     res.send(result);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
+  } catch (error: unknown) {
     let message;
     if (error instanceof Error) {
       message = error.message;
