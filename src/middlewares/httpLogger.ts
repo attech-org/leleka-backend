@@ -13,7 +13,7 @@ interface RequestLog {
   method: string;
 }
 
-const logRequest = (req: Request, res: Response, next: NextFunction) => {
+const httpLogger = (req: Request, res: Response, next: NextFunction) => {
   const request: RequestLog = {
     baseUrl: req.baseUrl,
     originalUrl: req.originalUrl,
@@ -25,7 +25,7 @@ const logRequest = (req: Request, res: Response, next: NextFunction) => {
   // if request has not big body add body
   // and hide password field in it
   if (req.body) {
-    if (JSON.stringify(req.body).length < 200) {
+    if (JSON.stringify(req.body).length < 1000) {
       request.body = req.body?.password
         ? { ...req.body, password: "**********" }
         : req.body;
@@ -37,4 +37,4 @@ const logRequest = (req: Request, res: Response, next: NextFunction) => {
   Logger.http(request);
   next();
 };
-export default logRequest;
+export default httpLogger;
