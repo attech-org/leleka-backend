@@ -21,6 +21,5 @@ export const verifyJWT = (token: string) => {
   const verifyOptions: VerifyOptions = {
     algorithms: ["HS256"],
   };
-
-  return verify(token, process.env.JWT_SECRET, verifyOptions);
+  return verify(token, process.env.JWT_SECRET, verifyOptions) as User;
 };
