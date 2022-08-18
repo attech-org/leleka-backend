@@ -42,10 +42,21 @@ export const createUser = async (user: User) => {
   }
 };
 
-export const findUser = async (user: User) => {
+export const findUser = async (user: User, withPassword?: boolean) => {
   const { username } = user;
-  const userInDatabase = await UserModel.findOne({ username: username });
-  return userInDatabase;
+  if (withPassword) {
+    const userInDatabase = await UserModel.findOne(
+      {
+        username: username,
+      },
+      "+password"
+    );
+
+    return userInDatabase;
+  } else {
+    const userInDatabase = await UserModel.findOne({ username: username });
+    return userInDatabase;
+  }
 };
 
 export default UserModel;
