@@ -7,18 +7,7 @@ export const getAdminUser = () => {
   });
 };
 
-export const findUserByUserName = async (username: string) => {
-  return UserModel.findOne({ username: username });
-};
-
-export const findUserByUserNameAndSelect = async (
-  username: string,
-  selected: string
-) => {
-  return UserModel.findOne({ username: username }).select(selected);
-};
-
-export const addUserData = async (user: User) => {
+export const createUser = async (user: User) => {
   try {
     if (user && user.username) {
       const { password } = user;
@@ -53,18 +42,18 @@ export const addUserData = async (user: User) => {
   }
 };
 
-export const findUserData = async (user: User) => {
+export const findUser = async (user: User) => {
   const { username, password } = user;
 
   if (user && username && password) {
-    const getUserPassword = await findUserByUserNameAndSelect(
-      username,
-      "password"
-    );
+    const getUserPassword = await UserModel.findOne({
+      username: username,
+    }).select("password");
     if (!comparePassword(getUserPassword.password, password)) {
       throw new Error("Password is incorrect");
     } else {
-      const userInDatabase = await findUserByUserName(username);
+      const userInDatabase = await UserModel.findOne({ username: username });
+
       return userInDatabase;
     }
   } else {

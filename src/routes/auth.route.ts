@@ -25,14 +25,8 @@ authRouter.route("/register").post(async (req: Request, res: Response) => {
     const result = await register(data);
     res.send(result);
   } catch (error: unknown) {
-    let message;
-    if (error instanceof Error) {
-      message = error.message;
-    } else {
-      message = String(error);
-    }
     console.error(error);
-    res.status(400).send(message);
+    res.sendStatus(400);
   }
 });
 
@@ -44,14 +38,8 @@ authRouter.route("/login").post(async (req: Request, res: Response) => {
     const result = await login(data);
     res.send(result);
   } catch (error: unknown) {
-    let message;
-    if (error instanceof Error) {
-      message = error.message;
-    } else {
-      message = String(error);
-    }
     console.error(error);
-    res.status(400).send(message);
+    res.sendStatus(400);
   }
 });
 
