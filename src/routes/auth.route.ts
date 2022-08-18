@@ -26,7 +26,7 @@ authRouter.route("/register").post(async (req: Request, res: Response) => {
     res.send(result);
   } catch (error: unknown) {
     console.error(error);
-    res.sendStatus(400);
+    return res.status(400).send(error.toString());
   }
 });
 
@@ -39,7 +39,7 @@ authRouter.route("/login").post(async (req: Request, res: Response) => {
     res.send(result);
   } catch (error: unknown) {
     console.error(error);
-    res.sendStatus(400);
+    return res.status(400).send(error.toString());
   }
 });
 

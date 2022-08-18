@@ -1,4 +1,4 @@
-import { comparePassword, hashPassword } from "../helpers/password";
+import { hashPassword } from "../helpers/password";
 import { User, UserModel } from "../models/User";
 
 export const getAdminUser = () => {
@@ -43,22 +43,9 @@ export const createUser = async (user: User) => {
 };
 
 export const findUser = async (user: User) => {
-  const { username, password } = user;
-
-  if (user && username && password) {
-    const getUserPassword = await UserModel.findOne({
-      username: username,
-    }).select("password");
-    if (!comparePassword(getUserPassword.password, password)) {
-      throw new Error("Password is incorrect");
-    } else {
-      const userInDatabase = await UserModel.findOne({ username: username });
-
-      return userInDatabase;
-    }
-  } else {
-    throw new Error("Username or password missing");
-  }
+  const { username } = user;
+  const userInDatabase = await UserModel.findOne({ username: username });
+  return userInDatabase;
 };
 
 export default UserModel;
