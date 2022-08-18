@@ -1,13 +1,14 @@
-import { AccessToken, AccessTokenModel } from "src/models/AccessToken";
+import { AccessToken, AccessTokenModel } from "../models/AccessToken";
 
 export const addAccessToken = async (access_token: AccessToken) => {
   try {
     if (access_token) {
-      const result = await new AccessTokenModel(access_token).save();
+      const dbAccessToken = new AccessTokenModel({ accessToken: access_token });
+      const result = await dbAccessToken.save();
       return result;
     }
   } catch (err: unknown) {
-    console.error(err);
+    throw new Error("There is err");
   }
 };
 

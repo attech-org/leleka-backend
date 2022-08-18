@@ -1,7 +1,6 @@
-import { addAccessToken } from "src/repositories/auth.repository";
-
 import { generateJWT } from "../config/jwt";
 import { User } from "../models/User";
+import { addAccessToken } from "../repositories/auth.repository";
 import { addUserData } from "../repositories/user.repository";
 import { AccessToken } from "./../models/AccessToken";
 

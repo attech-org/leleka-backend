@@ -24,7 +24,7 @@ authRouter
       const code = req.query.code;
       res.sendStatus(200);
       if (code) {
-        const form = {
+        const authOptions = {
           code: code,
           grant_type: "authorization_code",
           redirect_uri: redirectUri,
@@ -38,10 +38,11 @@ authRouter
           .post(process.env.POST_TWITTER_OAUTH2_TOKEN)
           .set("Content-Type", "application/x-www-form-urlencoded")
           .set("Authorization", `Basic ${base64secret}`)
-          .send(form);
-        console.log(response);
+          .send(authOptions);
+        // console.log(response);
         const result = await accessToken(response.body.access_token);
         console.log(result);
+        // res.send(result);
       }
     } catch (err: unknown) {
       console.error(err);
