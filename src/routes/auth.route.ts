@@ -1,31 +1,15 @@
 import express, { Request, Response } from "express";
 import superagent from "superagent";
 
-import { register } from "../services/auth.service";
+import { accessToken, register } from "../services/auth.service";
 
 const authRouter = express.Router();
 
-const redirectUri = `http://localhost:${process.env.PORT}/api/auth/twitter-callback`;
+const redirectUri = process.env.REDIRECT_URI;
 const twitterClientId = process.env.TWITTER_CLIENT_ID;
 const twitterClientSecret = process.env.TWITTER_CLIENT_SECRET;
 const state = {};
-const codeChallenge = "sdSD939fFFsfdfdskojilmsionjfje";
-
-// const authOptions = {
-//   method: "POST",
-//   url: "https://api.twitter.com/2/oauth2/token",
-//   headers: {
-//     "Content-Type": "application/x-www-form-urlencoded",
-//   },
-
-//   form: {
-//     grantType: "authorization_code",
-//     clientId: twitterClientId,
-//     clientSecret: twitterClientSecret,
-//     code: code,
-//     redirectUri: redirectUri,
-//   },
-// };
+const codeChallenge = process.env.CODE_CHALLENGE;
 
 authRouter.route("/twitter").get(async (_req: Request, res: Response) => {
   res.redirect(
@@ -36,14 +20,13 @@ authRouter.route("/twitter").get(async (_req: Request, res: Response) => {
 authRouter
   .route("/twitter-callback")
   .get(async (req: Request, res: Response) => {
-    const code = req.query.code;
-    res.sendStatus(200);
-    if (code) {
-      try {
+    try {
+      const code = req.query.code;
+      res.sendStatus(200);
+      if (code) {
         const form = {
           code: code,
           grant_type: "authorization_code",
-          // client_id: twitterClientId,
           redirect_uri: redirectUri,
           code_verifier: codeChallenge,
         };
@@ -52,14 +35,16 @@ authRouter
           `${twitterClientId}:${twitterClientSecret}`
         ).toString("base64");
         const response = await superagent
-          .post("https://api.twitter.com/2/oauth2/token")
+          .post(process.env.POST_TWITTER_OAUTH2_TOKEN)
           .set("Content-Type", "application/x-www-form-urlencoded")
           .set("Authorization", `Basic ${base64secret}`)
           .send(form);
-        console.info("Request", response.body);
-      } catch (err: unknown) {
-        console.error(err);
+        console.log(response);
+        const result = await accessToken(response.body.access_token);
+        console.log(result);
       }
+    } catch (err: unknown) {
+      console.error(err);
     }
   });
 // in query params: "code" +
