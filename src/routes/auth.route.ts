@@ -18,23 +18,24 @@ const authRouter = express.Router();
 // );
 
 authRouter.route("/register").post(async (req: Request, res: Response) => {
-  try {
-    // process input data
-    // call repository method
-    const data = req.body;
-    const result = await register(data);
-    res.send(result);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    let message;
-    if (error instanceof Error) {
-      message = error.message;
-    } else {
-      message = String(error);
-    }
-    console.error(error);
-    res.status(400).send(message);
-  }
+  // try {
+  // process input data
+  // call repository method
+  const data = req.body;
+
+  const result = await register(data);
+  res.send(result);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // } catch (error: any) {
+  //   let message;
+  //   if (error instanceof Error) {
+  //     message = error.message;
+  //   } else {
+  //     message = String(error);
+  //   }
+  //   console.error(error);
+  //   res.status(400).send(message);
+  // }
 });
 
 export default authRouter;
