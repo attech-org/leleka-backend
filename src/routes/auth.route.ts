@@ -18,22 +18,13 @@ const authRouter = express.Router();
 // );
 
 authRouter.route("/register").post(async (req: Request, res: Response) => {
-  try {
-    // process input data
-    // call repository method
-    const data = req.body;
-    const result = await register(data);
-    res.send(result);
-  } catch (error: unknown) {
-    console.error(error);
-    return res.status(400).send(error.toString());
-  }
+  const data = req.body;
+  const result = await register(data);
+  res.send(result);
 });
 
 authRouter.route("/login").post(async (req: Request, res: Response) => {
   try {
-    // process input data
-    // call repository method
     const data = req.body;
     const result = await login(data);
     res.send(result);
