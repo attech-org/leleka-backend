@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 
-import { register } from "../services/auth.service";
+import { login, register } from "../services/auth.service";
 
 const authRouter = express.Router();
 
@@ -18,24 +18,15 @@ const authRouter = express.Router();
 // );
 
 authRouter.route("/register").post(async (req: Request, res: Response) => {
-  // try {
-  // process input data
-  // call repository method
   const data = req.body;
-
   const result = await register(data);
   res.send(result);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // } catch (error: any) {
-  //   let message;
-  //   if (error instanceof Error) {
-  //     message = error.message;
-  //   } else {
-  //     message = String(error);
-  //   }
-  //   console.error(error);
-  //   res.status(400).send(message);
-  // }
+});
+
+authRouter.route("/login").post(async (req: Request, res: Response) => {
+  const data = req.body;
+  const result = await login(data);
+  res.send(result);
 });
 
 export default authRouter;
