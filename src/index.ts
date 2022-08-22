@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import "express-async-errors";
 
 import { connectDB } from "./config/db";
+import Logger from "./config/Logger";
 import errorHandler from "./middlewares/errorHandler.middlewares";
 import httpLogger from "./middlewares/httpLogger";
 import apiRoutes from "./routes/index.route";
@@ -17,7 +18,13 @@ app.use(httpLogger);
 app.use("/api", apiRoutes);
 app.use((req: Request, res: Response) => {
   res.status(404);
-
+  Logger.error({
+    error: "Not found",
+    originalUrl: req.originalUrl,
+    hostname: req.hostname,
+    method: req.method,
+    status: 404,
+  });
   // respond with json
   if (req.accepts("json")) {
     res.json({ error: "Not found" });
@@ -39,11 +46,8 @@ app.listen(PORT, () => {
 });
 
 process.on("unhandledRejection", (error: unknown) => {
-  // console.error(`Logged Error: ${error}`);
   // server.close(() => process.exit(1));
-  if (error instanceof Error) {
-    throw new Error(error.message);
-  } else {
-    throw new Error(String(error));
-  }
+  // console.error(`Logged Error: ${error}`);
+  // this error will be caught in middlewares
+  throw error;
 });

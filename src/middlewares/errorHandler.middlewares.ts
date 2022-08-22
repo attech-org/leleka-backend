@@ -10,10 +10,12 @@ const errorHandler: ErrorRequestHandler = (
   next: NextFunction
 ) => {
   Logger.error({ message: err.message, status: err.status, stack: err.stack });
-
+  if (err.name === "TokenExpiredError") {
+    err.status = 401;
+  }
   // respond with json
   if (req.accepts("json")) {
-    res.status(err.status || 500).json({ message: err.message });
+    res.status(err.status || 500).json({ error: err.message });
     next(err);
     return;
   }
