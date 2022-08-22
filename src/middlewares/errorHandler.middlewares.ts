@@ -18,14 +18,14 @@ const errorHandler: ErrorRequestHandler = (
   }
   // respond with json
   if (req.accepts("json")) {
-    res.status(err.status || 500).json({ error: err.message });
+    res.status(err.status || 400).json({ error: err.message });
     next(err);
     return;
   }
 
   // default to plain-text. send()
   res
-    .status(err.status || 500)
+    .status(err.status || 400)
     .type("txt")
     .send(err.message);
   next(err);
