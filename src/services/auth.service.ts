@@ -7,7 +7,7 @@ export const register = async (data: User) => {
   // process input data
   // call repository method
   const userInDataBase: User = await createUser(data);
-  const tokens = generateJWT(userInDataBase);
+  const tokens = await generateJWT(userInDataBase);
   return {
     user: userInDataBase,
     accessToken: tokens.accessToken,
@@ -25,7 +25,7 @@ export const login = async (data: User) => {
       if (!comparePassword(userInDataBase.password, password)) {
         throw new Error("Wrong password");
       } else {
-        const tokens = generateJWT(userInDataBase);
+        const tokens = await generateJWT(userInDataBase);
         return {
           user: userInDataBase,
           accessToken: tokens.accessToken,

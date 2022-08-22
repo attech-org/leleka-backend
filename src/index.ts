@@ -4,7 +4,7 @@ import "express-async-errors";
 import { connectDB } from "./config/db";
 import Logger from "./config/Logger";
 import errorHandler from "./middlewares/errorHandler.middlewares";
-import httpLogger from "./middlewares/httpLogger";
+import httpLogger from "./middlewares/httpLogger.middlewares";
 import apiRoutes from "./routes/index.route";
 
 const app = express();
