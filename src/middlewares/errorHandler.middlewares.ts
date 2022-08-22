@@ -13,6 +13,9 @@ const errorHandler: ErrorRequestHandler = (
   if (err.name === "TokenExpiredError") {
     err.status = 401;
   }
+  if (err.name === "JsonWebTokenError") {
+    err.status = 400;
+  }
   // respond with json
   if (req.accepts("json")) {
     res.status(err.status || 500).json({ error: err.message });
