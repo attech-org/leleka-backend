@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import superagent from "superagent";
 
-import { accessToken, register } from "../services/auth.service";
+import { accessToken, login, register } from "../services/auth.service";
 
 const authRouter = express.Router();
 
@@ -54,23 +54,15 @@ authRouter
 // save them to DB and send it to user
 
 authRouter.route("/register").post(async (req: Request, res: Response) => {
-  try {
-    // process input data
-    // call repository method
-    const data = req.body;
-    const result = await register(data);
-    res.send(result);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    let message;
-    if (error instanceof Error) {
-      message = error.message;
-    } else {
-      message = String(error);
-    }
-    console.error(error);
-    res.status(400).send(message);
-  }
+  const data = req.body;
+  const result = await register(data);
+  res.send(result);
+});
+
+authRouter.route("/login").post(async (req: Request, res: Response) => {
+  const data = req.body;
+  const result = await login(data);
+  res.send(result);
 });
 
 export default authRouter;
