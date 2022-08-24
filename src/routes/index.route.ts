@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 
 import authRoutes from "./auth.route";
+import bookmarksRoutes from "./bookmarks.route";
 
 const router = express.Router();
 
@@ -12,6 +13,7 @@ router.post("/ping", (req: Request, res: Response) => {
 });
 
 router.use("/auth", authRoutes);
+router.use("/bookmarks", bookmarksRoutes);
 // router.use("/users", usersRoutes); ...
 
 export default router;
