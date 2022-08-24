@@ -1,12 +1,12 @@
 import { ObjectId } from "mongodb";
 
-export const idCheck = (id: string) => {
+export const idValidator = (id: string) => {
   if (!ObjectId.isValid(id)) {
     throw new Error("Input error: incorrect Id");
   }
 };
-export const stringCheck = (data: string) => {
+export const stringValidator = (data: string) => {
   if (data.trim().length === 0) {
-    throw new Error("Input error: password must not be empty");
+    throw new Error("Input error: value must not be empty");
   }
 };

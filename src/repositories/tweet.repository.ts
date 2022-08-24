@@ -1,10 +1,13 @@
 import { ObjectId } from "mongodb";
 
-import { idCheck, stringCheck } from "../helpers/tweets.checks.utils";
+import {
+  idValidator,
+  stringValidator,
+} from "../helpers/tweets.validators.utils";
 import { TweetModel } from "../models/Tweet";
 
 export const getTweetById = (id: string) => {
-  idCheck(id);
+  idValidator(id);
   const objectIdId = new ObjectId(id);
   return TweetModel.findById(objectIdId);
 };
@@ -13,8 +16,8 @@ export const createTweet = async (
   content: string,
   repliedTo?: string
 ) => {
-  idCheck(authorId);
-  idCheck(repliedTo);
+  idValidator(authorId);
+  idValidator(repliedTo);
   const objectIdAuthorId = new ObjectId(authorId);
   const objectIdRepliedTo = new ObjectId(repliedTo);
   const tweetModel = new TweetModel({
@@ -26,7 +29,7 @@ export const createTweet = async (
   tweetModel.save();
 };
 export const deleteTweet = async (id: string) => {
-  idCheck(id);
+  idValidator(id);
   const objectIdId = new ObjectId(id);
   return TweetModel.deleteOne({ _id: objectIdId });
 };
@@ -42,16 +45,16 @@ export const updateTweet = async (
     updatedAt: Date;
   }
 ) => {
-  idCheck(id);
+  idValidator(id);
   const objectIdId = new ObjectId(id);
   if (newData.content) {
-    stringCheck(newData.content);
+    stringValidator(newData.content);
   }
   if (newData.authorId) {
-    idCheck(newData.authorId);
+    idValidator(newData.authorId);
   }
   if (newData.repliedTo) {
-    idCheck(newData.repliedTo);
+    idValidator(newData.repliedTo);
   }
   return TweetModel.updateOne({ _id: objectIdId }, newData);
 };
