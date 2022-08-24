@@ -15,7 +15,6 @@ export const isAuthorised = async (
   res: Response,
   next: NextFunction
 ) => {
-  // try {
   let token =
     req.headers["x-access-token"] ||
     req.headers.authorization ||

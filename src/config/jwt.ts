@@ -54,15 +54,15 @@ export const updateAccessToken = async (refreshToken: string) => {
   if (!findTokenInDatabase) {
     throw Error("Invalid refresh token");
   }
-  const verifyPeyload: User = verify(
+  const verifyPayload: User = verify(
     refreshToken,
     process.env.JWT_SECRET,
     verifyOptions
   ) as User;
-  if (verifyPeyload._id !== findTokenInDatabase.userId) {
+  if (verifyPayload._id !== findTokenInDatabase.userId) {
     throw Error("Invalid refresh token");
   }
-  const payload = { _id: verifyPeyload._id, username: verifyPeyload.username };
+  const payload = { _id: verifyPayload._id, username: verifyPayload.username };
 
   const accessToken = sign(payload, process.env.JWT_SECRET, signOptions);
   return accessToken;
