@@ -9,18 +9,23 @@ export interface Bookmark extends Document {
 const BookmarkSchema: Schema = new Schema<Bookmark>(
   {
     tweetId: {
-      type: String,
+      type: ObjectId,
+      required: true,
     },
-  },
-
-  {
-    toJSON: {
-      virtuals: true,
-      transform: (doc, ret) => {
-        return ret;
-      },
+    ownerId: {
+      type: ObjectId,
+      required: true,
     },
   }
+
+  // {
+  //   toJSON: {
+  //     virtuals: true,
+  //     transform: (doc, ret) => {
+  //       return ret;
+  //     },
+  //   },
+  // }
 );
 
-export const BookmarkModel = model<Bookmark>("Bookmarks", BookmarkSchema);
+export const BookmarkModel = model<Bookmark>("Bookmark", BookmarkSchema);
