@@ -5,7 +5,7 @@ export interface Bookmark extends Document {
   tweetId: ObjectId;
   ownerId: ObjectId;
   createdAt: string;
-  updatedAt: string | null;
+  updatedAt?: string;
 }
 
 const BookmarkSchema: Schema = new Schema<Bookmark>({
@@ -27,7 +27,7 @@ const BookmarkSchema: Schema = new Schema<Bookmark>({
   },
 
   updatedAt: {
-    type: String || null,
+    type: String,
     required: false,
   },
 });

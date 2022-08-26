@@ -10,6 +10,7 @@ export const addOne = async (tweetId: string, ownerId: string) => {
     tweetId: tweetId,
     ownerId: ownerId,
     createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   });
   return result.save();
 };
