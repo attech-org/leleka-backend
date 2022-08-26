@@ -1,4 +1,4 @@
-import { Bookmark } from "../models/Bookmark";
+import { Bookmark } from "../models/Bookmark.model";
 import {
   addOne,
   deleteOne,

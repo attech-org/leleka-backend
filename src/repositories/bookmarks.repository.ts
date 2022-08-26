@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 
-import { BookmarkModel } from "../models/Bookmark";
+import { BookmarkModel } from "../models/Bookmark.model";
 
 export const listBookmarks = async () => {
   const result = await BookmarkModel.find();
