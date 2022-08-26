@@ -1,3 +1,4 @@
+import cors from "cors";
 import express, { Request, Response } from "express";
 import "express-async-errors";
 
@@ -13,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 app.use(express.json());
 app.use(httpLogger);
-
+app.use(cors());
 app.use("/api", apiRoutes);
 app.use((req: Request, res: Response) => {
   res.status(404);
