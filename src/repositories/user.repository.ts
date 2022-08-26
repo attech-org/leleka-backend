@@ -1,5 +1,5 @@
 import { hashPassword } from "../helpers/password";
-import { User, UserModel } from "../models/User";
+import { User, UserModel } from "../models/User.model";
 
 export const getList = async () => {
   try {
