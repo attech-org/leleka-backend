@@ -30,6 +30,7 @@ export const create = async (data: User) => {
       url: data.url || "",
       description: data.description || "",
       created_at: new Date().toISOString(),
+      updated_at: null,
     });
     result.save();
     return result;
@@ -48,7 +49,10 @@ export const deleteOne = async (id: string) => {
 
 export const updateOne = async (id: string, data: User) => {
   try {
-    await UserModel.updateOne({ _id: id }, data);
+    await UserModel.updateOne(
+      { _id: id },
+      { ...data, updated_at: new Date().toISOString() }
+    );
     const result = await UserModel.findById({ _id: id });
     return result;
   } catch (error) {

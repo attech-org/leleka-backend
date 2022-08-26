@@ -14,6 +14,7 @@ export interface User extends Document {
   favourites_count: number;
   statuses_count: number;
   created_at: Date;
+  updated_at: Date | null;
   email: string;
   profile: {
     firstName: string;
@@ -96,6 +97,10 @@ const UserSchema: Schema = new Schema<User>(
     created_at: {
       type: Date,
       required: true,
+    },
+    updated_at: {
+      type: Date || null,
+      required: false,
     },
     email: {
       type: String,
