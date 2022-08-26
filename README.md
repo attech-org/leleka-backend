@@ -17,7 +17,7 @@
 6. Api:
 
 - Registration - 127.0.0.1:3001/api/auth/register
-- Proxy Link Preview - `http://127.0.0.1:3001/api/proxyLinkPreview/?url=${url}`
+- Proxy Link Preview - `http://127.0.0.1:3001/api/link-preview/?url=${url}`
 
   how it works Frontend:
 

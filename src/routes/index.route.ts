@@ -15,6 +15,6 @@ router.post("/ping", (req: Request, res: Response) => {
 router.use("/auth", authRoutes);
 // router.use("/users", usersRoutes); ...
 
-router.use("/proxyLinkPreview", proxyLinkPreviewRouter);
+router.use("/link-preview", proxyLinkPreviewRouter);
 
 export default router;
