@@ -1,4 +1,4 @@
-import { UserLeleka } from "../models/UserLeleka";
+import { User } from "../models/User";
 import {
   create,
   deleteOne,
@@ -29,7 +29,7 @@ export const getUser = async (id: string) => {
   }
 };
 
-export const createUser = async (data: UserLeleka) => {
+export const createUser = async (data: User) => {
   try {
     const result = await create(data);
     return result;
@@ -46,7 +46,7 @@ export const deleteUser = async (id: string) => {
   }
 };
 
-export const updateUser = async (id: string, data: UserLeleka) => {
+export const updateUser = async (id: string, data: User) => {
   try {
     const result = await updateOne(id, data);
     if (result) {

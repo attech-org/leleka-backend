@@ -1,19 +1,21 @@
 import { hashPassword } from "../helpers/password";
 import { User, UserModel } from "../models/User";
-import { UserLelekaModel, UserLeleka } from "../models/UserLeleka";
 
 export const getList = async () => {
-  const result = await UserLelekaModel.find();
+  const result = await UserModel.find();
   return result;
 };
 
 export const getUserById = async (id: string) => {
-  const result = await UserLelekaModel.findById(id);
+  const result = await UserModel.findById(id);
   return result;
 };
 
-export const create = async (data: UserLeleka) => {
-  const result = new UserLelekaModel({
+export const create = async (data: User) => {
+  const result = new UserModel({
+    username: data.username,
+    password: data.password,
+    email: data.email,
     name: data.name,
     location: data.location || "",
     url: data.url || "",
@@ -25,18 +27,13 @@ export const create = async (data: UserLeleka) => {
 };
 
 export const deleteOne = async (id: string) => {
-  await UserLelekaModel.deleteOne({ _id: id });
+  await UserModel.deleteOne({ _id: id });
 };
 
-export const updateOne = async (id: string, data: UserLeleka) => {
-  const user = await UserLelekaModel.findById({ _id: id });
-  await user.update({
-    name: data.name || user.name,
-    location: data.location || user.location,
-    url: data.url || user.url,
-    description: data.description || user.description,
-  });
-  return user;
+export const updateOne = async (id: string, data: User) => {
+  await UserModel.updateOne({ _id: id }, data);
+  const result = await UserModel.findById({ _id: id });
+  return result;
 };
 
 export const createUser = async (user: User) => {
