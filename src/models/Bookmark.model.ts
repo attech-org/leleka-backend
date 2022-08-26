@@ -4,8 +4,8 @@ import mongoose, { model, Schema, Document } from "mongoose";
 export interface Bookmark extends Document {
   tweetId: ObjectId;
   ownerId: ObjectId;
-  createdAt: Date;
-  updatedAt: Date | null;
+  createdAt: string;
+  updatedAt: string | null;
 }
 
 const BookmarkSchema: Schema = new Schema<Bookmark>({
@@ -22,12 +22,12 @@ const BookmarkSchema: Schema = new Schema<Bookmark>({
   },
 
   createdAt: {
-    type: Date,
+    type: String,
     required: true,
   },
 
   updatedAt: {
-    type: Date || null,
+    type: String || null,
     required: false,
   },
 });

@@ -9,7 +9,7 @@ export const addOne = async (tweetId: string, ownerId: string) => {
   const result = new BookmarkModel({
     tweetId: tweetId,
     ownerId: ownerId,
-    createdAt: new Date(),
+    createdAt: new Date().toISOString(),
   });
   return result.save();
 };
