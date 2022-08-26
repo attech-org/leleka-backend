@@ -15,10 +15,7 @@ export const isAuthorized = async (
   res: Response,
   next: NextFunction
 ) => {
-  let token =
-    req.headers["x-access-token"] ||
-    req.headers.authorization ||
-    req.body?.accessToken;
+  let token = req.headers.authorization;
 
   console.warn(token, "token");
 
