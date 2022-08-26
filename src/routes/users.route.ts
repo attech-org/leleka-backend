@@ -46,24 +46,24 @@ usersRoutes.route("/").post(async (req: Request, res: Response) => {
   }
 });
 
-usersRoutes.route("/:id").delete(async (req: Request, res: Response) => {
-  try {
-    if (req.params.id) {
-      await deleteUser(req.params.id);
-    }
-    res.sendStatus(200);
-  } catch (error) {
-    console.error(error);
-    return res.sendStatus(500);
-  }
-});
-
 usersRoutes.route("/:id").put(async (req: Request, res: Response) => {
   try {
     const result = await updateUser(req.params.id, req.body);
     if (result) {
       return res.json(result);
     }
+  } catch (error) {
+    console.error(error);
+    return res.sendStatus(500);
+  }
+});
+
+usersRoutes.route("/:id").delete(async (req: Request, res: Response) => {
+  try {
+    if (req.params.id) {
+      await deleteUser(req.params.id);
+    }
+    res.sendStatus(200);
   } catch (error) {
     console.error(error);
     return res.sendStatus(500);

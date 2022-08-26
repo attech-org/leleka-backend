@@ -29,7 +29,7 @@ export const create = async (data: User) => {
       location: data.location || "",
       url: data.url || "",
       description: data.description || "",
-      created_at: new Date(),
+      created_at: new Date().toISOString(),
     });
     result.save();
     return result;
