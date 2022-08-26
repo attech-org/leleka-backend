@@ -14,7 +14,7 @@ export const listUsers = async () => {
       return result;
     }
   } catch (error) {
-    throw new Error("Error");
+    throw new Error("Error in Services");
   }
 };
 
@@ -25,7 +25,7 @@ export const getUser = async (id: string) => {
       return result;
     }
   } catch (error) {
-    throw new Error("Error");
+    throw new Error("Error in Services");
   }
 };
 
@@ -34,7 +34,7 @@ export const createUser = async (data: User) => {
     const result = await create(data);
     return result;
   } catch (error) {
-    throw new Error("Error");
+    throw new Error("Error in Services");
   }
 };
 
@@ -42,7 +42,7 @@ export const deleteUser = async (id: string) => {
   try {
     await deleteOne(id);
   } catch (error) {
-    throw new Error("Error");
+    throw new Error("Error in Services");
   }
 };
 
@@ -53,6 +53,6 @@ export const updateUser = async (id: string, data: User) => {
       return result;
     }
   } catch (error) {
-    throw new Error("Error");
+    throw new Error("Error in Services");
   }
 };
