@@ -10,17 +10,22 @@ const errorHandler: ErrorRequestHandler = (
   next: NextFunction
 ) => {
   Logger.error({ message: err.message, status: err.status, stack: err.stack });
-
+  if (err.name === "TokenExpiredError") {
+    err.status = 401;
+  }
+  if (err.name === "JsonWebTokenError") {
+    err.status = 400;
+  }
   // respond with json
   if (req.accepts("json")) {
-    res.status(err.status || 500).json({ message: err.message });
+    res.status(err.status || 400).json({ error: err.message });
     next(err);
     return;
   }
 
   // default to plain-text. send()
   res
-    .status(err.status || 500)
+    .status(err.status || 400)
     .type("txt")
     .send(err.message);
   next(err);
