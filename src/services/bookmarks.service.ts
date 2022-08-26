@@ -1,5 +1,3 @@
-import { ObjectId } from "mongodb";
-
 import { Bookmark } from "../models/Bookmark";
 import {
   addOne,
@@ -16,10 +14,10 @@ export const addBookmark = async (ownerId: string, tweetId: string) => {
   if (!ownerId || !tweetId) {
     throw new Error("ownerId and tweetId are required");
   } else {
-    return addOne(new ObjectId(ownerId), new ObjectId(tweetId));
+    return addOne(ownerId, tweetId);
   }
 };
 
 export const deleteBookmark = (id: string) => {
-  return deleteOne(new ObjectId(id));
+  return deleteOne(id);
 };

@@ -7,16 +7,16 @@ export const listBookmarks = async () => {
   return result;
 };
 
-export const addOne = async (tweetId: ObjectId, ownerId: ObjectId) => {
+export const addOne = async (tweetId: string, ownerId: string) => {
   const result = new BookmarkModel({
-    tweetId: tweetId,
-    ownerId: ownerId,
+    tweetId: new ObjectId(tweetId),
+    ownerId: new ObjectId(ownerId),
   });
   return result.save();
 };
 
-export const deleteOne = async (id: ObjectId) => {
-  const result = await BookmarkModel.deleteOne({ _id: id });
+export const deleteOne = async (id: string) => {
+  const result = await BookmarkModel.deleteOne({ _id: new ObjectId(id) });
   return result;
 };
 
