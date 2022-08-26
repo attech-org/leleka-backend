@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 
 import authRoutes from "./auth.route";
+import proxyLinkPreviewRouter from "./proxyLinkPreview.route";
 
 const router = express.Router();
 
@@ -13,5 +14,7 @@ router.post("/ping", (req: Request, res: Response) => {
 
 router.use("/auth", authRoutes);
 // router.use("/users", usersRoutes); ...
+
+router.use("/link-preview", proxyLinkPreviewRouter);
 
 export default router;
