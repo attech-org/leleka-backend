@@ -1,9 +1,6 @@
-import { ObjectId } from "mongodb";
 import { model, Schema, Document } from "mongoose";
 
 export interface UserLeleka extends Document {
-  //reference
-  _id: ObjectId;
   name: string;
   // screen_name: string;
   location: string;
@@ -19,10 +16,6 @@ export interface UserLeleka extends Document {
 }
 
 const UserLelekaSchema: Schema = new Schema<UserLeleka>({
-  _id: {
-    type: ObjectId,
-    required: true,
-  },
   name: {
     type: String,
     required: true,
@@ -78,4 +71,7 @@ const UserLelekaSchema: Schema = new Schema<UserLeleka>({
   },
 });
 
-export const UserLelekaModel = model<UserLeleka>("Tweet", UserLelekaSchema);
+export const UserLelekaModel = model<UserLeleka>(
+  "UserLeleka",
+  UserLelekaSchema
+);

@@ -21,6 +21,7 @@ export const create = async (data: UserLeleka) => {
     created_at: new Date(),
   });
   result.save();
+  return result;
 };
 
 export const deleteOne = async (id: string) => {

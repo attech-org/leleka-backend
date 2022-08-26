@@ -14,7 +14,7 @@ usersRoutes.route("/").get(async (req: Request, res: Response) => {
   try {
     const result = await listUsers();
     if (result) {
-      return res.json(result);
+      return res.send(result);
     }
   } catch (error) {
     console.error(error);
@@ -26,7 +26,7 @@ usersRoutes.route("/:id").get(async (req: Request, res: Response) => {
   try {
     const result = await getUser(req.params.id);
     if (result) {
-      return res.json(result);
+      return res.send(result);
     }
   } catch (error) {
     console.error(error);
@@ -37,9 +37,9 @@ usersRoutes.route("/:id").get(async (req: Request, res: Response) => {
 usersRoutes.route("/").post(async (req: Request, res: Response) => {
   try {
     if (req.body.name) {
-      await createUser(req.body);
+      const result = await createUser(req.body);
+      return res.send(result);
     }
-    return res.sendStatus(200);
   } catch (error) {
     console.error(error);
     return res.sendStatus(500);

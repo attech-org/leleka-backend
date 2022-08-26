@@ -31,7 +31,8 @@ export const getUser = async (id: string) => {
 
 export const createUser = async (data: UserLeleka) => {
   try {
-    return await create(data);
+    const result = await create(data);
+    return result;
   } catch (error) {
     throw new Error("Error");
   }
