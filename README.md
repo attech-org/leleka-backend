@@ -18,5 +18,5 @@
 
 - Registration - post: 127.0.0.1:3001/api/auth/register
 - Log in - post: 127.0.0.1:3001/api/auth/login
-- Refresh access token - post: 127.0.0.1:3001/api/auth/refreshToken
+- Refresh access token - post: 127.0.0.1:3001/api/auth/refresh
 - test authorized - get: 127.0.0.1:3001/api/testAuthorized

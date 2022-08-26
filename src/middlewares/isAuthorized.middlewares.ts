@@ -7,10 +7,10 @@ import { User } from "../models/User.model";
 const accessDenied: CustomError = {
   name: "AccessDenied",
   message: "Access denied. No token provided.",
-  status: 403,
+  status: 401,
 };
 
-export const isAuthorised = async (
+export const isAuthorized = async (
   req: Request,
   res: Response,
   next: NextFunction

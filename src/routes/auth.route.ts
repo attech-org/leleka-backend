@@ -29,7 +29,7 @@ authRouter.route("/login").post(async (req: Request, res: Response) => {
   res.send(result);
 });
 
-authRouter.route("/refreshToken").post(async (req: Request, res: Response) => {
+authRouter.route("/refresh").post(async (req: Request, res: Response) => {
   const data = req.body;
   if (!data.refreshToken) {
     throw Error("refreshToken missing at body of request");

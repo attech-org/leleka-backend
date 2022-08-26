@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 
-import { isAuthorised } from "../middlewares/isAuthorised.middlewares";
+import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
 import authRoutes from "./auth.route";
 
 const router = express.Router();
@@ -12,7 +12,7 @@ router.post("/ping", (req: Request, res: Response) => {
   res.send({ ...req.body, processed: true });
 });
 
-router.get("/testAuthorized", isAuthorised, (_req: Request, res: Response) => {
+router.get("/testAuthorized", isAuthorized, (_req: Request, res: Response) => {
   res.send("You Authorized");
 });
 
