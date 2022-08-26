@@ -41,7 +41,7 @@ export const create = async (data: User) => {
 
 export const deleteOne = async (id: string) => {
   try {
-    await UserModel.deleteOne({ _id: id });
+    await UserModel.findByIdAndDelete({ _id: id });
   } catch (error) {
     throw new Error("Error in the DB");
   }
