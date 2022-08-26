@@ -4,22 +4,22 @@ import express, { Request, Response } from "express";
 import * as tweetsService from "../services/tweets.sevice";
 
 export const tweetsRouter = express.Router();
-tweetsRouter.get("/getOne/:id", async (req: Request, res: Response) => {
+tweetsRouter.get("/:id", async (req: Request, res: Response) => {
   const tweet = await tweetsService.getTweetById(req.params.id);
   res.json(tweet);
 });
 
-tweetsRouter.get("/getAll", async (req: Request, res: Response) => {
+tweetsRouter.get("/", async (req: Request, res: Response) => {
   const tweets = await tweetsService.getAllTweets();
   res.json(tweets);
 });
 
-tweetsRouter.delete("/delete/:id", async (req: Request, res: Response) => {
+tweetsRouter.delete("/:id", async (req: Request, res: Response) => {
   await tweetsService.deleteTweet(req.params.id);
   res.sendStatus(200);
 });
 
-tweetsRouter.post("/create", async (req: Request, res: Response) => {
+tweetsRouter.post("/", async (req: Request, res: Response) => {
   if (req.body.authorId) {
     await tweetsService.createTweet(
       req.body.authorId,
@@ -32,7 +32,7 @@ tweetsRouter.post("/create", async (req: Request, res: Response) => {
   }
 });
 
-tweetsRouter.put("/update/:id", async (req: Request, res: Response) => {
+tweetsRouter.put("/:id", async (req: Request, res: Response) => {
   await tweetsService.updateTweet(req.params.id, {
     authorId: req.body.authorId,
     content: req.body.content,
