@@ -1,7 +1,7 @@
 import { Bookmark } from "../models/Bookmark.model";
 import {
   addOne,
-  deleteOne,
+  deleteById,
   listBookmarks,
 } from "../repositories/bookmarks.repository";
 
@@ -19,5 +19,5 @@ export const addBookmark = async (ownerId: string, tweetId: string) => {
 };
 
 export const deleteBookmark = (id: string) => {
-  return deleteOne(id);
+  return deleteById(id);
 };

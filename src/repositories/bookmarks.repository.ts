@@ -1,5 +1,3 @@
-import { ObjectId } from "mongodb";
-
 import { BookmarkModel } from "../models/Bookmark.model";
 
 export const listBookmarks = async () => {
@@ -9,14 +7,15 @@ export const listBookmarks = async () => {
 
 export const addOne = async (tweetId: string, ownerId: string) => {
   const result = new BookmarkModel({
-    tweetId: new ObjectId(tweetId),
-    ownerId: new ObjectId(ownerId),
+    tweetId: tweetId,
+    ownerId: ownerId,
+    createdAt: new Date(),
   });
   return result.save();
 };
 
-export const deleteOne = async (id: string) => {
-  const result = await BookmarkModel.deleteOne({ _id: new ObjectId(id) });
+export const deleteById = async (id: string) => {
+  const result = await BookmarkModel.deleteOne({ _id: id });
   return result;
 };
 
