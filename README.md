@@ -19,7 +19,7 @@
 - Registration - 127.0.0.1:3001/api/auth/register
 - Proxy Link Preview - `http://127.0.0.1:3001/api/proxyLinkPreview/?url=${url}`
 
-  how it work Frontend:
+  how it works Frontend:
 
   ```
   import { LinkPreview } from "@dhaiwat10/react-link-preview";
@@ -63,4 +63,4 @@
   }
   ```
 
-  or only get data as did at customFetcher and render it
+  or just get the data as was done in customFetcher and render it
