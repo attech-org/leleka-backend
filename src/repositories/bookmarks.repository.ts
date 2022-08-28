@@ -1,11 +1,10 @@
 import { BookmarkModel } from "../models/Bookmark.model";
 
-export const listBookmarks = async () => {
-  const result = await BookmarkModel.find();
-  return result;
+export const listBookmarks = () => {
+  return BookmarkModel.find();
 };
 
-export const addOne = async (tweetId: string, ownerId: string) => {
+export const addOne = (tweetId: string, ownerId: string) => {
   const result = new BookmarkModel({
     tweetId: tweetId,
     ownerId: ownerId,
@@ -15,9 +14,8 @@ export const addOne = async (tweetId: string, ownerId: string) => {
   return result.save();
 };
 
-export const deleteById = async (id: string) => {
-  const result = await BookmarkModel.deleteOne({ _id: id });
-  return result;
+export const deleteById = (id: string) => {
+  return BookmarkModel.deleteOne({ _id: id });
 };
 
 export default BookmarkModel;
