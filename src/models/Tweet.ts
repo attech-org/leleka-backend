@@ -5,9 +5,9 @@ export interface Tweet extends Document {
   //reference
   authorId: ObjectId;
   content: string;
-  createdAt: Date;
-  repliedTo: ObjectId | null;
-  updatedAt: Date;
+  createdAt: string;
+  repliedTo?: ObjectId;
+  updatedAt: string;
   stats: {
     likes: number;
     retweets: Array<ObjectId>;
@@ -24,7 +24,7 @@ const TweetSchema: Schema = new Schema<Tweet>({
     type: String,
   },
   createdAt: {
-    type: Date,
+    type: String,
     required: true,
   },
   repliedTo: {
@@ -33,9 +33,9 @@ const TweetSchema: Schema = new Schema<Tweet>({
   },
 
   updatedAt: {
-    type: Date,
+    type: String,
     required: false,
-    default: new Date(0),
+    default: "",
   },
   stats: {
     required: false,
@@ -45,4 +45,4 @@ const TweetSchema: Schema = new Schema<Tweet>({
   },
 });
 
-export const TweetModel = model<Tweet>("Tweet", TweetSchema);
+export const TweetModel = model<Tweet>("TweetModel", TweetSchema);

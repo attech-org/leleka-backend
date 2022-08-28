@@ -1,9 +1,3 @@
-import { ObjectId } from "mongodb";
-
-import {
-  idValidator,
-  stringValidator,
-} from "../helpers/tweets.validators.utils";
 import {
   createOne,
   deleteOne,
@@ -13,8 +7,7 @@ import {
 } from "../repositories/tweet.repository";
 
 export const getTweetById = (id: string) => {
-  idValidator(id);
-  return getOneById(new ObjectId(id));
+  return getOneById(id);
 };
 
 export const createTweet = async (
@@ -22,14 +15,10 @@ export const createTweet = async (
   content: string,
   repliedTo?: string
 ) => {
-  idValidator(authorId);
-  idValidator(repliedTo);
-  stringValidator(content, "content");
-  createOne(new ObjectId(authorId), content, new ObjectId(repliedTo));
+  createOne(authorId, content, repliedTo);
 };
 export const deleteTweet = async (id: string) => {
-  idValidator(id);
-  return deleteOne(new ObjectId(id));
+  return deleteOne(id);
 };
 
 export const getAllTweets = async () => {
@@ -44,20 +33,10 @@ export const updateTweet = async (
     updatedAt: Date;
   }
 ) => {
-  idValidator(id);
-  if (newData.content) {
-    stringValidator(newData.content, "content");
-  }
-  if (newData.authorId) {
-    idValidator(newData.authorId);
-  }
-  if (newData.repliedTo) {
-    idValidator(newData.repliedTo);
-  }
-  updateOne(new ObjectId(id), {
+  updateOne(id, {
     content: newData.content,
-    authorId: new ObjectId(newData.authorId),
-    repliedTo: new ObjectId(newData.repliedTo),
-    updatedAt: newData.updatedAt,
+    authorId: newData.authorId,
+    repliedTo: newData.repliedTo,
+    updatedAt: newData.updatedAt.toISOString(),
   });
 };

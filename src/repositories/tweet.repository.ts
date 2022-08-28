@@ -2,36 +2,43 @@ import { ObjectId } from "mongodb";
 
 import { TweetModel } from "../models/Tweet";
 
-export const getOneById = (id: ObjectId) => {
-  return TweetModel.findById(id);
+export const getOneById = (id: string) => {
+  return TweetModel.find({ _id: id });
 };
 export const createOne = async (
-  authorId: ObjectId,
+  authorId: string,
   content: string,
-  repliedTo?: ObjectId
+  repliedTo?: string
 ) => {
   const tweetModel = new TweetModel({
-    authorId: authorId,
+    authorId: new ObjectId(authorId),
     content: content,
-    repliedTo: repliedTo,
-    createdAt: new Date(),
+    repliedTo: new ObjectId(repliedTo),
+    createdAt: new Date().toISOString(),
   });
   tweetModel.save();
 };
-export const deleteOne = async (id: ObjectId) => {
-  return TweetModel.deleteOne({ _id: id });
+export const deleteOne = async (id: string) => {
+  return TweetModel.deleteOne({ _id: new ObjectId(id) });
 };
 export const getAll = async () => {
   return TweetModel.find();
 };
 export const updateOne = async (
-  id: ObjectId,
+  id: string,
   newData: {
     content?: string;
-    authorId?: ObjectId;
-    repliedTo?: ObjectId;
-    updatedAt: Date;
+    authorId?: string;
+    repliedTo?: string;
+    updatedAt: string;
   }
 ) => {
-  return TweetModel.updateOne({ _id: id }, newData);
+  const data = {
+    content: newData.content,
+    updatedAt: newData.updatedAt,
+    repliedTo: new ObjectId(newData.repliedTo),
+    authorId: new ObjectId(newData.authorId),
+  };
+
+  return TweetModel.updateOne({ _id: id }, data);
 };
