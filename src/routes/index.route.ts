@@ -3,6 +3,7 @@ import express, { Request, Response } from "express";
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
 import authRoutes from "./auth.route";
 import proxyLinkPreviewRouter from "./proxyLinkPreview.route";
+import usersRoutes from "./users.route";
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ router.get("/testAuthorized", isAuthorized, (_req: Request, res: Response) => {
 });
 
 router.use("/auth", authRoutes);
-// router.use("/users", usersRoutes); ...
+router.use("/users", usersRoutes);
 
 router.use("/link-preview", proxyLinkPreviewRouter);
 
