@@ -1,8 +1,10 @@
 import { NextFunction, Response, Request } from "express";
 
+import { AnyYupSchema } from "../helpers/validation";
+
 export const validation =
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (schema: any) => async (req: Request, res: Response, next: NextFunction) => {
+  (schema: AnyYupSchema) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     const resource = req.body;
 
     await schema.validate(resource);
