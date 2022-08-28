@@ -4,17 +4,17 @@ export interface User extends Document {
   username: string;
   password: string;
   name: string;
-  location: string;
-  url: string;
-  description: string;
+  location?: string;
+  url?: string;
+  description?: string;
   verified: boolean;
-  followers_count: number;
-  friends_count: number;
-  listed_count: number;
-  favourites_count: number;
-  statuses_count: number;
-  created_at: Date;
-  updated_at: Date | null;
+  followersCount: number;
+  friendsCount: number;
+  listedCount: number;
+  favouritesCount: number;
+  statusesCount: number;
+  createdAt: string;
+  updatedAt?: string;
   email: string;
   profile: {
     firstName: string;
@@ -69,37 +69,37 @@ const UserSchema: Schema = new Schema<User>(
       required: false,
       default: false,
     },
-    followers_count: {
+    followersCount: {
       type: Number,
       required: false,
       default: 0,
     },
-    friends_count: {
+    friendsCount: {
       type: Number,
       required: false,
       default: 0,
     },
-    listed_count: {
+    listedCount: {
       type: Number,
       required: false,
       default: 0,
     },
-    favourites_count: {
+    favouritesCount: {
       type: Number,
       required: false,
       default: 0,
     },
-    statuses_count: {
+    statusesCount: {
       type: Number,
       required: false,
       default: 0,
     },
-    created_at: {
-      type: Date,
+    createdAt: {
+      type: String,
       required: true,
     },
-    updated_at: {
-      type: Date || null,
+    updatedAt: {
+      type: String,
       required: false,
     },
     email: {
@@ -123,7 +123,7 @@ const UserSchema: Schema = new Schema<User>(
     toJSON: {
       virtuals: true,
       transform: (doc, ret) => {
-        delete ret._id;
+        // delete ret._id;    Need to ask
         delete ret.password;
         return ret;
       },

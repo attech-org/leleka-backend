@@ -2,62 +2,42 @@ import { hashPassword } from "../helpers/password";
 import { User, UserModel } from "../models/User.model";
 
 export const getList = async () => {
-  try {
-    const result = await UserModel.find();
-    return result;
-  } catch (error) {
-    throw new Error("Error in the DB");
-  }
+  const result = await UserModel.find();
+  return result;
 };
 
 export const getUserById = async (id: string) => {
-  try {
-    const result = await UserModel.findById(id);
-    return result;
-  } catch (error) {
-    throw new Error("Error in the DB");
-  }
+  const result = await UserModel.findById(id);
+  return result;
 };
 
 export const create = async (data: User) => {
-  try {
-    const result = new UserModel({
-      username: data.username,
-      password: data.password,
-      email: data.email,
-      name: data.name,
-      location: data.location || "",
-      url: data.url || "",
-      description: data.description || "",
-      created_at: new Date().toISOString(),
-      updated_at: null,
-    });
-    result.save();
-    return result;
-  } catch (error) {
-    throw new Error("Error in the DB");
-  }
+  const result = new UserModel({
+    username: data.username,
+    password: data.password,
+    email: data.email,
+    name: data.name,
+    location: data.location || "",
+    url: data.url || "",
+    description: data.description || "",
+    createdAt: new Date().toISOString(),
+  });
+  result.save();
+  return result;
 };
 
 export const deleteOne = async (id: string) => {
-  try {
-    await UserModel.findByIdAndDelete({ _id: id });
-  } catch (error) {
-    throw new Error("Error in the DB");
-  }
+  const result = await UserModel.findByIdAndDelete({ _id: id });
+  return result;
 };
 
 export const updateOne = async (id: string, data: User) => {
-  try {
-    await UserModel.updateOne(
-      { _id: id },
-      { ...data, updated_at: new Date().toISOString() }
-    );
-    const result = await UserModel.findById({ _id: id });
-    return result;
-  } catch (error) {
-    throw new Error("Error in the DB");
-  }
+  await UserModel.updateOne(
+    { _id: id },
+    { ...data, updated_at: new Date().toISOString() }
+  );
+  const result = await UserModel.findById({ _id: id });
+  return result;
 };
 
 export const createUser = async (user: User) => {

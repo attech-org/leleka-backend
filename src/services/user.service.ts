@@ -1,4 +1,4 @@
-import { User } from "../models/User";
+import { User } from "../models/User.model";
 import {
   create,
   deleteOne,
@@ -8,51 +8,31 @@ import {
 } from "../repositories/user.repository";
 
 export const listUsers = async () => {
-  try {
-    const result = await getList();
-    if (result) {
-      return result;
-    }
-  } catch (error) {
-    throw new Error("Error in Services");
+  const result = await getList();
+  if (result) {
+    return result;
   }
 };
 
 export const getUser = async (id: string) => {
-  try {
-    const result = await getUserById(id);
-    if (result) {
-      return result;
-    }
-  } catch (error) {
-    throw new Error("Error in Services");
+  const result = await getUserById(id);
+  if (result) {
+    return result;
   }
 };
 
 export const createUser = async (data: User) => {
-  try {
-    const result = await create(data);
-    return result;
-  } catch (error) {
-    throw new Error("Error in Services");
-  }
+  const result = await create(data);
+  return result;
 };
 
 export const deleteUser = async (id: string) => {
-  try {
-    await deleteOne(id);
-  } catch (error) {
-    throw new Error("Error in Services");
-  }
+  await deleteOne(id);
 };
 
 export const updateUser = async (id: string, data: User) => {
-  try {
-    const result = await updateOne(id, data);
-    if (result) {
-      return result;
-    }
-  } catch (error) {
-    throw new Error("Error in Services");
+  const result = await updateOne(id, data);
+  if (result) {
+    return result;
   }
 };
