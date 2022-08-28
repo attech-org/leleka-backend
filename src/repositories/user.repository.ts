@@ -1,10 +1,43 @@
 import { hashPassword } from "../helpers/password";
 import { User, UserModel } from "../models/User.model";
 
-export const getAdminUser = () => {
-  return UserModel.find({
-    username: "admin",
+export const getList = async () => {
+  const result = await UserModel.find();
+  return result;
+};
+
+export const getUserById = async (id: string) => {
+  const result = await UserModel.findById(id);
+  return result;
+};
+
+export const create = async (data: User) => {
+  const result = new UserModel({
+    username: data.username,
+    password: data.password,
+    email: data.email,
+    name: data.name,
+    location: data.location || "",
+    url: data.url || "",
+    description: data.description || "",
+    createdAt: new Date().toISOString(),
   });
+  result.save();
+  return result;
+};
+
+export const deleteOne = async (id: string) => {
+  const result = await UserModel.findByIdAndDelete({ _id: id });
+  return result;
+};
+
+export const updateOne = async (id: string, data: User) => {
+  await UserModel.updateOne(
+    { _id: id },
+    { ...data, updated_at: new Date().toISOString() }
+  );
+  const result = await UserModel.findById({ _id: id });
+  return result;
 };
 
 export const createUser = async (user: User) => {
