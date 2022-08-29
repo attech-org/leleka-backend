@@ -29,6 +29,11 @@ export const getMetadata = async (url: string): Promise<APIOutput> => {
     output.image = images[0];
   }
 
+  if (output.image && output.image.startsWith("/")) {
+    output.image =
+      (url.endsWith("/") ? url.slice(0, url.length - 1) : url) + output.image;
+  }
+
   output.description = og.description || meta.description || "";
   output.title = og.title || meta.title || "";
   output.siteName = og.site_name || "";
