@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 
-import { login, register } from "../services/auth.service";
+import { getNewAccessToken, login, register } from "../services/auth.service";
 
 const authRouter = express.Router();
 
@@ -26,6 +26,15 @@ authRouter.route("/register").post(async (req: Request, res: Response) => {
 authRouter.route("/login").post(async (req: Request, res: Response) => {
   const data = req.body;
   const result = await login(data);
+  res.send(result);
+});
+
+authRouter.route("/refresh").post(async (req: Request, res: Response) => {
+  const data = req.body;
+  if (!data.refreshToken) {
+    throw Error("refreshToken missing at body of request");
+  }
+  const result = await getNewAccessToken(data.refreshToken);
   res.send(result);
 });
 
