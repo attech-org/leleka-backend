@@ -1,14 +1,7 @@
 import { sign, SignOptions, verify, VerifyOptions } from "jsonwebtoken";
 
 import { User } from "../models/User.model";
-import { UserToken } from "../models/UserToken.models";
-import {
-  deleteToken,
-  getToken,
-  getTokenByUserId,
-  saveToken,
-} from "../repositories/userToken.repository";
-import { updateUser } from "../services/user.service";
+import { getUserTokens, updateUser } from "../services/user.service";
 
 const verifyOptions: VerifyOptions = {
   algorithms: ["HS256"],
@@ -25,14 +18,13 @@ export const generateJWT = async (user: User) => {
 
   let refreshToken = "";
 
-  const findTokenInDatabase = await getTokenByUserId(String(user._id));
+  const findTokenInDatabase = await getUserTokens(user.username);
   if (findTokenInDatabase) {
     try {
-      refreshToken = findTokenInDatabase.token;
+      refreshToken = findTokenInDatabase.auth.local.refreshToken;
       verify(refreshToken, process.env.JWT_SECRET, verifyOptions);
     } catch (error: unknown) {
       //expire
-      await deleteToken(refreshToken);
       refreshToken = "";
     }
   }
@@ -41,7 +33,6 @@ export const generateJWT = async (user: User) => {
       ...signOptions,
       expiresIn: "365d",
     });
-    await saveToken({ userId: user._id, token: refreshToken } as UserToken);
   }
 
   await updateUser(user._id, {
@@ -60,20 +51,27 @@ export const verifyJWT = (token: string) => {
 };
 
 export const updateAccessToken = async (refreshToken: string) => {
-  const findTokenInDatabase = await getToken(refreshToken);
-  if (!findTokenInDatabase) {
-    throw Error("Invalid refresh token");
-  }
   const verifyPayload: User = verify(
     refreshToken,
     process.env.JWT_SECRET,
     verifyOptions
   ) as User;
-  if (verifyPayload._id !== findTokenInDatabase.userId) {
+  const findTokenInDatabase = await getUserTokens(verifyPayload.username);
+  if (
+    verifyPayload._id !== findTokenInDatabase._id ||
+    findTokenInDatabase.auth.local.refreshToken !== refreshToken
+  ) {
     throw Error("Invalid refresh token");
   }
   const payload = { _id: verifyPayload._id, username: verifyPayload.username };
 
   const accessToken = sign(payload, process.env.JWT_SECRET, signOptions);
+  await updateUser(verifyPayload._id, {
+    auth: {
+      local: {
+        accessToken: accessToken,
+      },
+    },
+  } as User);
   return accessToken;
 };

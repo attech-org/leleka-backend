@@ -68,8 +68,10 @@ export const create = async (user: User) => {
   }
 };
 
-export const findUser = async (user: User, additionalFields: string) => {
-  const { username } = user;
+export const findUserByUsername = async (
+  username: string,
+  additionalFields: string
+) => {
   if (additionalFields) {
     const userInDatabase = await UserModel.findOne(
       {

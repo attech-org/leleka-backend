@@ -2,6 +2,7 @@ import { User } from "../models/User.model";
 import {
   create,
   deleteOne,
+  findUserByUsername,
   getList,
   getUserById,
   updateOne,
@@ -16,6 +17,16 @@ export const listUsers = async () => {
 
 export const getUser = async (id: string) => {
   const result = await getUserById(id);
+  if (result) {
+    return result;
+  }
+};
+
+export const getUserTokens = async (username: string) => {
+  const result = await findUserByUsername(
+    username,
+    "+auth.local.refreshToken +auth.local.accessToken"
+  );
   if (result) {
     return result;
   }

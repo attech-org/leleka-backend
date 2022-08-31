@@ -1,7 +1,7 @@
 import { generateJWT, updateAccessToken } from "../config/jwt";
 import { comparePassword } from "../helpers/password";
 import { User } from "../models/User.model";
-import { create, findUser } from "../repositories/user.repository";
+import { create, findUserByUsername } from "../repositories/user.repository";
 
 export const register = async (data: User) => {
   // process input data
@@ -21,7 +21,10 @@ export const login = async (data: User) => {
   // call repository method
   const { password } = data;
 
-  const userInDataBase: User = await findUser(data, "+password");
+  const userInDataBase: User = await findUserByUsername(
+    data.username,
+    "+password"
+  );
   if (userInDataBase) {
     if (!comparePassword(userInDataBase.password, password)) {
       throw new Error("Wrong password");
