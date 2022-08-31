@@ -24,6 +24,16 @@ export interface User extends Document {
     phone?: string;
     gender?: string;
   };
+  auth: {
+    local: {
+      accessToken: string;
+      refreshToken: string;
+    };
+    twitter: {
+      accessToken: string;
+      refreshToken: string;
+    };
+  };
 }
 
 // define user schema
@@ -51,47 +61,38 @@ const UserSchema: Schema = new Schema<User>(
     },
     location: {
       type: String,
-      required: false,
       default: "",
     },
     url: {
       type: String,
-      required: false,
       default: "",
     },
     description: {
       type: String,
-      required: false,
       default: "",
     },
     verified: {
       type: Boolean,
-      required: false,
       default: false,
     },
     followersCount: {
       type: Number,
-      required: false,
       default: 0,
     },
     friendsCount: {
       type: Number,
-      required: false,
       default: 0,
     },
     listedCount: {
       type: Number,
-      required: false,
       default: 0,
     },
     favouritesCount: {
       type: Number,
-      required: false,
       default: 0,
     },
     statusesCount: {
       type: Number,
-      required: false,
       default: 0,
     },
     createdAt: {
@@ -100,7 +101,6 @@ const UserSchema: Schema = new Schema<User>(
     },
     updatedAt: {
       type: String,
-      required: false,
     },
     email: {
       type: String,
@@ -117,6 +117,24 @@ const UserSchema: Schema = new Schema<User>(
       bio: String,
       phone: String,
       gender: String,
+    },
+    auth: {
+      local: {
+        accessToken: {
+          type: String,
+        },
+        refreshToken: {
+          type: String,
+        },
+      },
+      twitter: {
+        accessToken: {
+          type: String,
+        },
+        refreshToken: {
+          type: String,
+        },
+      },
     },
   },
   {
