@@ -8,6 +8,7 @@ import {
   getTokenByUserId,
   saveToken,
 } from "../repositories/userToken.repository";
+import { updateUser } from "../services/user.service";
 
 const verifyOptions: VerifyOptions = {
   algorithms: ["HS256"],
@@ -42,6 +43,13 @@ export const generateJWT = async (user: User) => {
     });
     await saveToken({ userId: user._id, token: refreshToken } as UserToken);
   }
+  user.auth = {
+    local: {
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+    },
+  };
+  await updateUser(user._id, user);
   return { accessToken, refreshToken };
 };
 

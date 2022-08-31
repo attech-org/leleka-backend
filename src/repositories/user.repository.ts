@@ -11,48 +11,41 @@ export const getUserById = async (id: string) => {
   return result;
 };
 
-export const create = async (data: User) => {
-  const result = new UserModel({
-    username: data.username,
-    password: data.password,
-    email: data.email,
-    name: data.name,
-    location: data.location || "",
-    url: data.url || "",
-    description: data.description || "",
-    createdAt: new Date().toISOString(),
-  });
-  result.save();
-  return result;
-};
-
 export const deleteOne = async (id: string) => {
   const result = await UserModel.findByIdAndDelete({ _id: id });
   return result;
 };
 
 export const updateOne = async (id: string, data: User) => {
-  await UserModel.updateOne(
-    { _id: id },
-    { ...data, updated_at: new Date().toISOString() }
-  );
+  if (data.password) {
+    const encryptedPassword = hashPassword(data.password);
+    await UserModel.updateOne(
+      { _id: id },
+      {
+        ...data,
+        updatedAt: new Date().toISOString(),
+        password: encryptedPassword,
+      }
+    );
+  } else {
+    await UserModel.updateOne(
+      { _id: id },
+      { ...data, updatedAt: new Date().toISOString() }
+    );
+  }
   const result = await UserModel.findById({ _id: id });
   return result;
 };
 
-export const createUser = async (user: User) => {
+export const create = async (user: User) => {
   try {
-    if (user && user.username) {
-      const { password } = user;
-      const encryptedPassword = hashPassword(password);
-      const dbUser = new UserModel({ ...user, password: encryptedPassword });
+    const { password } = user;
+    const encryptedPassword = hashPassword(password);
+    const dbUser = new UserModel({ ...user, password: encryptedPassword });
 
-      const userInDatabase = await dbUser.save();
+    const userInDatabase = await dbUser.save();
 
-      return userInDatabase;
-    } else {
-      throw new Error("Error: 'username' is absent!!!");
-    }
+    return userInDatabase;
   } catch (error) {
     if (
       error.code === 11000 &&
@@ -75,14 +68,14 @@ export const createUser = async (user: User) => {
   }
 };
 
-export const findUser = async (user: User, withPassword?: boolean) => {
+export const findUser = async (user: User, additionalFields: string) => {
   const { username } = user;
-  if (withPassword) {
+  if (additionalFields) {
     const userInDatabase = await UserModel.findOne(
       {
         username: username,
       },
-      "+password"
+      additionalFields
     );
 
     return userInDatabase;
