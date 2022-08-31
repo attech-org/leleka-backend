@@ -58,7 +58,7 @@ export const updateAccessToken = async (refreshToken: string) => {
   ) as User;
   const findTokenInDatabase = await getUserTokens(verifyPayload.username);
   if (
-    verifyPayload._id !== findTokenInDatabase._id ||
+    verifyPayload._id !== findTokenInDatabase.id ||
     findTokenInDatabase.auth.local.refreshToken !== refreshToken
   ) {
     throw Error("Invalid refresh token");
