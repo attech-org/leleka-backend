@@ -1,6 +1,28 @@
 {
   "name": "leleka-backend",
   "version": "1.0.0",
+  "authors": [
+    {
+      "name": "Alexandr Tovmach",
+      "email": "alexandrtovmach@gmail.com"
+    },
+    {
+      "name": "Vitalii Denysyuk",
+      "email": "denvit1@gmail.com"
+    },
+    {
+      "name": "Maksim Fomin",
+      "email": "fomin.max.13@gmail.com"
+    },
+    {
+      "name": "Andrew Kaenko",
+      "email": "kaenkoa@gmail.com"
+    },
+    {
+      "name": "Paukov Nikita",
+      "email": "nikpaukov8214@gmail.com"
+    }
+  ],
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,7 +35,6 @@
     "lint-staged": "lint-staged"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
