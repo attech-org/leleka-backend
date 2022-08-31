@@ -1,6 +1,8 @@
 import express, { Request, Response } from "express";
 
-import { register } from "../services/auth.service";
+import { loginSchema, registerSchema } from "../helpers/validation";
+import { validation } from "../middlewares/yup.middlewares";
+import { getNewAccessToken, login, register } from "../services/auth.service";
 
 const authRouter = express.Router();
 
@@ -17,17 +19,29 @@ const authRouter = express.Router();
 // save them to DB and send it to user
 // );
 
-authRouter.route("/register").post(async (req: Request, res: Response) => {
-  try {
-    // process input data
-    // call repository method
+authRouter
+  .route("/register")
+  .post(validation(registerSchema), async (req: Request, res: Response) => {
     const data = req.body;
     const result = await register(data);
     res.send(result);
-  } catch (error: unknown) {
-    console.error(error);
-    res.sendStatus(400);
+  });
+
+authRouter
+  .route("/login")
+  .post(validation(loginSchema), async (req: Request, res: Response) => {
+    const data = req.body;
+    const result = await login(data);
+    res.send(result);
+  });
+
+authRouter.route("/refresh").post(async (req: Request, res: Response) => {
+  const data = req.body;
+  if (!data.refreshToken) {
+    throw Error("refreshToken missing at body of request");
   }
+  const result = await getNewAccessToken(data.refreshToken);
+  res.send(result);
 });
 
 export default authRouter;
