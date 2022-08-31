@@ -17,8 +17,9 @@ export interface Tweet extends Document {
 
 const TweetSchema: Schema = new Schema<Tweet>({
   authorId: {
-    type: ObjectId,
+    type: Schema.Types.ObjectId,
     required: true,
+    ref: "User",
   },
   content: {
     type: String,
@@ -28,8 +29,9 @@ const TweetSchema: Schema = new Schema<Tweet>({
     required: true,
   },
   repliedTo: {
-    type: ObjectId,
+    type: Schema.Types.ObjectId,
     required: false,
+    ref: "Tweet",
   },
 
   updatedAt: {
@@ -40,9 +42,9 @@ const TweetSchema: Schema = new Schema<Tweet>({
   stats: {
     required: false,
     likes: { type: Number, default: 0 },
-    retweets: { type: Array<ObjectId>, default: 0 },
+    retweets: { type: Array<Schema.Types.ObjectId>, ref: "Tweet", default: 0 },
     //Comments - todo, comments base
   },
 });
 
-export const TweetModel = model<Tweet>("TweetModel", TweetSchema);
+export const TweetModel = model<Tweet>("Tweet", TweetSchema);

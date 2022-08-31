@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/order
 import express, { Request, Response } from "express";
 
 import * as tweetsService from "../services/tweets.sevice";
@@ -37,7 +36,7 @@ tweetsRouter.put("/:id", async (req: Request, res: Response) => {
     authorId: req.body.authorId,
     content: req.body.content,
     repliedTo: req.body.repliedTo,
-    updatedAt: new Date(),
+    updatedAt: new Date().toISOString(),
   });
   res.sendStatus(200);
 });

@@ -30,13 +30,13 @@ export const updateTweet = async (
     content?: string;
     authorId?: string;
     repliedTo?: string;
-    updatedAt: Date;
+    updatedAt: string;
   }
 ) => {
   updateOne(id, {
     content: newData.content,
     authorId: newData.authorId,
     repliedTo: newData.repliedTo,
-    updatedAt: newData.updatedAt.toISOString(),
+    updatedAt: newData.updatedAt,
   });
 };
