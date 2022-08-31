@@ -70,6 +70,7 @@ export const updateAccessToken = async (refreshToken: string) => {
     auth: {
       local: {
         accessToken: accessToken,
+        refreshToken: refreshToken,
       },
     },
   } as User);
