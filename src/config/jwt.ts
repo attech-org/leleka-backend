@@ -43,13 +43,15 @@ export const generateJWT = async (user: User) => {
     });
     await saveToken({ userId: user._id, token: refreshToken } as UserToken);
   }
-  user.auth = {
-    local: {
-      accessToken: accessToken,
-      refreshToken: refreshToken,
+
+  await updateUser(user._id, {
+    auth: {
+      local: {
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      },
     },
-  };
-  await updateUser(user._id, user);
+  } as User);
   return { accessToken, refreshToken };
 };
 
