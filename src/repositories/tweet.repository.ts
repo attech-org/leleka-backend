@@ -31,12 +31,6 @@ export const updateOne = async (
     updatedAt: string;
   }
 ) => {
-  const data = {
-    content: newData.content,
-    updatedAt: newData.updatedAt,
-    repliedTo: newData.repliedTo,
-    authorId: newData.authorId,
-  };
 
-  return TweetModel.updateOne({ _id: id }, data);
+  return TweetModel.updateOne({ _id: id }, mewData);
 };
