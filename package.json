@@ -28,6 +28,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.4.1",
     "mongoose": "^6.2.4",
+    "mongoose-paginate-v2": "^1.7.0",
     "morgan": "^1.10.0",
     "winston": "^3.8.1"
   },
