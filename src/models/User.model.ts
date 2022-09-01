@@ -13,7 +13,7 @@ export interface User extends Document {
   listedCount: number;
   favouritesCount: number;
   statusesCount: number;
-  createdAt: string;
+  createdAt?: string;
   updatedAt?: string;
   email: string;
   profile: {
@@ -24,14 +24,14 @@ export interface User extends Document {
     phone?: string;
     gender?: string;
   };
-  auth: {
-    local: {
-      accessToken: string;
-      refreshToken: string;
+  auth?: {
+    local?: {
+      accessToken?: string;
+      refreshToken?: string;
     };
-    twitter: {
-      accessToken: string;
-      refreshToken: string;
+    twitter?: {
+      accessToken?: string;
+      refreshToken?: string;
     };
   };
 }
@@ -97,10 +97,11 @@ const UserSchema: Schema = new Schema<User>(
     },
     createdAt: {
       type: String,
-      required: true,
+      default: new Date().toISOString(),
     },
     updatedAt: {
       type: String,
+      default: new Date().toISOString(),
     },
     email: {
       type: String,
@@ -122,17 +123,21 @@ const UserSchema: Schema = new Schema<User>(
       local: {
         accessToken: {
           type: String,
+          select: false,
         },
         refreshToken: {
           type: String,
+          select: false,
         },
       },
       twitter: {
         accessToken: {
           type: String,
+          select: false,
         },
         refreshToken: {
           type: String,
+          select: false,
         },
       },
     },
