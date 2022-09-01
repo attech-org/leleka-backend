@@ -162,5 +162,3 @@ export const UserModel = mongoose.model<User, mongoose.PaginateModel<User>>(
   UserSchema,
   "Users"
 );
-
-// export const UserModel = model<User>("User", UserSchema);
