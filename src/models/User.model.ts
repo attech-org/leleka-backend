@@ -14,7 +14,7 @@ export interface User extends Document {
   listedCount: number;
   favouritesCount: number;
   statusesCount: number;
-  createdAt: string;
+  createdAt?: string;
   updatedAt?: string;
   email: string;
   profile: {
@@ -24,6 +24,16 @@ export interface User extends Document {
     bio?: string;
     phone?: string;
     gender?: string;
+  };
+  auth?: {
+    local?: {
+      accessToken?: string;
+      refreshToken?: string;
+    };
+    twitter?: {
+      accessToken?: string;
+      refreshToken?: string;
+    };
   };
 }
 
@@ -52,56 +62,47 @@ export const UserSchema: Schema = new Schema<User>(
     },
     location: {
       type: String,
-      required: false,
       default: "",
     },
     url: {
       type: String,
-      required: false,
       default: "",
     },
     description: {
       type: String,
-      required: false,
       default: "",
     },
     verified: {
       type: Boolean,
-      required: false,
       default: false,
     },
     followersCount: {
       type: Number,
-      required: false,
       default: 0,
     },
     friendsCount: {
       type: Number,
-      required: false,
       default: 0,
     },
     listedCount: {
       type: Number,
-      required: false,
       default: 0,
     },
     favouritesCount: {
       type: Number,
-      required: false,
       default: 0,
     },
     statusesCount: {
       type: Number,
-      required: false,
       default: 0,
     },
     createdAt: {
       type: String,
-      required: true,
+      default: new Date().toISOString(),
     },
     updatedAt: {
       type: String,
-      required: false,
+      default: new Date().toISOString(),
     },
     email: {
       type: String,
@@ -118,6 +119,28 @@ export const UserSchema: Schema = new Schema<User>(
       bio: String,
       phone: String,
       gender: String,
+    },
+    auth: {
+      local: {
+        accessToken: {
+          type: String,
+          select: false,
+        },
+        refreshToken: {
+          type: String,
+          select: false,
+        },
+      },
+      twitter: {
+        accessToken: {
+          type: String,
+          select: false,
+        },
+        refreshToken: {
+          type: String,
+          select: false,
+        },
+      },
     },
   },
   {
