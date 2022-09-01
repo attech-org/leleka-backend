@@ -8,8 +8,8 @@ import {
   updateOne,
 } from "../repositories/user.repository";
 
-export const listUsers = () => {
-  return getList();
+export const listUsers = (query: object) => {
+  return getList(query);
 };
 
 export const getUser = (id: string) => {

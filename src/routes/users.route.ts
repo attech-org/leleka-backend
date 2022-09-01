@@ -14,7 +14,7 @@ const usersRoutes = express.Router();
 usersRoutes
   .route("/")
   .get(isAuthorized, async (req: Request, res: Response) => {
-    const result = await listUsers();
+    const result = await listUsers(req.query);
     return res.send(result);
   });
 
