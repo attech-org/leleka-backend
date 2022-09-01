@@ -38,7 +38,7 @@ export interface User extends Document {
 }
 
 // define user schema
-export const UserSchema: Schema = new Schema<User>(
+const UserSchema: Schema = new Schema<User>(
   {
     username: {
       type: String,
