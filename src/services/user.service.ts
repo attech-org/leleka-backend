@@ -2,48 +2,45 @@ import { User } from "../models/User.model";
 import {
   create,
   deleteOne,
-  findUserByUsername,
   getList,
   getUserById,
+  updateLocalToken,
   updateOne,
 } from "../repositories/user.repository";
 
-export const listUsers = async () => {
-  const result = await getList();
-  if (result) {
-    return result;
-  }
+export const listUsers = () => {
+  return getList();
 };
 
-export const getUser = async (id: string) => {
-  const result = await getUserById(id);
-  if (result) {
-    return result;
-  }
+export const getUser = (id: string) => {
+  return getUserById(id);
 };
 
-export const getUserTokens = async (username: string) => {
-  const result = await findUserByUsername(
-    username,
-    "+auth.local.refreshToken +auth.local.accessToken"
+export const getUserTokens = async (id: string) => {
+  const result = await getUserById(
+    id,
+    "+auth.local.refreshToken +auth.local.accessToken" +
+      " +auth.twitter.accessToken +auth.twitter.refreshToken"
   );
   if (result) {
     return result;
   }
 };
 
-export const createUser = async (data: User) => {
-  const result = await create(data);
-  return result;
+export const createUser = (data: User) => {
+  return create(data);
 };
 
-export const deleteUser = async (id: string) => {
-  await deleteOne(id);
+export const deleteUser = (id: string) => {
+  return deleteOne(id);
 };
 
-export const updateUser = async (id: string, data: User) => {
-  const result = await updateOne(id, data);
-  if (result) {
-    return result;
-  }
+export const updateUser = (id: string, data: User) => {
+  return updateOne(id, data);
 };
+
+export const updateUserLocalToken = (
+  id: string,
+  accessToken: string,
+  refreshToken: string
+) => updateLocalToken(id, accessToken, refreshToken);

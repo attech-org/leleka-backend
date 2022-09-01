@@ -1,7 +1,7 @@
 import { sign, SignOptions, verify, VerifyOptions } from "jsonwebtoken";
 
 import { User } from "../models/User.model";
-import { getUserTokens, updateUser } from "../services/user.service";
+import { getUserTokens, updateUserLocalToken } from "../services/user.service";
 
 const verifyOptions: VerifyOptions = {
   algorithms: ["HS256"],
@@ -18,7 +18,7 @@ export const generateJWT = async (user: User) => {
 
   let refreshToken = "";
 
-  const findTokenInDatabase = await getUserTokens(user.username);
+  const findTokenInDatabase = await getUserTokens(user.id);
   if (findTokenInDatabase) {
     try {
       refreshToken = findTokenInDatabase.auth.local.refreshToken;
@@ -34,15 +34,8 @@ export const generateJWT = async (user: User) => {
       expiresIn: "365d",
     });
   }
+  await updateUserLocalToken(user._id, accessToken, refreshToken);
 
-  await updateUser(user._id, {
-    auth: {
-      local: {
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-      },
-    },
-  } as User);
   return { accessToken, refreshToken };
 };
 
@@ -56,7 +49,7 @@ export const updateAccessToken = async (refreshToken: string) => {
     process.env.JWT_SECRET,
     verifyOptions
   ) as User;
-  const findTokenInDatabase = await getUserTokens(verifyPayload.username);
+  const findTokenInDatabase = await getUserTokens(verifyPayload._id);
   if (
     verifyPayload._id !== findTokenInDatabase.id ||
     findTokenInDatabase.auth.local.refreshToken !== refreshToken
@@ -66,13 +59,8 @@ export const updateAccessToken = async (refreshToken: string) => {
   const payload = { _id: verifyPayload._id, username: verifyPayload.username };
 
   const accessToken = sign(payload, process.env.JWT_SECRET, signOptions);
-  await updateUser(verifyPayload._id, {
-    auth: {
-      local: {
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-      },
-    },
-  } as User);
+
+  await updateUserLocalToken(verifyPayload._id, accessToken, refreshToken);
+
   return accessToken;
 };

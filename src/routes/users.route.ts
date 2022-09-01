@@ -48,7 +48,7 @@ usersRoutes
   .delete(isAuthorized, async (req: Request, res: Response) => {
     if (req.params.id) {
       await deleteUser(req.params.id);
-      res.sendStatus(200);
+      return res.sendStatus(200);
     }
     return res.sendStatus(500);
   });

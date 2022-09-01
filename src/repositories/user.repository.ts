@@ -6,7 +6,11 @@ export const getList = async () => {
   return result;
 };
 
-export const getUserById = async (id: string) => {
+export const getUserById = async (id: string, additionalFields?: string) => {
+  if (additionalFields) {
+    const result = await UserModel.findById(id, additionalFields);
+    return result;
+  }
   const result = await UserModel.findById(id);
   return result;
 };
@@ -14,6 +18,22 @@ export const getUserById = async (id: string) => {
 export const deleteOne = async (id: string) => {
   const result = await UserModel.findByIdAndDelete({ _id: id });
   return result;
+};
+
+export const updateLocalToken = (
+  id: string,
+  accessToken: string,
+  refreshToken: string
+) => {
+  return UserModel.updateOne(
+    { _id: id },
+    {
+      $set: {
+        updatedAt: new Date().toISOString(),
+        "auth.local": { accessToken: accessToken, refreshToken: refreshToken },
+      },
+    }
+  );
 };
 
 export const updateOne = async (id: string, data: User) => {
