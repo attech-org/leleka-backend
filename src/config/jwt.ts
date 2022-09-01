@@ -1,7 +1,10 @@
 import { sign, SignOptions, verify, VerifyOptions } from "jsonwebtoken";
 
 import { User } from "../models/User.model";
-import { getUserTokens, updateUserLocalToken } from "../services/user.service";
+import {
+  getUserLocalTokens,
+  updateUserLocalTokens,
+} from "../services/user.service";
 
 const verifyOptions: VerifyOptions = {
   algorithms: ["HS256"],
@@ -18,10 +21,10 @@ export const generateJWT = async (user: User) => {
 
   let refreshToken = "";
 
-  const findTokenInDatabase = await getUserTokens(user.id);
+  const findTokenInDatabase = await getUserLocalTokens(user.id);
   if (findTokenInDatabase) {
     try {
-      refreshToken = findTokenInDatabase.auth.local.refreshToken;
+      refreshToken = findTokenInDatabase.refreshToken;
       verify(refreshToken, process.env.JWT_SECRET, verifyOptions);
     } catch (error: unknown) {
       //expire
@@ -34,7 +37,7 @@ export const generateJWT = async (user: User) => {
       expiresIn: "365d",
     });
   }
-  await updateUserLocalToken(user._id, accessToken, refreshToken);
+  await updateUserLocalTokens(user._id, accessToken, refreshToken);
 
   return { accessToken, refreshToken };
 };
@@ -49,10 +52,10 @@ export const updateAccessToken = async (refreshToken: string) => {
     process.env.JWT_SECRET,
     verifyOptions
   ) as User;
-  const findTokenInDatabase = await getUserTokens(verifyPayload._id);
+  const findTokenInDatabase = await getUserLocalTokens(verifyPayload._id);
   if (
     verifyPayload._id !== findTokenInDatabase.id ||
-    findTokenInDatabase.auth.local.refreshToken !== refreshToken
+    findTokenInDatabase.refreshToken !== refreshToken
   ) {
     throw Error("Invalid refresh token");
   }
@@ -60,7 +63,7 @@ export const updateAccessToken = async (refreshToken: string) => {
 
   const accessToken = sign(payload, process.env.JWT_SECRET, signOptions);
 
-  await updateUserLocalToken(verifyPayload._id, accessToken, refreshToken);
+  await updateUserLocalTokens(verifyPayload._id, accessToken, refreshToken);
 
   return accessToken;
 };

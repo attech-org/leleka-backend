@@ -20,7 +20,7 @@ export const deleteOne = async (id: string) => {
   return result;
 };
 
-export const updateLocalToken = (
+export const updateLocalTokens = (
   id: string,
   accessToken: string,
   refreshToken: string

@@ -4,7 +4,7 @@ import {
   deleteOne,
   getList,
   getUserById,
-  updateLocalToken,
+  updateLocalTokens,
   updateOne,
 } from "../repositories/user.repository";
 
@@ -16,14 +16,18 @@ export const getUser = (id: string) => {
   return getUserById(id);
 };
 
-export const getUserTokens = async (id: string) => {
+export const getUserLocalTokens = async (id: string) => {
   const result = await getUserById(
     id,
     "+auth.local.refreshToken +auth.local.accessToken" +
       " +auth.twitter.accessToken +auth.twitter.refreshToken"
   );
   if (result) {
-    return result;
+    return {
+      id: result.id,
+      accessToken: result.auth.local.accessToken,
+      refreshToken: result.auth.local.refreshToken,
+    };
   }
 };
 
@@ -39,8 +43,8 @@ export const updateUser = (id: string, data: User) => {
   return updateOne(id, data);
 };
 
-export const updateUserLocalToken = (
+export const updateUserLocalTokens = (
   id: string,
   accessToken: string,
   refreshToken: string
-) => updateLocalToken(id, accessToken, refreshToken);
+) => updateLocalTokens(id, accessToken, refreshToken);
