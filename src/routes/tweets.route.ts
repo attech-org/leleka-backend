@@ -5,12 +5,12 @@ import * as tweetsService from "../services/tweets.sevice";
 export const tweetsRouter = express.Router();
 tweetsRouter.get("/:id", async (req: Request, res: Response) => {
   const tweet = await tweetsService.getTweetById(req.params.id);
-  res.json(tweet);
+  res.send(tweet);
 });
 
 tweetsRouter.get("/", async (req: Request, res: Response) => {
   const tweets = await tweetsService.getAllTweets();
-  res.json(tweets);
+  res.send(tweets);
 });
 
 tweetsRouter.delete("/:id", async (req: Request, res: Response) => {
@@ -27,7 +27,7 @@ tweetsRouter.post("/", async (req: Request, res: Response) => {
     );
     res.sendStatus(201);
   } else {
-    res.status(400).json({ error: "Missing authorId" });
+    res.status(400).send({ error: "Missing authorId" });
   }
 });
 
