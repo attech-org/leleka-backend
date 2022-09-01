@@ -7,8 +7,8 @@ import {
   updateOne,
 } from "../repositories/user.repository";
 
-export const listUsers = async () => {
-  const result = await getList();
+export const listUsers = async (query: object) => {
+  const result = await getList(query);
   if (result) {
     return result;
   }
