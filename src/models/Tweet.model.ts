@@ -10,7 +10,7 @@ export interface Tweet extends Document {
   updatedAt: string;
   stats: {
     likes: number;
-    retweets: Array<ObjectId>;
+    retweets: number;
     //Comments - todo, comments base
   };
 }
@@ -42,7 +42,7 @@ const TweetSchema: Schema = new Schema<Tweet>({
   stats: {
     required: false,
     likes: { type: Number, default: 0 },
-    retweets: { type: Array<Schema.Types.ObjectId>, ref: "Tweet", default: 0 },
+    retweets: Number,
     //Comments - todo, comments base
   },
 });
