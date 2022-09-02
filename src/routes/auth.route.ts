@@ -14,7 +14,7 @@ const authRouter = express.Router();
 
 // authRouter.route("/twitter_callback").get(
 // in query params: "code"
-// post reuqest to Twitter API with received "code" and "twitter_client_id", "twitter_client_secret" from .env
+// post request to Twitter API with received "code" and "twitter_client_id", "twitter_client_secret" from .env
 // in response you'll have authToken and refreshAuthToken
 // save them to DB and send it to user
 // );
