@@ -42,7 +42,7 @@ const TweetSchema: Schema = new Schema<Tweet>({
   stats: {
     required: false,
     likes: { type: Number, default: 0 },
-    retweets: Number,
+    retweets: { type: Number, default: 0 },
     //Comments - todo, comments base
   },
 });
