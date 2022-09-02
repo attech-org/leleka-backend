@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
 
-import * as tweetsService from "../services/tweets.sevice";
+import * as tweetsService from "../services/tweets.service";
 
-export const tweetsRouter = express.Router();
+const tweetsRouter = express.Router();
 tweetsRouter.get("/:id", async (req: Request, res: Response) => {
   const tweet = await tweetsService.getTweetById(req.params.id);
   res.send(tweet);
@@ -40,3 +40,5 @@ tweetsRouter.put("/:id", async (req: Request, res: Response) => {
   });
   res.sendStatus(200);
 });
+
+export default tweetsRouter;
