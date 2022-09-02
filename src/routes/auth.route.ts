@@ -1,7 +1,14 @@
 import express, { Request, Response } from "express";
 import superagent from "superagent";
 
-import { accessToken, login, register } from "../services/auth.service";
+import { loginSchema, registerSchema } from "../helpers/validation";
+import { validation } from "../middlewares/yup.middlewares";
+import {
+  accessToken,
+  getNewAccessToken,
+  login,
+  register,
+} from "../services/auth.service";
 
 const authRouter = express.Router();
 
@@ -39,9 +46,8 @@ authRouter
           .set("Content-Type", "application/x-www-form-urlencoded")
           .set("Authorization", `Basic ${base64secret}`)
           .send(authOptions);
-        // console.log(response);
         const result = await accessToken(response.body.access_token);
-        console.log(result);
+        console.info(result);
         // res.send(result);
       }
     } catch (err: unknown) {
@@ -53,15 +59,28 @@ authRouter
 // in response you'll have authToken and refreshAuthToken
 // save them to DB and send it to user
 
-authRouter.route("/register").post(async (req: Request, res: Response) => {
-  const data = req.body;
-  const result = await register(data);
-  res.send(result);
-});
+authRouter
+  .route("/register")
+  .post(validation(registerSchema), async (req: Request, res: Response) => {
+    const data = req.body;
+    const result = await register(data);
+    res.send(result);
+  });
 
-authRouter.route("/login").post(async (req: Request, res: Response) => {
+authRouter
+  .route("/login")
+  .post(validation(loginSchema), async (req: Request, res: Response) => {
+    const data = req.body;
+    const result = await login(data);
+    res.send(result);
+  });
+
+authRouter.route("/refresh").post(async (req: Request, res: Response) => {
   const data = req.body;
-  const result = await login(data);
+  if (!data.refreshToken) {
+    throw Error("refreshToken missing at body of request");
+  }
+  const result = await getNewAccessToken(data.refreshToken);
   res.send(result);
 });
 

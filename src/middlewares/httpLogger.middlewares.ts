@@ -33,8 +33,8 @@ const httpLogger = (req: Request, res: Response, next: NextFunction) => {
       request.body = "{ hugeBody: true }";
     }
   }
-
   Logger.http(request);
+
   next();
 };
 export default httpLogger;

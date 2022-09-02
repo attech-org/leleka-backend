@@ -1,25 +1,75 @@
 import { hashPassword } from "../helpers/password";
-import { User, UserModel } from "../models/User";
+import { User, UserModel } from "../models/User.model";
 
-export const getAdminUser = () => {
-  return UserModel.find({
-    username: "admin",
-  });
+export const getList = async (queryParams: object) => {
+  const query = {};
+  const options = {
+    ...queryParams,
+  };
+  const result = await UserModel.paginate(query, options);
+  return result;
 };
 
-export const createUser = async (user: User) => {
-  try {
-    if (user && user.username) {
-      const { password } = user;
-      const encryptedPassword = hashPassword(password);
-      const dbUser = new UserModel({ ...user, password: encryptedPassword });
+export const getUserById = async (id: string, additionalFields?: string) => {
+  if (additionalFields) {
+    const result = await UserModel.findById(id, additionalFields);
+    return result;
+  }
+  const result = await UserModel.findById(id);
+  return result;
+};
 
-      const userInDatabase = await dbUser.save();
+export const deleteOne = async (id: string) => {
+  const result = await UserModel.findByIdAndDelete({ _id: id });
+  return result;
+};
 
-      return userInDatabase;
-    } else {
-      throw new Error("Error: 'username' is absent!!!");
+export const updateLocalTokens = (
+  id: string,
+  accessToken: string,
+  refreshToken: string
+) => {
+  return UserModel.updateOne(
+    { _id: id },
+    {
+      $set: {
+        updatedAt: new Date().toISOString(),
+        "auth.local": { accessToken: accessToken, refreshToken: refreshToken },
+      },
     }
+  );
+};
+
+export const updateOne = async (id: string, data: User) => {
+  if (data.password) {
+    const encryptedPassword = hashPassword(data.password);
+    await UserModel.updateOne(
+      { _id: id },
+      {
+        ...data,
+        updatedAt: new Date().toISOString(),
+        password: encryptedPassword,
+      }
+    );
+  } else {
+    await UserModel.updateOne(
+      { _id: id },
+      { ...data, updatedAt: new Date().toISOString() }
+    );
+  }
+  const result = await UserModel.findById({ _id: id });
+  return result;
+};
+
+export const create = async (user: User) => {
+  try {
+    const { password } = user;
+    const encryptedPassword = hashPassword(password);
+    const dbUser = new UserModel({ ...user, password: encryptedPassword });
+
+    const userInDatabase = await dbUser.save();
+
+    return userInDatabase;
   } catch (error) {
     if (
       error.code === 11000 &&
@@ -42,14 +92,16 @@ export const createUser = async (user: User) => {
   }
 };
 
-export const findUser = async (user: User, withPassword?: boolean) => {
-  const { username } = user;
-  if (withPassword) {
+export const findUserByUsername = async (
+  username: string,
+  additionalFields: string
+) => {
+  if (additionalFields) {
     const userInDatabase = await UserModel.findOne(
       {
         username: username,
       },
-      "+password"
+      additionalFields
     );
 
     return userInDatabase;
