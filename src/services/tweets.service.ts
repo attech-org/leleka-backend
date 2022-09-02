@@ -15,7 +15,7 @@ export const createTweet = async (
   content: string,
   repliedTo?: string
 ) => {
-  createOne(authorId, content, repliedTo);
+  return createOne(authorId, content, repliedTo);
 };
 export const deleteTweet = async (id: string) => {
   return deleteOne(id);
@@ -33,5 +33,5 @@ export const updateTweet = async (
     updatedAt: string;
   }
 ) => {
-  updateOne(id, newData);
+  return updateOne(id, newData);
 };

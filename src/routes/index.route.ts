@@ -21,9 +21,10 @@ router.get("/testAuthorized", isAuthorized, (_req: Request, res: Response) => {
 });
 
 router.use("/auth", authRoutes);
-router.use("/users", usersRoutes);
 router.use("/tweets", tweetsRouter);
 router.use("/bookmarks", bookmarksRoutes);
+router.use("/tweets", tweetsRouter);
+router.use("/users", usersRoutes);
 router.use("/link-preview", proxyLinkPreviewRouter);
 
 export default router;
