@@ -14,7 +14,7 @@ export const createOne = async (
     repliedTo: repliedTo,
     createdAt: new Date().toISOString(),
   });
-  tweetModel.save();
+  return tweetModel.save();
 };
 export const deleteOne = async (id: string) => {
   return TweetModel.deleteOne({ _id: id });
