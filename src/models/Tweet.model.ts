@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
-import { model, Schema, Document } from "mongoose";
+import mongoose, { model, Schema, Document } from "mongoose";
+import paginate from "mongoose-paginate-v2";
 
 export interface Tweet extends Document {
   //reference
@@ -46,5 +47,8 @@ const TweetSchema: Schema = new Schema<Tweet>({
     //Comments - todo, comments base
   },
 });
-
-export const TweetModel = model<Tweet>("Tweet", TweetSchema);
+TweetSchema.plugin(paginate);
+export const TweetModel = model<Tweet, mongoose.PaginateModel<Tweet>>(
+  "Tweet",
+  TweetSchema
+);

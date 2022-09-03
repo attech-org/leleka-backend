@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { PaginationParameters } from "mongoose-paginate-v2";
 
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
 import {
@@ -12,7 +13,7 @@ const bookmarksRouter = express.Router();
 bookmarksRouter
   .route("/")
   .get(isAuthorized, async (req: Request, res: Response) => {
-    const result = await getBookmarks();
+    const result = await getBookmarks(new PaginationParameters(req));
     res.send(result);
   });
 

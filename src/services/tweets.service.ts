@@ -1,7 +1,9 @@
+import { PaginationParameters } from "mongoose-paginate-v2";
+
 import {
   createOne,
   deleteOne,
-  getAll,
+  getList,
   getOneById,
   updateOne,
 } from "../repositories/tweet.repository";
@@ -21,8 +23,10 @@ export const deleteTweet = async (id: string) => {
   return deleteOne(id);
 };
 
-export const getAllTweets = async () => {
-  return getAll();
+export const getAllTweets = async (
+  data: PaginationParameters<never, never>
+) => {
+  return getList(...data.get());
 };
 export const updateTweet = async (
   id: string,

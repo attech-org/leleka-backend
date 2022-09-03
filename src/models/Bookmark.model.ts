@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import mongoose, { model, Schema, Document } from "mongoose";
+import paginate from "mongoose-paginate-v2";
 
 export interface Bookmark extends Document {
   tweetId: ObjectId;
@@ -32,4 +33,8 @@ const BookmarkSchema: Schema = new Schema<Bookmark>({
   },
 });
 
-export const BookmarkModel = model<Bookmark>("Bookmark", BookmarkSchema);
+BookmarkSchema.plugin(paginate);
+export const BookmarkModel = model<Bookmark, mongoose.PaginateModel<Bookmark>>(
+  "Bookmark",
+  BookmarkSchema
+);
