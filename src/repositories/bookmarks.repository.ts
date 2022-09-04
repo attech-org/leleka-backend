@@ -1,7 +1,7 @@
 import { BookmarkModel } from "../models/Bookmark.model";
 
-export const listBookmarks = () => {
-  return BookmarkModel.find();
+export const listBookmarks = async (query: object, options: object) => {
+  return BookmarkModel.paginate(query, options);
 };
 
 export const addOne = (tweetId: string, ownerId: string) => {
