@@ -1,15 +1,11 @@
 import { FollowingModel } from "./../models/Following.model";
 
-export const getList = async (queryParams: object) => {
-  const query = {};
-  const options = {
-    ...queryParams,
-  };
-  const result = await FollowingModel.paginate(query, options);
+export const getList = (query: object, options: object) => {
+  const result = FollowingModel.paginate(query, options);
   return result;
 };
 
-export const addOne = async (ownerId: string, followingId: string) => {
+export const addOne = (ownerId: string, followingId: string) => {
   const result = new FollowingModel({
     ownerId: ownerId,
     followingId: followingId,
@@ -19,7 +15,7 @@ export const addOne = async (ownerId: string, followingId: string) => {
   return result.save();
 };
 
-export const deleteById = async (followingId: string) => {
+export const deleteById = (followingId: string) => {
   return FollowingModel.findByIdAndDelete(followingId);
 };
 
