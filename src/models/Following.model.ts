@@ -2,20 +2,20 @@ import mongoose, { Schema, Document, Types } from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
 export interface Following extends Document {
-  followingId: Types.ObjectId;
-  ownerId: Types.ObjectId;
+  following: Types.ObjectId;
+  follower: Types.ObjectId;
   createdAt?: string;
   updatedAt?: string;
 }
 
 const FollowingSchema: Schema = new Schema<Following>({
-  followingId: {
+  following: {
     type: Schema.Types.ObjectId,
     required: true,
     ref: "User",
   },
 
-  ownerId: {
+  follower: {
     type: Schema.Types.ObjectId,
     required: true,
     ref: "User",

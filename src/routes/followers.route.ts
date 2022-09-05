@@ -25,8 +25,8 @@ followersRouter
     isAuthorized,
     validation(followersSchema),
     async (req: Request, res: Response) => {
-      const { followerId, ownerId } = req.body;
-      const newFollower = await addFollower(followerId, ownerId);
+      const { follower, following } = req.body;
+      const newFollower = await addFollower(follower, following);
       res.status(201).send(newFollower);
     }
   );

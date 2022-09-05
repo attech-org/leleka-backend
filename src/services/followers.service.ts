@@ -13,8 +13,8 @@ export const getFollowers = async (
   return followersList;
 };
 
-export const addFollower = (ownerId: string, followerId: string) => {
-  return addOneFollower(ownerId, followerId);
+export const addFollower = (following: string, follower: string) => {
+  return addOneFollower(following, follower);
 };
 
 export const deleteFollower = (id: string) => {

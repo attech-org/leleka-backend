@@ -1,15 +1,15 @@
 import { TweetModel } from "../models/Tweet.model";
 
 export const getOneById = (id: string) => {
-  return TweetModel.find({ _id: id }).populate("authorId");
+  return TweetModel.find({ _id: id }).populate("author");
 };
 export const createOne = async (
-  authorId: string,
+  author: string,
   content: string,
   repliedTo?: string
 ) => {
   const tweetModel = new TweetModel({
-    authorId: authorId,
+    author: author,
     content: content,
     repliedTo: repliedTo,
     createdAt: new Date().toISOString(),
@@ -20,13 +20,13 @@ export const deleteOne = async (id: string) => {
   return TweetModel.deleteOne({ _id: id });
 };
 export const getList = async (query: object, options: object) => {
-  return TweetModel.paginate(query, { ...options, populate: "authorId" });
+  return TweetModel.paginate(query, { ...options, populate: "author" });
 };
 export const updateOne = async (
   id: string,
   newData: {
     content?: string;
-    authorId?: string;
+    author?: string;
     repliedTo?: string;
     stats?: { likes?: number; retweets?: number };
     updatedAt: string;

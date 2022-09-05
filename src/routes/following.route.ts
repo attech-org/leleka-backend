@@ -25,9 +25,9 @@ followingRouter
   });
 
 followingRouter
-  .route("/:followingId")
+  .route("/:following")
   .delete(isAuthorized, async (req: Request, res: Response) => {
-    await deleteFollowing(req.params.followingId);
+    await deleteFollowing(req.params.following);
     res.sendStatus(200);
   });
 
