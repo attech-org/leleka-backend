@@ -14,57 +14,79 @@
    ```sh
    npm run dev
    ```
-6. Api:
+6. Pagination query info: `https://www.npmjs.com/package/mongoose-paginate-v2`, Url example: `127.0.0.1:3001/api/tweets/?limit=1&page=2&query={"content": "bbb"}`
 
-- Registration - post: 127.0.0.1:3001/api/auth/register
-- Log in - post: 127.0.0.1:3001/api/auth/login
-- Refresh access token - post: 127.0.0.1:3001/api/auth/refresh
-- test authorized - get: 127.0.0.1:3001/api/testAuthorized
-- Proxy Link Preview - `http://127.0.0.1:3001/api/link-preview/?url=${url}`
-- Pagination query info: `https://www.npmjs.com/package/mongoose-paginate-v2`, Url example: `127.0.0.1:3001/api/tweets/?limit=1&page=2&query={"content": "bbb"}`
+7. Api:
 
-  how it works Frontend:
+   7.1. Auth
 
-  ```
-  import { LinkPreview } from "@dhaiwat10/react-link-preview";
+   - Registration - post: 127.0.0.1:3001/api/auth/register
+   - Log in - post: 127.0.0.1:3001/api/auth/login
+   - Refresh access token - post: 127.0.0.1:3001/api/auth/refresh
+   - test authorized (need authorization) - get: 127.0.0.1:3001/api/testAuthorized
 
-  const customFetcher = async (url: string) => {
-     const response = await fetch(
-       `http://127.0.0.1:3001/api/link-preview/?url=${url}`
-     );
-     const json = await response.json();
-     console.warn(json.metadata);
-     return json.metadata;
-  };
+     7.2. Users (need authorization)
 
-  const MorePage: React.FunctionComponent = () => {
-  return (
-     <Layout>
-        {" "}
-        <LinkPreview
-        fetcher={customFetcher}
-        url={"https://getbootstrap.com/docs/5.0/components/card/"}
-        />
-        <LinkPreview
-        fetcher={customFetcher}
-        url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        />
-     </Layout>
-  );
-  };
-  ```
+   - get all users - get: 127.0.0.1:3001/api/users/
+   - get user by id - get: 127.0.0.1:3001/api/users/id
+   - create user - post: 127.0.0.1:3001/api/users/
+   - modify user by id - put: 127.0.0.1:3001/api/users/id
+   - delete user by id - delete: 127.0.0.1:3001/api/users/id
 
-  JSON from customFetcher is
+     7.3. Tweets (Pagination, query, aggregation of user)
 
-  ```
-  export interface APIOutput {
-     title?: string;
-     description?: string;
-     image?: string;
-     siteName?: string;
-     hostname?: string;
-     url?: string;
-  }
-  ```
+   - get tweets - get: 127.0.0.1:3001/api/tweets/?limit=1&page=2&query={"content": "bbb"}
+   - get tweet by id - get: 127.0.0.1:3001/api/tweets/id
+   - create tweet - post: 127.0.0.1:3001/api/tweets/
+   - modify tweet by id - put: 127.0.0.1:3001/api/tweets/id
+   - delete tweet by id - delete: 127.0.0.1:3001/api/tweets/id
 
-  or just get the data as was done in customFetcher and render it
+     7.4 Link Preview
+
+   - Proxy Link Preview - `http://127.0.0.1:3001/api/link-preview/?url=${url}`
+
+   how it works Frontend:
+
+   ```
+   import { LinkPreview } from "@dhaiwat10/react-link-preview";
+
+   const customFetcher = async (url: string) => {
+      const response = await fetch(
+         `http://127.0.0.1:3001/api/link-preview/?url=${url}`
+      );
+      const json = await response.json();
+      console.warn(json.metadata);
+      return json.metadata;
+   };
+
+   const MorePage: React.FunctionComponent = () => {
+   return (
+      <Layout>
+         {" "}
+         <LinkPreview
+         fetcher={customFetcher}
+         url={"https://getbootstrap.com/docs/5.0/components/card/"}
+         />
+         <LinkPreview
+         fetcher={customFetcher}
+         url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+         />
+      </Layout>
+   );
+   };
+   ```
+
+   JSON from customFetcher is
+
+   ```
+   export interface APIOutput {
+      title?: string;
+      description?: string;
+      image?: string;
+      siteName?: string;
+      hostname?: string;
+      url?: string;
+   }
+   ```
+
+   or just get the data as was done in customFetcher and render it
