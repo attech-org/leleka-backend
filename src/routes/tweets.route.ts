@@ -3,25 +3,25 @@ import { PaginationParameters } from "mongoose-paginate-v2";
 
 import * as tweetsService from "../services/tweets.service";
 
-const tweetsRouter = express.Router();
-tweetsRouter.get("/:id", async (req: Request, res: Response) => {
+const tweetsRoutes = express.Router();
+tweetsRoutes.get("/:id", async (req: Request, res: Response) => {
   const tweet = await tweetsService.getTweetById(req.params.id);
   res.send(tweet);
 });
 
-tweetsRouter.get("/", async (req: Request, res: Response) => {
+tweetsRoutes.get("/", async (req: Request, res: Response) => {
   const tweets = await tweetsService.getAllTweets(
     new PaginationParameters(req)
   );
   res.send(tweets);
 });
 
-tweetsRouter.delete("/:id", async (req: Request, res: Response) => {
+tweetsRoutes.delete("/:id", async (req: Request, res: Response) => {
   await tweetsService.deleteTweet(req.params.id);
   res.sendStatus(200);
 });
 
-tweetsRouter.post("/", async (req: Request, res: Response) => {
+tweetsRoutes.post("/", async (req: Request, res: Response) => {
   if (req.body.author) {
     const newTweet = await tweetsService.createTweet(
       req.body.author,
@@ -34,7 +34,7 @@ tweetsRouter.post("/", async (req: Request, res: Response) => {
   }
 });
 
-tweetsRouter.put("/:id", async (req: Request, res: Response) => {
+tweetsRoutes.put("/:id", async (req: Request, res: Response) => {
   const modifyTweet = await tweetsService.updateTweet(req.params.id, {
     author: req.body.author,
     content: req.body.content,
@@ -44,4 +44,4 @@ tweetsRouter.put("/:id", async (req: Request, res: Response) => {
   res.status(200).send(modifyTweet);
 });
 
-export default tweetsRouter;
+export default tweetsRoutes;

@@ -39,9 +39,5 @@ export const changeStats = async (
   fieldName: string,
   value: number
 ) => {
-  const res = await TweetModel.updateOne(
-    { _id: id },
-    { $inc: { [fieldName]: value } }
-  );
-  return res;
+  return TweetModel.updateOne({ _id: id }, { $inc: { [fieldName]: value } });
 };

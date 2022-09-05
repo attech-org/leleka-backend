@@ -2,23 +2,23 @@ import express, { Request, Response } from "express";
 
 import { changeLike, getLikeById, updateLike } from "../services/likes.service";
 
-const likesRouter = express.Router();
+const likesRoutes = express.Router();
 
-likesRouter.post("/", async (req: Request, res: Response) => {
-  await changeLike(req.body.tweetId, req.body.userId);
+likesRoutes.post("/", async (req: Request, res: Response) => {
+  await changeLike(req.body.tweet, req.body.user);
   res.sendStatus(200);
 });
 
-likesRouter.get("/:id", async (req: Request, res: Response) => {
+likesRoutes.get("/:id", async (req: Request, res: Response) => {
   const result = await getLikeById(req.params.id);
   res.status(200).send(result);
 });
-likesRouter.put("/:id", async (req: Request, res: Response) => {
+likesRoutes.put("/:id", async (req: Request, res: Response) => {
   const result = await updateLike(req.params.id, {
-    tweetId: req.body.tweetId,
-    userId: req.body.userId,
+    tweet: req.body.tweet,
+    user: req.body.user,
   });
   res.status(200).send(result);
 });
 
-export default likesRouter;
+export default likesRoutes;

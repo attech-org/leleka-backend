@@ -2,17 +2,17 @@ import { ObjectId } from "mongodb";
 import { model, Schema, Document } from "mongoose";
 
 export interface Like extends Document {
-  userId: ObjectId;
-  tweetId: ObjectId;
+  user: ObjectId;
+  tweet: ObjectId;
 }
 
 const LikeSchema: Schema = new Schema<Like>({
-  userId: {
+  user: {
     type: ObjectId,
     required: true,
-    ref: "User",
+    ref: "Users",
   },
-  tweetId: {
+  tweet: {
     type: ObjectId,
     required: true,
     ref: "Tweet",

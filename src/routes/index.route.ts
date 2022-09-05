@@ -4,9 +4,9 @@ import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
 import authRoutes from "./auth.route";
 import bookmarksRoutes from "./bookmarks.route";
 import followingRoutes from "./following.route";
-import likesRouter from "./likes.route";
+import likesRoutes from "./likes.route";
 import proxyLinkPreviewRouter from "./proxyLinkPreview.route";
-import tweetsRouter from "./tweets.route";
+import tweetsRoutes from "./tweets.route";
 import usersRoutes from "./users.route";
 
 const router = express.Router();
@@ -24,11 +24,11 @@ router.get("/testAuthorized", isAuthorized, (_req: Request, res: Response) => {
 
 router.use("/auth", authRoutes);
 router.use("/bookmarks", bookmarksRoutes);
-router.use("/tweets", tweetsRouter);
+router.use("/tweets", tweetsRoutes);
 router.use("/users", usersRoutes);
 router.use("/following", followingRoutes);
 router.use("/link-preview", proxyLinkPreviewRouter);
-router.use("/likes", likesRouter);
+router.use("/likes", likesRoutes);
 router.use("/followers", followersRoutes);
 
 export default router;
