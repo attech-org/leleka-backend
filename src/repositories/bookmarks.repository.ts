@@ -4,10 +4,10 @@ export const listBookmarks = async (query: object, options: object) => {
   return BookmarkModel.paginate(query, options);
 };
 
-export const addOne = (tweetId: string, ownerId: string) => {
+export const addOne = (tweet: string, owner: string) => {
   const result = new BookmarkModel({
-    tweetId: tweetId,
-    ownerId: ownerId,
+    tweet: tweet,
+    owner: owner,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   });

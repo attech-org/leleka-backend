@@ -20,8 +20,8 @@ bookmarksRouter
 bookmarksRouter
   .route("/")
   .post(isAuthorized, async (req: Request, res: Response) => {
-    const { tweetId, ownerId } = req.body;
-    await addBookmark(tweetId, ownerId);
+    const { tweet, owner } = req.body;
+    await addBookmark(tweet, owner);
     res.sendStatus(200);
   });
 

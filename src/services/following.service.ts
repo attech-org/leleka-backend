@@ -13,8 +13,8 @@ export const getFollowing = (
 };
 
 export const addFollowing = (data: Record<string, string>) => {
-  const { ownerId, followingId } = data;
-  return addOne(ownerId, followingId);
+  const { follower, following } = data;
+  return addOne(follower, following);
 };
 
 export const deleteFollowing = (id: string) => {

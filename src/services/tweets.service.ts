@@ -13,11 +13,11 @@ export const getTweetById = (id: string) => {
 };
 
 export const createTweet = async (
-  authorId: string,
+  author: string,
   content: string,
   repliedTo?: string
 ) => {
-  return createOne(authorId, content, repliedTo);
+  return createOne(author, content, repliedTo);
 };
 export const deleteTweet = async (id: string) => {
   return deleteOne(id);
@@ -32,7 +32,7 @@ export const updateTweet = async (
   id: string,
   newData: {
     content?: string;
-    authorId?: string;
+    author?: string;
     repliedTo?: string;
     updatedAt: string;
   }
