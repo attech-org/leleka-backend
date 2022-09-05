@@ -28,13 +28,15 @@ usersRoutes
     return res.sendStatus(500);
   });
 
-usersRoutes.route("/").post(async (req: Request, res: Response) => {
-  if (req.body.name) {
-    const result = await createUser(req.body);
-    return res.send(result);
-  }
-  return res.sendStatus(500);
-});
+usersRoutes
+  .route("/")
+  .post(isAuthorized, async (req: Request, res: Response) => {
+    if (req.body.name) {
+      const result = await createUser(req.body);
+      return res.send(result);
+    }
+    return res.sendStatus(500);
+  });
 
 usersRoutes
   .route("/:id")

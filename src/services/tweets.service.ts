@@ -24,9 +24,9 @@ export const deleteTweet = async (id: string) => {
 };
 
 export const getAllTweets = async (
-  data: PaginationParameters<never, never>
+  paginationParameters: PaginationParameters<never, never>
 ) => {
-  return getList(...data.get());
+  return getList(...paginationParameters.get());
 };
 export const updateTweet = async (
   id: string,
