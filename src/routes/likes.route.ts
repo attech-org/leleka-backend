@@ -5,8 +5,8 @@ import { changeLike, getLikeById, updateLike } from "../services/likes.service";
 const likesRouter = express.Router();
 
 likesRouter.post("/", async (req: Request, res: Response) => {
-  const result = await changeLike(req.body.tweetId, req.body.userId);
-  res.status(200).send(result);
+  await changeLike(req.body.tweetId, req.body.userId);
+  res.sendStatus(200);
 });
 
 likesRouter.get("/:id", async (req: Request, res: Response) => {

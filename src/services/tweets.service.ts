@@ -41,7 +41,7 @@ export const updateTweet = async (
 ) => {
   return updateOne(id, newData);
 };
-export const incrementTweetStats = async (
+export const changeTweetStats = async (
   id: string,
   fieldName: string,
   value: number
