@@ -5,6 +5,7 @@ import {
   deleteOne,
   getList,
   getOneById,
+  changeStats,
   updateOne,
 } from "../repositories/tweet.repository";
 
@@ -34,8 +35,16 @@ export const updateTweet = async (
     content?: string;
     author?: string;
     repliedTo?: string;
+    stats?: { likes?: number; retweets?: number };
     updatedAt: string;
   }
 ) => {
   return updateOne(id, newData);
+};
+export const changeTweetStats = async (
+  id: string,
+  fieldName: string,
+  value: number
+) => {
+  return changeStats(id, fieldName, value);
 };

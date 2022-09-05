@@ -15,7 +15,6 @@
    npm run dev
    ```
 6. Pagination query info: `https://www.npmjs.com/package/mongoose-paginate-v2`, Url example: `127.0.0.1:3001/api/tweets/?limit=1&page=2&query={"content": "bbb"}`
-
 7. Api:
 
    7.1. Auth
@@ -44,6 +43,11 @@
      7.4 Link Preview
 
    - Proxy Link Preview - `http://127.0.0.1:3001/api/link-preview/?url=${url}`
+   - 7.5 Likes
+   -
+   - add\delete like - post: `127.0.0.1:3001/api/likes`
+   - get like by id - get: `127.0.0.1:3001/api/likes/id`
+   - update like info - put: `127.0.0.1:3001/api/likes/id`
 
    how it works Frontend:
 
