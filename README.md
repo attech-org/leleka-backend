@@ -22,7 +22,7 @@
 - test authorized - get: 127.0.0.1:3001/api/testAuthorized
 - Proxy Link Preview - `http://127.0.0.1:3001/api/link-preview/?url=${url}`
 - Pagination query info: `https://www.npmjs.com/package/mongoose-paginate-v2`, Url example: `127.0.0.1:3001/api/tweets/?limit=1&page=2&query={"content": "bbb"}`
-
+- Likes: Post `127.0.0.1:3001/api/likes` with twitId & userId - use for likes and dislikes
   how it works Frontend:
 
   ```
