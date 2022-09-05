@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { PaginationParameters } from "mongoose-paginate-v2";
 
 import * as tweetsService from "../services/tweets.service";
 
@@ -9,7 +10,9 @@ tweetsRouter.get("/:id", async (req: Request, res: Response) => {
 });
 
 tweetsRouter.get("/", async (req: Request, res: Response) => {
-  const tweets = await tweetsService.getAllTweets();
+  const tweets = await tweetsService.getAllTweets(
+    new PaginationParameters(req)
+  );
   res.send(tweets);
 });
 

@@ -21,6 +21,7 @@
 - Refresh access token - post: 127.0.0.1:3001/api/auth/refresh
 - test authorized - get: 127.0.0.1:3001/api/testAuthorized
 - Proxy Link Preview - `http://127.0.0.1:3001/api/link-preview/?url=${url}`
+- Pagination query info: `https://www.npmjs.com/package/mongoose-paginate-v2`, Url example: `127.0.0.1:3001/api/tweets/?limit=1&page=2&query={"content": "bbb"}`
 
   how it works Frontend:
 

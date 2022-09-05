@@ -1,12 +1,15 @@
-import { Bookmark } from "../models/Bookmark.model";
+import { PaginationParameters } from "mongoose-paginate-v2";
+
 import {
   addOne,
   deleteById,
   listBookmarks,
 } from "../repositories/bookmarks.repository";
 
-export const getBookmarks = async () => {
-  const bookmarksList: Bookmark[] = await listBookmarks();
+export const getBookmarks = async (
+  data: PaginationParameters<never, never>
+) => {
+  const bookmarksList = await listBookmarks(...data.get());
   return bookmarksList;
 };
 
