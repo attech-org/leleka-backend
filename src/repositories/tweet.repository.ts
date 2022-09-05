@@ -28,8 +28,20 @@ export const updateOne = async (
     content?: string;
     authorId?: string;
     repliedTo?: string;
+    stats?: { likes?: number; retweets?: number };
     updatedAt: string;
   }
 ) => {
-  return TweetModel.updateOne({ _id: id }, newData);
+  return TweetModel.findOneAndUpdate({ _id: id }, newData);
+};
+export const changeStats = async (
+  id: string,
+  fieldName: string,
+  value: number
+) => {
+  const res = await TweetModel.updateOne(
+    { _id: id },
+    { $inc: { [fieldName]: value } }
+  );
+  return res;
 };
