@@ -20,3 +20,8 @@ export const registerSchema = loginSchema.concat(
       .email("Please use a valid email address"),
   })
 );
+
+export const followersSchema = yup.object({
+  follower: yup.string().required("followerId can't be blank"),
+  following: yup.string().required("ownerId can't be blank"),
+});

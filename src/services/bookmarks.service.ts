@@ -13,11 +13,11 @@ export const getBookmarks = async (
   return bookmarksList;
 };
 
-export const addBookmark = async (ownerId: string, tweetId: string) => {
-  if (!ownerId || !tweetId) {
-    throw new Error("ownerId and tweetId are required");
+export const addBookmark = async (owner: string, tweet: string) => {
+  if (!owner || !tweet) {
+    throw new Error("owner and tweet are required");
   } else {
-    return addOne(ownerId, tweetId);
+    return addOne(owner, tweet);
   }
 };
 

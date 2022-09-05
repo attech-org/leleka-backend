@@ -4,7 +4,7 @@ import paginate from "mongoose-paginate-v2";
 
 export interface Tweet extends Document {
   //reference
-  authorId: ObjectId;
+  author: ObjectId;
   content: string;
   createdAt: string;
   repliedTo?: ObjectId;
@@ -17,10 +17,10 @@ export interface Tweet extends Document {
 }
 
 const TweetSchema: Schema = new Schema<Tweet>({
-  authorId: {
+  author: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: "User",
+    ref: "Users",
   },
   content: {
     type: String,

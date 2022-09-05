@@ -22,21 +22,21 @@ tweetsRouter.delete("/:id", async (req: Request, res: Response) => {
 });
 
 tweetsRouter.post("/", async (req: Request, res: Response) => {
-  if (req.body.authorId) {
+  if (req.body.author) {
     const newTweet = await tweetsService.createTweet(
-      req.body.authorId,
+      req.body.author,
       req.body.content,
       req.body.repliedTo
     );
     res.status(201).send(newTweet);
   } else {
-    res.status(400).send({ error: "Missing authorId" });
+    res.status(400).send({ error: "Missing author" });
   }
 });
 
 tweetsRouter.put("/:id", async (req: Request, res: Response) => {
   const modifyTweet = await tweetsService.updateTweet(req.params.id, {
-    authorId: req.body.authorId,
+    author: req.body.author,
     content: req.body.content,
     repliedTo: req.body.repliedTo,
     updatedAt: new Date().toISOString(),

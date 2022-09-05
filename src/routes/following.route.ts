@@ -3,33 +3,32 @@ import { PaginationParameters } from "mongoose-paginate-v2";
 
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
 import {
-  addBookmark,
-  deleteBookmark,
-  getBookmarks,
-} from "../services/bookmarks.service";
+  getFollowing,
+  addFollowing,
+  deleteFollowing,
+} from "../services/following.service";
 
-const bookmarksRouter = express.Router();
+const followingRouter = express.Router();
 
-bookmarksRouter
+followingRouter
   .route("/")
   .get(isAuthorized, async (req: Request, res: Response) => {
-    const result = await getBookmarks(new PaginationParameters(req));
+    const result = await getFollowing(new PaginationParameters(req));
     res.send(result);
   });
 
-bookmarksRouter
+followingRouter
   .route("/")
   .post(isAuthorized, async (req: Request, res: Response) => {
-    const { tweet, owner } = req.body;
-    await addBookmark(tweet, owner);
-    res.sendStatus(200);
+    const result = await addFollowing(req.body);
+    res.status(201).send(result);
   });
 
-bookmarksRouter
-  .route("/:id")
+followingRouter
+  .route("/:following")
   .delete(isAuthorized, async (req: Request, res: Response) => {
-    await deleteBookmark(req.params.id);
+    await deleteFollowing(req.params.following);
     res.sendStatus(200);
   });
 
-export default bookmarksRouter;
+export default followingRouter;
