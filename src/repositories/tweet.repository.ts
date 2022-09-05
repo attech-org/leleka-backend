@@ -1,7 +1,7 @@
 import { TweetModel } from "../models/Tweet.model";
 
 export const getOneById = (id: string) => {
-  return TweetModel.find({ _id: id });
+  return TweetModel.find({ _id: id }).populate("authorId");
 };
 export const createOne = async (
   authorId: string,
@@ -20,7 +20,7 @@ export const deleteOne = async (id: string) => {
   return TweetModel.deleteOne({ _id: id });
 };
 export const getList = async (query: object, options: object) => {
-  return TweetModel.paginate(query, options);
+  return TweetModel.paginate(query, { ...options, populate: "authorId" });
 };
 export const updateOne = async (
   id: string,
