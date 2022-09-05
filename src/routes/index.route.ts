@@ -3,6 +3,7 @@ import express, { Request, Response } from "express";
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
 import authRoutes from "./auth.route";
 import bookmarksRoutes from "./bookmarks.route";
+import followingRoutes from "./following.route";
 import proxyLinkPreviewRouter from "./proxyLinkPreview.route";
 import tweetsRouter from "./tweets.route";
 import usersRoutes from "./users.route";
@@ -24,6 +25,7 @@ router.use("/auth", authRoutes);
 router.use("/bookmarks", bookmarksRoutes);
 router.use("/tweets", tweetsRouter);
 router.use("/users", usersRoutes);
+router.use("/following", followingRoutes);
 router.use("/link-preview", proxyLinkPreviewRouter);
 
 export default router;
