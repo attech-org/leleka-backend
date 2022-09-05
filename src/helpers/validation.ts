@@ -22,6 +22,6 @@ export const registerSchema = loginSchema.concat(
 );
 
 export const followersSchema = yup.object({
-  followerId: yup.string().required("followerId can't be blank"),
-  ownerId: yup.string().required("ownerId can't be blank"),
+  follower: yup.string().required("followerId can't be blank"),
+  following: yup.string().required("ownerId can't be blank"),
 });

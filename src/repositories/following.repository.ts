@@ -5,18 +5,18 @@ export const getList = (query: object, options: object) => {
   return result;
 };
 
-export const addOne = (ownerId: string, followingId: string) => {
+export const addOne = (follower: string, following: string) => {
   const result = new FollowingModel({
-    ownerId: ownerId,
-    followingId: followingId,
+    follower: follower,
+    following: following,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   });
   return result.save();
 };
 
-export const deleteById = (followingId: string) => {
-  return FollowingModel.findByIdAndDelete(followingId);
+export const deleteById = (following: string) => {
+  return FollowingModel.findByIdAndDelete(following);
 };
 
 export default FollowingModel;

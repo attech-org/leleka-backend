@@ -4,10 +4,10 @@ export const listFollowers = (query: object, options: object) => {
   return FollowerModel.paginate(query, options);
 };
 
-export const addOneFollower = (ownerId: string, followerId: string) => {
+export const addOneFollower = (following: string, follower: string) => {
   const result = new FollowerModel({
-    followerId: followerId,
-    ownerId: ownerId,
+    follower: follower,
+    following: following,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   });
