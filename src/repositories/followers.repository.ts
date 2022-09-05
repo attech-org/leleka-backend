@@ -1,10 +1,6 @@
 import { FollowerModel } from "../models/Follower.model";
 
-export const listFollowers = (queryParams: object) => {
-  const query = {};
-  const options = {
-    ...queryParams,
-  };
+export const listFollowers = (query: object, options: object) => {
   return FollowerModel.paginate(query, options);
 };
 

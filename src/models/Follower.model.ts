@@ -1,35 +1,34 @@
-import { ObjectId } from "mongodb";
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, Types } from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
 export interface Follower extends Document {
-  followerId: ObjectId;
-  ownerId: ObjectId;
-  createdAt: string;
+  followerId: Types.ObjectId;
+  ownerId: Types.ObjectId;
+  createdAt?: string;
   updatedAt?: string;
 }
 
 const FollowerSchema: Schema = new Schema<Follower>({
   followerId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     required: true,
     ref: "User",
   },
 
   ownerId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     required: true,
     ref: "User",
   },
 
   createdAt: {
     type: String,
-    required: true,
+    default: new Date().toISOString(),
   },
 
   updatedAt: {
     type: String,
-    required: false,
+    default: new Date().toISOString(),
   },
 });
 

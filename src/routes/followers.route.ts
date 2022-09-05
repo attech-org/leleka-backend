@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { PaginationParameters } from "mongoose-paginate-v2";
 
 import { followersSchema } from "../helpers/validation";
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
@@ -14,7 +15,7 @@ const followersRouter = express.Router();
 followersRouter
   .route("/")
   .get(isAuthorized, async (req: Request, res: Response) => {
-    const result = await getFollowers(req.query);
+    const result = await getFollowers(new PaginationParameters(req));
     res.send(result);
   });
 
@@ -25,8 +26,8 @@ followersRouter
     validation(followersSchema),
     async (req: Request, res: Response) => {
       const { followerId, ownerId } = req.body;
-      await addFollower(followerId, ownerId);
-      res.sendStatus(200);
+      const newFollower = await addFollower(followerId, ownerId);
+      res.status(201).send(newFollower);
     }
   );
 
