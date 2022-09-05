@@ -15,24 +15,9 @@
    npm run dev
    ```
 6. Pagination query info: `https://www.npmjs.com/package/mongoose-paginate-v2`, Url example: `127.0.0.1:3001/api/tweets/?limit=1&page=2&query={"content": "bbb"}`
-
-<<<<<<< HEAD
-
-- Registration - post: 127.0.0.1:3001/api/auth/register
-- Log in - post: 127.0.0.1:3001/api/auth/login
-- Refresh access token - post: 127.0.0.1:3001/api/auth/refresh
-- test authorized - get: 127.0.0.1:3001/api/testAuthorized
-- Proxy Link Preview - `http://127.0.0.1:3001/api/link-preview/?url=${url}`
-- Pagination query info: `https://www.npmjs.com/package/mongoose-paginate-v2`, Url example: `127.0.0.1:3001/api/tweets/?limit=1&page=2&query={"content": "bbb"}`
-- Likes: Post `127.0.0.1:3001/api/likes` with twitId & userId - use for likes and dislikes
-  how it works Frontend:
-  =======
-
 7. Api:
 
    7.1. Auth
-
-   > > > > > > > 138b35aa70ef8d1b32379ddce8f57a083de55921
 
    - Registration - post: 127.0.0.1:3001/api/auth/register
    - Log in - post: 127.0.0.1:3001/api/auth/login
@@ -58,6 +43,11 @@
      7.4 Link Preview
 
    - Proxy Link Preview - `http://127.0.0.1:3001/api/link-preview/?url=${url}`
+   - 7.5 Likes
+   -
+   - add\delete like - post: `127.0.0.1:3001/api/likes`
+   - get like by id - get: `127.0.0.1:3001/api/likes/id`
+   - update like info - put: `127.0.0.1:3001/api/likes/id`
 
    how it works Frontend:
 
