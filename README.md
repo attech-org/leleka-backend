@@ -40,7 +40,9 @@
     - modify tweet by id - put: 127.0.0.1:3001/api/tweets/id
     - delete tweet by id - delete: 127.0.0.1:3001/api/tweets/id
 
-      7.4 Link Preview
+    -comments - same as get tweets, but with specification of "replied to" and sort order: get: localhost:3001/api/tweets?sort=updatedAt&query={"repliedTo": "631777cd233a0e57f5b5f392"}
+
+    7.4 Link Preview
 
     - Proxy Link Preview - `http://127.0.0.1:3001/api/link-preview/?url=${url}`
 
