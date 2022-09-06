@@ -3,6 +3,7 @@ import express, { Request, Response } from "express";
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
 import authRoutes from "./auth.route";
 import bookmarksRoutes from "./bookmarks.route";
+import followersRoutes from "./followers.route";
 import followingRoutes from "./following.route";
 import likesRoutes from "./likes.route";
 import proxyLinkPreviewRouter from "./proxyLinkPreview.route";

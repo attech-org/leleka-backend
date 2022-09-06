@@ -12,13 +12,13 @@ const FollowingSchema: Schema = new Schema<Following>({
   following: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: "User",
+    ref: "Users",
   },
 
   follower: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: "User",
+    ref: "Users",
   },
 
   createdAt: {
