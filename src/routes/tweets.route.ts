@@ -1,47 +1,51 @@
 import express, { Request, Response } from "express";
 import { PaginationParameters } from "mongoose-paginate-v2";
 
+import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
+import { User } from "../models/User.model";
 import * as tweetsService from "../services/tweets.service";
 
-const tweetsRouter = express.Router();
-tweetsRouter.get("/:id", async (req: Request, res: Response) => {
+const tweetsRoutes = express.Router();
+tweetsRoutes.route("/:id").get(async (req: Request, res: Response) => {
   const tweet = await tweetsService.getTweetById(req.params.id);
   res.send(tweet);
 });
 
-tweetsRouter.get("/", async (req: Request, res: Response) => {
+tweetsRoutes.route("/").get(async (req: Request, res: Response) => {
   const tweets = await tweetsService.getAllTweets(
     new PaginationParameters(req)
   );
   res.send(tweets);
 });
 
-tweetsRouter.delete("/:id", async (req: Request, res: Response) => {
+tweetsRoutes.delete("/:id", async (req: Request, res: Response) => {
   await tweetsService.deleteTweet(req.params.id);
   res.sendStatus(200);
 });
 
-tweetsRouter.post("/", async (req: Request, res: Response) => {
-  if (req.body.author) {
+tweetsRoutes
+  .route("/")
+  .post(isAuthorized, async (req: Request, res: Response) => {
+    const user = req.user as User;
     const newTweet = await tweetsService.createTweet(
-      req.body.author,
+      user._id,
       req.body.content,
       req.body.repliedTo
     );
     res.status(201).send(newTweet);
-  } else {
-    res.status(400).send({ error: "Missing author" });
-  }
-});
-
-tweetsRouter.put("/:id", async (req: Request, res: Response) => {
-  const modifyTweet = await tweetsService.updateTweet(req.params.id, {
-    author: req.body.author,
-    content: req.body.content,
-    repliedTo: req.body.repliedTo,
-    updatedAt: new Date().toISOString(),
   });
-  res.status(200).send(modifyTweet);
-});
 
-export default tweetsRouter;
+tweetsRoutes
+  .route("/:id")
+  .put(isAuthorized, async (req: Request, res: Response) => {
+    const user = req.user as User;
+    const modifyTweet = await tweetsService.updateTweet(req.params.id, {
+      author: user._id,
+      content: req.body.content,
+      repliedTo: req.body.repliedTo,
+      updatedAt: new Date().toISOString(),
+    });
+    res.status(200).send(modifyTweet);
+  });
+
+export default tweetsRoutes;

@@ -8,11 +8,13 @@ export const createOne = async (
   content: string,
   repliedTo?: string
 ) => {
+  const date = new Date().toISOString();
   const tweetModel = new TweetModel({
     author: author,
     content: content,
     repliedTo: repliedTo,
-    createdAt: new Date().toISOString(),
+    createdAt: date,
+    updatedAt: date,
   });
   return tweetModel.save();
 };
@@ -28,8 +30,16 @@ export const updateOne = async (
     content?: string;
     author?: string;
     repliedTo?: string;
+    stats?: { likes?: number; retweets?: number };
     updatedAt: string;
   }
 ) => {
-  return TweetModel.updateOne({ _id: id }, newData);
+  return TweetModel.findOneAndUpdate({ _id: id }, newData);
+};
+export const changeStats = async (
+  id: string,
+  fieldName: string,
+  value: number
+) => {
+  return TweetModel.updateOne({ _id: id }, { $inc: { [fieldName]: value } });
 };
