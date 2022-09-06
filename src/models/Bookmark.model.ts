@@ -19,7 +19,7 @@ const BookmarkSchema: Schema = new Schema<Bookmark>({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: "User",
+    ref: "Users",
   },
 
   createdAt: {
