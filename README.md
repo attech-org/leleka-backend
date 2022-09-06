@@ -44,53 +44,53 @@
 
     - Proxy Link Preview - `http://127.0.0.1:3001/api/link-preview/?url=${url}`
 
-          how it works Frontend:
+            how it works Frontend:
 
-          ```
-          import { LinkPreview } from "@dhaiwat10/react-link-preview";
+            ```
+            import { LinkPreview } from "@dhaiwat10/react-link-preview";
 
-          const customFetcher = async (url: string) => {
-             const response = await fetch(
-                `http://127.0.0.1:3001/api/link-preview/?url=${url}`
-             );
-             const json = await response.json();
-             console.warn(json.metadata);
-             return json.metadata;
-          };
+            const customFetcher = async (url: string) => {
+               const response = await fetch(
+                  `http://127.0.0.1:3001/api/link-preview/?url=${url}`
+               );
+               const json = await response.json();
+               console.warn(json.metadata);
+               return json.metadata;
+            };
 
-          const MorePage: React.FunctionComponent = () => {
-          return (
-             <Layout>
-                {" "}
-                <LinkPreview
-                fetcher={customFetcher}
-                url={"https://getbootstrap.com/docs/5.0/components/card/"}
-                />
-                <LinkPreview
-                fetcher={customFetcher}
-                url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                />
-             </Layout>
-          );
-          };
-          ```
+            const MorePage: React.FunctionComponent = () => {
+            return (
+               <Layout>
+                  {" "}
+                  <LinkPreview
+                  fetcher={customFetcher}
+                  url={"https://getbootstrap.com/docs/5.0/components/card/"}
+                  />
+                  <LinkPreview
+                  fetcher={customFetcher}
+                  url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                  />
+               </Layout>
+            );
+            };
+            ```
 
-          JSON from customFetcher is
+            JSON from customFetcher is
 
-          ```
-          export interface APIOutput {
-             title?: string;
-             description?: string;
-             image?: string;
-             siteName?: string;
-             hostname?: string;
-             url?: string;
-          }
-          ```
+            ```
+            export interface APIOutput {
+               title?: string;
+               description?: string;
+               image?: string;
+               siteName?: string;
+               hostname?: string;
+               url?: string;
+            }
+            ```
 
-          or just get the data as was done in customFetcher and render it
+            or just get the data as was done in customFetcher and render it
 
-    - 7.5 Likes
+      7.5 Likes
 
     - add\delete like - post: `127.0.0.1:3001/api/likes`
     - get like by id - get: `127.0.0.1:3001/api/likes/id`
