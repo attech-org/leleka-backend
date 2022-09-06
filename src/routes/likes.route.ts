@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
+import { User } from "../models/User.model";
 import { changeLike, getLikeById, updateLike } from "../services/likes.service";
 
 const likesRoutes = express.Router();
@@ -8,7 +9,8 @@ const likesRoutes = express.Router();
 likesRoutes
   .route("/")
   .post(isAuthorized, async (req: Request, res: Response) => {
-    await changeLike(req.body.tweet, req.body.user._id);
+    const user = req.user as User;
+    await changeLike(req.body.tweet, user._id);
     res.sendStatus(200);
   });
 
@@ -19,9 +21,10 @@ likesRoutes.route("/:id").get(async (req: Request, res: Response) => {
 likesRoutes
   .route("/:id")
   .put(isAuthorized, async (req: Request, res: Response) => {
+    const user = req.user as User;
     const result = await updateLike(req.params.id, {
       tweet: req.body.tweet,
-      user: req.body.user._id,
+      user: user._id,
     });
     res.status(200).send(result);
   });

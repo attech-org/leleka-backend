@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { PaginationParameters } from "mongoose-paginate-v2";
 
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
+import { User } from "../models/User.model";
 import * as tweetsService from "../services/tweets.service";
 
 const tweetsRoutes = express.Router();
@@ -25,8 +26,9 @@ tweetsRoutes.delete("/:id", async (req: Request, res: Response) => {
 tweetsRoutes
   .route("/")
   .post(isAuthorized, async (req: Request, res: Response) => {
+    const user = req.user as User;
     const newTweet = await tweetsService.createTweet(
-      req.body.user._id,
+      user._id,
       req.body.content,
       req.body.repliedTo
     );
@@ -36,8 +38,9 @@ tweetsRoutes
 tweetsRoutes
   .route("/:id")
   .put(isAuthorized, async (req: Request, res: Response) => {
+    const user = req.user as User;
     const modifyTweet = await tweetsService.updateTweet(req.params.id, {
-      author: req.body.user._id,
+      author: user._id,
       content: req.body.content,
       repliedTo: req.body.repliedTo,
       updatedAt: new Date().toISOString(),
