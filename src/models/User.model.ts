@@ -21,6 +21,7 @@ export interface User extends Document {
     firstName: string;
     lastName: string;
     avatar?: string;
+    banner?: string;
     bio?: string;
     phone?: string;
     gender?: string;
