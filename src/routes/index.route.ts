@@ -7,6 +7,7 @@ import followersRoutes from "./followers.route";
 import followingRoutes from "./following.route";
 import likesRoutes from "./likes.route";
 import proxyLinkPreviewRouter from "./proxyLinkPreview.route";
+import tagsRoutes from "./tags.route";
 import tweetsRoutes from "./tweets.route";
 import usersRoutes from "./users.route";
 
@@ -31,5 +32,6 @@ router.use("/following", followingRoutes);
 router.use("/link-preview", proxyLinkPreviewRouter);
 router.use("/likes", likesRoutes);
 router.use("/followers", followersRoutes);
+router.use("/tags", tagsRoutes);
 
 export default router;
