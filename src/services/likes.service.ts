@@ -1,10 +1,18 @@
+import { PaginationParameters } from "mongoose-paginate-v2";
+
 import {
   createOne,
   getOne,
   deleteOne,
   updateOne,
+  listLikes,
 } from "../repositories/likes.repository";
 import { changeTweetStats } from "./tweets.service";
+
+export const getLikes = async (data: PaginationParameters<never, never>) => {
+  const likesList = await listLikes(...data.get());
+  return likesList;
+};
 
 export const changeLike = async (tweet: string, user: string) => {
   const deleted = await deleteOne({ user, tweet });

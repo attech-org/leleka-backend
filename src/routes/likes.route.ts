@@ -1,8 +1,19 @@
 import express, { Request, Response } from "express";
+import { PaginationParameters } from "mongoose-paginate-v2";
 
-import { changeLike, getLikeById, updateLike } from "../services/likes.service";
+import {
+  changeLike,
+  getLikeById,
+  getLikes,
+  updateLike,
+} from "../services/likes.service";
 
 const likesRoutes = express.Router();
+
+likesRoutes.route("/").get(async (req: Request, res: Response) => {
+  const result = await getLikes(new PaginationParameters(req));
+  res.send(result);
+});
 
 likesRoutes.post("/", async (req: Request, res: Response) => {
   await changeLike(req.body.tweet, req.body.user);

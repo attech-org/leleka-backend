@@ -1,5 +1,24 @@
 import { LikeModel } from "../models/Like.model";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const listLikes = async (query: any, options: object) => {
+  console.log("query:", query, "options:", options);
+  // const selected = query.select({""});
+  // const q = LikeModel.find({ author: query });
+
+  // console.log("q:", q);
+  // return LikeModel.paginate(query, {
+  //   ...options,
+  //   pagination: false,
+  //   populate: ["user", "tweet"],
+  // });
+
+  // return LikeModel.find().populate({
+  //   path: "author",
+  //   id: { $ne: "Ian Fleming" },
+  // });
+};
+
 export const getOne = async (
   data: { _id: string } | { user: string; tweet: string }
 ) => {
