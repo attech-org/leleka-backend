@@ -2,7 +2,7 @@ import { ObjectId } from "mongoose";
 
 import { Tag, TagModel } from "../models/Tag.model";
 
-export const getById = async (tagId: string | ObjectId) => {
+export const getById = async (tagId: string) => {
   return TagModel.findById(tagId);
 };
 
