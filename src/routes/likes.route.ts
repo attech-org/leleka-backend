@@ -17,11 +17,6 @@ const likesRoutes = express.Router();
 likesRoutes
   .route("/")
   .get(validation(likesQuerySchema), async (req: Request, res: Response) => {
-    if (req.query.tweetId) {
-      req.query = { query: `{ "tweet": "${req.query.tweetId}" }` };
-    } else if (req.query.userId) {
-      req.query = { query: `{ "user": "${req.query.userId}" }` };
-    }
     const result = await getLikes(new PaginationParameters(req));
     res.send(result);
   });
