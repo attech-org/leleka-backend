@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { PaginationParameters } from "mongoose-paginate-v2";
 
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
 import {
@@ -14,7 +15,7 @@ const usersRoutes = express.Router();
 usersRoutes
   .route("/")
   .get(isAuthorized, async (req: Request, res: Response) => {
-    const result = await listUsers(req.query);
+    const result = await listUsers(new PaginationParameters(req));
     return res.send(result);
   });
 

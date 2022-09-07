@@ -1,7 +1,10 @@
 import { FollowingModel } from "./../models/Following.model";
 
 export const getList = (query: object, options: object) => {
-  const result = FollowingModel.paginate(query, options);
+  const result = FollowingModel.paginate(query, {
+    ...options,
+    populate: ["following", "follower"],
+  });
   return result;
 };
 
