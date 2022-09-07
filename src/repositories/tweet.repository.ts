@@ -1,8 +1,15 @@
 import { TweetModel } from "../models/Tweet.model";
 
+export const getList = async (query: never, options: object) => {
+  const { authorId } = query;
+  const queryParams = { _id: authorId };
+  return TweetModel.paginate(queryParams, { ...options, populate: "author" });
+};
+
 export const getOneById = (id: string) => {
   return TweetModel.find({ _id: id }).populate("author");
 };
+
 export const createOne = async (
   author: string,
   content: string,
@@ -18,12 +25,7 @@ export const createOne = async (
   });
   return tweetModel.save();
 };
-export const deleteOne = async (id: string) => {
-  return TweetModel.deleteOne({ _id: id });
-};
-export const getList = async (query: object, options: object) => {
-  return TweetModel.paginate(query, { ...options, populate: "author" });
-};
+
 export const updateOne = async (
   id: string,
   newData: {
@@ -36,10 +38,15 @@ export const updateOne = async (
 ) => {
   return TweetModel.findOneAndUpdate({ _id: id }, newData);
 };
+
 export const changeStats = async (
   id: string,
   fieldName: string,
   value: number
 ) => {
   return TweetModel.updateOne({ _id: id }, { $inc: { [fieldName]: value } });
+};
+
+export const deleteOne = async (id: string) => {
+  return TweetModel.deleteOne({ _id: id });
 };

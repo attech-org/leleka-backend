@@ -4,10 +4,6 @@ import { PaginationParameters } from "mongoose-paginate-v2";
 import * as tweetsService from "../services/tweets.service";
 
 const tweetsRoutes = express.Router();
-tweetsRoutes.get("/:id", async (req: Request, res: Response) => {
-  const tweet = await tweetsService.getTweetById(req.params.id);
-  res.send(tweet);
-});
 
 tweetsRoutes.get("/", async (req: Request, res: Response) => {
   const tweets = await tweetsService.getAllTweets(
@@ -16,9 +12,9 @@ tweetsRoutes.get("/", async (req: Request, res: Response) => {
   res.send(tweets);
 });
 
-tweetsRoutes.delete("/:id", async (req: Request, res: Response) => {
-  await tweetsService.deleteTweet(req.params.id);
-  res.sendStatus(200);
+tweetsRoutes.get("/:id", async (req: Request, res: Response) => {
+  const tweet = await tweetsService.getTweetById(req.params.id);
+  res.send(tweet);
 });
 
 tweetsRoutes.post("/", async (req: Request, res: Response) => {
@@ -42,6 +38,11 @@ tweetsRoutes.put("/:id", async (req: Request, res: Response) => {
     updatedAt: new Date().toISOString(),
   });
   res.status(200).send(modifyTweet);
+});
+
+tweetsRoutes.delete("/:id", async (req: Request, res: Response) => {
+  await tweetsService.deleteTweet(req.params.id);
+  res.sendStatus(200);
 });
 
 export default tweetsRoutes;

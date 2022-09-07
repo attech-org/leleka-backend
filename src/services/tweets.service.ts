@@ -9,6 +9,12 @@ import {
   updateOne,
 } from "../repositories/tweet.repository";
 
+export const getAllTweets = async (
+  paginationParameters: PaginationParameters<never, never>
+) => {
+  return getList(...paginationParameters.get());
+};
+
 export const getTweetById = (id: string) => {
   return getOneById(id);
 };
@@ -20,15 +26,7 @@ export const createTweet = async (
 ) => {
   return createOne(author, content, repliedTo);
 };
-export const deleteTweet = async (id: string) => {
-  return deleteOne(id);
-};
 
-export const getAllTweets = async (
-  paginationParameters: PaginationParameters<never, never>
-) => {
-  return getList(...paginationParameters.get());
-};
 export const updateTweet = async (
   id: string,
   newData: {
@@ -47,4 +45,8 @@ export const changeTweetStats = async (
   value: number
 ) => {
   return changeStats(id, fieldName, value);
+};
+
+export const deleteTweet = async (id: string) => {
+  return deleteOne(id);
 };
