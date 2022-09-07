@@ -117,6 +117,7 @@ const UserSchema: Schema = new Schema<User>(
       firstName: String,
       lastName: String,
       avatar: String,
+      banner: String,
       bio: String,
       phone: String,
       gender: String,
