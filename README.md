@@ -97,5 +97,5 @@
     - add\delete like - post: `127.0.0.1:3001/api/likes`
     - get like by id - get: `127.0.0.1:3001/api/likes/id`
     - update like info - put: `127.0.0.1:3001/api/likes/id`
-    - get likes by userId: `127.0.0.1:3001/api/likes/?userId=USER_ID`
-    - get likes by tweetId: `127.0.0.1:3001/api/likes/tweetId=TWEET_ID`
+    - get likes by userId - get: `127.0.0.1:3001/api/likes/?userId=USER_ID`
+    - get likes by tweetId - get: `127.0.0.1:3001/api/likes/?tweetId=TWEET_ID`
