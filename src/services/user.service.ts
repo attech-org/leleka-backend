@@ -1,3 +1,5 @@
+import { PaginationParameters } from "mongoose-paginate-v2";
+
 import { User } from "../models/User.model";
 import {
   create,
@@ -8,8 +10,10 @@ import {
   updateOne,
 } from "../repositories/user.repository";
 
-export const listUsers = (query: object) => {
-  return getList(query);
+export const listUsers = (
+  paginationParameters: PaginationParameters<never, never>
+) => {
+  return getList(...paginationParameters.get());
 };
 
 export const getUser = (id: string) => {

@@ -8,11 +8,13 @@ export const createOne = async (
   content: string,
   repliedTo?: string
 ) => {
+  const date = new Date().toISOString();
   const tweetModel = new TweetModel({
     author: author,
     content: content,
     repliedTo: repliedTo,
-    createdAt: new Date().toISOString(),
+    createdAt: date,
+    updatedAt: date,
   });
   return tweetModel.save();
 };

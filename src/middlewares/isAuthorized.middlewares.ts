@@ -39,6 +39,6 @@ export const isAuthorized = async (
       message: "Access denied. Failed to authenticate token.",
     } as CustomError;
   }
-
+  req.user = user;
   next();
 };

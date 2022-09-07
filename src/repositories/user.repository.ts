@@ -1,13 +1,8 @@
 import { hashPassword } from "../helpers/password";
 import { User, UserModel } from "../models/User.model";
 
-export const getList = async (queryParams: object) => {
-  const query = {};
-  const options = {
-    ...queryParams,
-  };
-  const result = await UserModel.paginate(query, options);
-  return result;
+export const getList = (query: object, options: object) => {
+  return UserModel.paginate(query, { ...options });
 };
 
 export const getUserById = async (id: string, additionalFields?: string) => {

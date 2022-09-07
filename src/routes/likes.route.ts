@@ -2,7 +2,9 @@ import express, { Request, Response } from "express";
 import { PaginationParameters } from "mongoose-paginate-v2";
 
 import { likesQuerySchema } from "../helpers/validation";
+import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
 import { validation } from "../middlewares/yup.middlewares";
+import { User } from "../models/User.model";
 import {
   changeLike,
   getLikeById,
@@ -24,21 +26,27 @@ likesRoutes
     res.send(result);
   });
 
-likesRoutes.post("/", async (req: Request, res: Response) => {
-  await changeLike(req.body.tweet, req.body.user);
-  res.sendStatus(200);
-});
+likesRoutes
+  .route("/")
+  .post(isAuthorized, async (req: Request, res: Response) => {
+    const user = req.user as User;
+    await changeLike(req.body.tweet, user._id);
+    res.sendStatus(200);
+  });
 
-likesRoutes.get("/:id", async (req: Request, res: Response) => {
+likesRoutes.route("/:id").get(async (req: Request, res: Response) => {
   const result = await getLikeById(req.params.id);
   res.status(200).send(result);
 });
-likesRoutes.put("/:id", async (req: Request, res: Response) => {
-  const result = await updateLike(req.params.id, {
-    tweet: req.body.tweet,
-    user: req.body.user,
+likesRoutes
+  .route("/:id")
+  .put(isAuthorized, async (req: Request, res: Response) => {
+    const user = req.user as User;
+    const result = await updateLike(req.params.id, {
+      tweet: req.body.tweet,
+      user: user._id,
+    });
+    res.status(200).send(result);
   });
-  res.status(200).send(result);
-});
 
 export default likesRoutes;
