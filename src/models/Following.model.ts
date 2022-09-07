@@ -37,4 +37,4 @@ FollowingSchema.plugin(paginate);
 export const FollowingModel = mongoose.model<
   Following,
   mongoose.PaginateModel<Following>
->("Folowing", FollowingSchema, "Folowing");
+>("Following", FollowingSchema, "Following");
