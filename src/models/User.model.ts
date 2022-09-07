@@ -21,6 +21,7 @@ export interface User extends Document {
     firstName: string;
     lastName: string;
     avatar?: string;
+    banner?: string;
     bio?: string;
     phone?: string;
     gender?: string;
@@ -116,6 +117,7 @@ const UserSchema: Schema = new Schema<User>(
       firstName: String,
       lastName: String,
       avatar: String,
+      banner: String,
       bio: String,
       phone: String,
       gender: String,
