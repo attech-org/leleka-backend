@@ -18,8 +18,8 @@ likesRoutes.route("/").get(validation(likesQuerySchema), async (req, res) => {
 });
 
 likesRoutes.route("/").post(isAuthorized, async (req, res) => {
-  await changeLike(req.body.tweet, req.user._id);
-  res.sendStatus(200);
+  const newLike = await changeLike(req.body.tweet, req.user._id);
+  res.status(201).send(newLike);
 });
 
 likesRoutes.route("/:id").get(async (req, res) => {

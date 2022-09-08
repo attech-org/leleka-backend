@@ -16,8 +16,8 @@ bookmarksRouter.route("/").get(isAuthorized, async (req, res) => {
 
 bookmarksRouter.route("/").post(isAuthorized, async (req, res) => {
   const { tweet, owner } = req.body;
-  await addBookmark(tweet, owner);
-  res.sendStatus(200);
+  const newBookmarks = await addBookmark(tweet, owner);
+  return res.status(201).send(newBookmarks);
 });
 
 bookmarksRouter.route("/:id").delete(isAuthorized, async (req, res) => {

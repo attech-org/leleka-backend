@@ -27,7 +27,7 @@ usersRoutes.route("/:id").get(isAuthorized, async (req, res) => {
 usersRoutes.route("/").post(isAuthorized, async (req, res) => {
   if (req.body.name) {
     const result = await createUser(req.body);
-    return res.send(result);
+    return res.status(201).send(result);
   }
   return res.sendStatus(500);
 });
