@@ -27,6 +27,6 @@ export const followersSchema = yup.object({
 });
 
 export const likesQuerySchema = yup.object({
-  userId: yup.string(),
-  tweetId: yup.string(),
+  tweet: yup.string(),
+  user: yup.string(),
 });
