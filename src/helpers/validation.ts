@@ -5,11 +5,13 @@ import { AnyObject } from "yup/lib/types";
 export type AnyYupSchema = OptionalObjectSchema<AnyObject>;
 
 export const loginSchema = yup.object({
-  username: yup.string().required("Username can't be blank"),
-  password: yup
-    .string()
-    .required("Password can't be blank")
-    .min(8, "Please use minimum of 8 characters for password"),
+  body: yup.object({
+    username: yup.string().required("Username can't be blank"),
+    password: yup
+      .string()
+      .required("Password can't be blank")
+      .min(8, "Please use minimum of 8 characters for password"),
+  }),
 });
 
 export const registerSchema = loginSchema.concat(
@@ -22,11 +24,15 @@ export const registerSchema = loginSchema.concat(
 );
 
 export const followersSchema = yup.object({
-  follower: yup.string().required("followerId can't be blank"),
-  following: yup.string().required("ownerId can't be blank"),
+  body: yup.object({
+    follower: yup.string().required("followerId can't be blank"),
+    following: yup.string().required("ownerId can't be blank"),
+  }),
 });
 
 export const likesQuerySchema = yup.object({
-  tweet: yup.string(),
-  user: yup.string(),
+  query: yup.object({
+    tweet: yup.string(),
+    user: yup.string(),
+  }),
 });

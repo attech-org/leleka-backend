@@ -9,9 +9,8 @@ import {
 } from "../repositories/likes.repository";
 import { changeTweetStats } from "./tweets.service";
 
-export const getLikes = async (data: PaginationParameters<never, never>) => {
-  const likesList = await listLikesByQueryParams(...data.get());
-  return likesList;
+export const getLikes = (data: PaginationParameters<never, never>) => {
+  return listLikesByQueryParams(...data.get());
 };
 
 export const changeLike = async (tweet: string, user: string) => {
