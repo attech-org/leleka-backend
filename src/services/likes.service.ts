@@ -5,12 +5,12 @@ import {
   getOne,
   deleteOne,
   updateOne,
-  listLikesByQueryParams,
+  getAll,
 } from "../repositories/likes.repository";
 import { changeTweetStats } from "./tweets.service";
 
 export const getLikes = (data: PaginationParameters<never, never>) => {
-  return listLikesByQueryParams(...data.get());
+  return getAll(...data.get());
 };
 
 export const changeLike = async (tweet: string, user: string) => {
