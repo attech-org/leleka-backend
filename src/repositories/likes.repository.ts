@@ -1,5 +1,12 @@
 import { LikeModel } from "../models/Like.model";
 
+export const getAll = async (query: object, options: object) => {
+  return LikeModel.paginate(query, {
+    ...options,
+    populate: ["user", "tweet"],
+  });
+};
+
 export const getOne = async (
   data: { _id: string } | { user: string; tweet: string }
 ) => {

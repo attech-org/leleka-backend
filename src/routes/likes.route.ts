@@ -1,10 +1,25 @@
 import express, { Request, Response } from "express";
+import { PaginationParameters } from "mongoose-paginate-v2";
 
+import { likesQuerySchema } from "../helpers/validation";
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
+import { validation } from "../middlewares/yup.middlewares";
 import { User } from "../models/User.model";
-import { changeLike, getLikeById, updateLike } from "../services/likes.service";
+import {
+  changeLike,
+  getLikeById,
+  getLikes,
+  updateLike,
+} from "../services/likes.service";
 
 const likesRoutes = express.Router();
+
+likesRoutes
+  .route("/")
+  .get(validation(likesQuerySchema), async (req: Request, res: Response) => {
+    const result = await getLikes(new PaginationParameters(req));
+    res.send(result);
+  });
 
 likesRoutes
   .route("/")

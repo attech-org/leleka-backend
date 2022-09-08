@@ -1,21 +1,26 @@
-import { ObjectId } from "mongodb";
-import { model, Schema, Document } from "mongoose";
+import mongoose, { model, Schema, Document, Types } from "mongoose";
+import paginate from "mongoose-paginate-v2";
 
 export interface Like extends Document {
-  user: ObjectId;
-  tweet: ObjectId;
+  user: Types.ObjectId;
+  tweet: Types.ObjectId;
 }
 
 const LikeSchema: Schema = new Schema<Like>({
   user: {
-    type: ObjectId,
+    type: Schema.Types.ObjectId,
     required: true,
     ref: "Users",
   },
   tweet: {
-    type: ObjectId,
+    type: Schema.Types.ObjectId,
     required: true,
     ref: "Tweet",
   },
 });
-export const LikeModel = model<Like>("Like", LikeSchema);
+LikeSchema.plugin(paginate);
+export const LikeModel = model<Like, mongoose.PaginateModel<Like>>(
+  "Like",
+  LikeSchema,
+  "Like"
+);
