@@ -1,9 +1,7 @@
 import { TweetModel } from "../models/Tweet.model";
 
 export const getList = async (query: never, options: object) => {
-  const { authorId } = query;
-  const queryParams = { _id: authorId };
-  return TweetModel.paginate(queryParams, { ...options, populate: "author" });
+  return TweetModel.paginate(query, { ...options, populate: "author" });
 };
 
 export const getOneById = (id: string) => {
@@ -22,8 +20,8 @@ export const createOne = async (
     repliedTo: repliedTo,
     createdAt: date,
     updatedAt: date,
-  });
-  return tweetModel.save();
+  }).populate("author");
+  return (await tweetModel).save();
 };
 
 export const updateOne = async (
@@ -36,7 +34,7 @@ export const updateOne = async (
     updatedAt: string;
   }
 ) => {
-  return TweetModel.findOneAndUpdate({ _id: id }, newData);
+  return TweetModel.findOneAndUpdate({ _id: id }, newData).populate("author");
 };
 
 export const changeStats = async (

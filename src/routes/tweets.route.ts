@@ -11,12 +11,21 @@ tweetsRoutes.route("/:id").get(async (req: Request, res: Response) => {
   res.send(tweet);
 });
 
-tweetsRoutes.route("/").get(async (req: Request, res: Response) => {
-  const tweets = await tweetsService.getAllTweets(
-    new PaginationParameters(req)
-  );
-  res.send(tweets);
-});
+tweetsRoutes
+  .route("/")
+  .get(isAuthorized, async (req: Request, res: Response) => {
+    // const { _id } = req.user as string;
+    // req.query = {
+    //   ...req.query,
+    //   query: { ...(req.query.query as object), author: _id },
+    // };
+
+    // console.log(req.query.query, req.user);
+    const tweets = await tweetsService.getAllTweets(
+      new PaginationParameters(req)
+    );
+    res.send(tweets);
+  });
 
 tweetsRoutes
   .route("/")

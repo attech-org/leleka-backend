@@ -50,5 +50,6 @@ TweetSchema.plugin(paginate);
 
 export const TweetModel = model<Tweet, mongoose.PaginateModel<Tweet>>(
   "Tweet",
-  TweetSchema
+  TweetSchema,
+  "Tweet"
 );
