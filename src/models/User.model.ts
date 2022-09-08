@@ -162,7 +162,7 @@ const UserSchema: Schema = new Schema<User>(
 UserSchema.plugin(paginate);
 
 export const UserModel = mongoose.model<User, mongoose.PaginateModel<User>>(
-  "Users",
+  "User",
   UserSchema,
-  "Users"
+  "User"
 );
