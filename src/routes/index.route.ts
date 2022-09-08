@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
 import authRoutes from "./auth.route";
@@ -11,14 +11,14 @@ import usersRoutes from "./users.route";
 
 const router = express.Router();
 
-router.get("/ping", (_req: Request, res: Response) => {
+router.get("/ping", (_req, res) => {
   res.send("pong");
 });
-router.post("/ping", (req: Request, res: Response) => {
+router.post("/ping", (req, res) => {
   res.send({ ...req.body, processed: true });
 });
 
-router.get("/testAuthorized", isAuthorized, (_req: Request, res: Response) => {
+router.get("/testAuthorized", isAuthorized, (_req, res) => {
   res.send("You Authorized");
 });
 

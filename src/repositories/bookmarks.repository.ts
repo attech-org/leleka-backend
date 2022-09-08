@@ -1,6 +1,6 @@
 import { BookmarkModel } from "../models/Bookmark.model";
 
-export const listBookmarks = async (query: object, options: object) => {
+export const listBookmarks = (query: object, options: object) => {
   return BookmarkModel.paginate(query, options);
 };
 

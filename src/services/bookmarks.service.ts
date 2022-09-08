@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { PaginationParameters } from "mongoose-paginate-v2";
 
 import {
@@ -6,14 +7,12 @@ import {
   listBookmarks,
 } from "../repositories/bookmarks.repository";
 
-export const getBookmarks = async (
-  data: PaginationParameters<never, never>
-) => {
-  const bookmarksList = await listBookmarks(...data.get());
-  return bookmarksList;
+export const getBookmarks = (req: Request) => {
+  const [query, options] = new PaginationParameters(req).get();
+  return listBookmarks(query, options);
 };
 
-export const addBookmark = async (owner: string, tweet: string) => {
+export const addBookmark = (owner: string, tweet: string) => {
   if (!owner || !tweet) {
     throw new Error("owner and tweet are required");
   } else {

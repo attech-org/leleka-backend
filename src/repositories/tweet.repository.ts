@@ -1,8 +1,18 @@
-import { TweetModel } from "../models/Tweet.model";
+import { FilterQuery, PaginateOptions } from "mongoose";
+
+import { Tweet, TweetModel } from "../models/Tweet.model";
+
+export const getList = (
+  query: FilterQuery<Tweet>,
+  options: PaginateOptions
+) => {
+  return TweetModel.paginate(query, { ...options, populate: "author" });
+};
 
 export const getOneById = (id: string) => {
   return TweetModel.find({ _id: id }).populate("author");
 };
+
 export const createOne = async (
   author: string,
   content: string,
@@ -16,15 +26,10 @@ export const createOne = async (
     createdAt: date,
     updatedAt: date,
   });
-  return tweetModel.save();
+  return (await tweetModel.save()).populate("author");
 };
-export const deleteOne = async (id: string) => {
-  return TweetModel.deleteOne({ _id: id });
-};
-export const getList = async (query: object, options: object) => {
-  return TweetModel.paginate(query, { ...options, populate: "author" });
-};
-export const updateOne = async (
+
+export const updateOne = (
   id: string,
   newData: {
     content?: string;
@@ -34,12 +39,13 @@ export const updateOne = async (
     updatedAt: string;
   }
 ) => {
-  return TweetModel.findOneAndUpdate({ _id: id }, newData);
+  return TweetModel.findOneAndUpdate({ _id: id }, newData).populate("author");
 };
-export const changeStats = async (
-  id: string,
-  fieldName: string,
-  value: number
-) => {
+
+export const changeStats = (id: string, fieldName: string, value: number) => {
   return TweetModel.updateOne({ _id: id }, { $inc: { [fieldName]: value } });
+};
+
+export const deleteOne = (id: string) => {
+  return TweetModel.deleteOne({ _id: id });
 };

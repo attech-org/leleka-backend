@@ -1,5 +1,4 @@
-import express, { Request, Response } from "express";
-import { PaginationParameters } from "mongoose-paginate-v2";
+import express from "express";
 
 import { followersSchema } from "../helpers/validation";
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
@@ -12,30 +11,22 @@ import {
 
 const followersRouter = express.Router();
 
-followersRouter
-  .route("/")
-  .get(isAuthorized, async (req: Request, res: Response) => {
-    const result = await getFollowers(new PaginationParameters(req));
-    res.send(result);
-  });
+followersRouter.route("/").get(isAuthorized, async (req, res) => {
+  const result = await getFollowers(req);
+  res.send(result);
+});
 
 followersRouter
   .route("/")
-  .post(
-    isAuthorized,
-    validation(followersSchema),
-    async (req: Request, res: Response) => {
-      const { follower, following } = req.body;
-      const newFollower = await addFollower(follower, following);
-      res.status(201).send(newFollower);
-    }
-  );
-
-followersRouter
-  .route("/:id")
-  .delete(isAuthorized, async (req: Request, res: Response) => {
-    await deleteFollower(req.params.id);
-    res.sendStatus(200);
+  .post(isAuthorized, validation(followersSchema), async (req, res) => {
+    const { follower, following } = req.body;
+    const newFollower = await addFollower(follower, following);
+    res.status(201).send(newFollower);
   });
+
+followersRouter.route("/:id").delete(isAuthorized, async (req, res) => {
+  await deleteFollower(req.params.id);
+  res.sendStatus(200);
+});
 
 export default followersRouter;

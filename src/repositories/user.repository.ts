@@ -14,9 +14,8 @@ export const getUserById = async (id: string, additionalFields?: string) => {
   return result;
 };
 
-export const deleteOne = async (id: string) => {
-  const result = await UserModel.findByIdAndDelete({ _id: id });
-  return result;
+export const deleteOne = (id: string) => {
+  return UserModel.findByIdAndDelete({ _id: id });
 };
 
 export const updateLocalTokens = (
