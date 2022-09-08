@@ -20,8 +20,8 @@ export const createOne = async (
     repliedTo: repliedTo,
     createdAt: date,
     updatedAt: date,
-  }).populate("author");
-  return (await tweetModel).save();
+  });
+  return (await tweetModel.save()).populate("author");
 };
 
 export const updateOne = async (
