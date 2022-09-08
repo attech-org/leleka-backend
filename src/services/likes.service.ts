@@ -28,7 +28,7 @@ export const changeLike = async (tweet: string, user: string) => {
 export const getLikeById = (id: string) => {
   return getOne({ _id: id });
 };
-export const updateLike = async (
+export const updateLike = (
   id: string,
   newData: { tweet?: string; user?: string }
 ) => {

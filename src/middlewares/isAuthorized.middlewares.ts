@@ -10,7 +10,7 @@ const accessDenied: CustomError = {
   status: 401,
 };
 
-export const isAuthorized = async (
+export const isAuthorized = (
   req: Request,
   res: Response,
   next: NextFunction

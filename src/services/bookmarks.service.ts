@@ -7,12 +7,12 @@ import {
   listBookmarks,
 } from "../repositories/bookmarks.repository";
 
-export const getBookmarks = async (req: Request) => {
+export const getBookmarks = (req: Request) => {
   const [query, options] = new PaginationParameters(req).get();
   return listBookmarks(query, options);
 };
 
-export const addBookmark = async (owner: string, tweet: string) => {
+export const addBookmark = (owner: string, tweet: string) => {
   if (!owner || !tweet) {
     throw new Error("owner and tweet are required");
   } else {

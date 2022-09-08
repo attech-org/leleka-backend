@@ -2,7 +2,7 @@ import { FilterQuery, PaginateOptions } from "mongoose";
 
 import { Tweet, TweetModel } from "../models/Tweet.model";
 
-export const getList = async (
+export const getList = (
   query: FilterQuery<Tweet>,
   options: PaginateOptions
 ) => {
@@ -29,7 +29,7 @@ export const createOne = async (
   return (await tweetModel.save()).populate("author");
 };
 
-export const updateOne = async (
+export const updateOne = (
   id: string,
   newData: {
     content?: string;
@@ -42,14 +42,10 @@ export const updateOne = async (
   return TweetModel.findOneAndUpdate({ _id: id }, newData).populate("author");
 };
 
-export const changeStats = async (
-  id: string,
-  fieldName: string,
-  value: number
-) => {
+export const changeStats = (id: string, fieldName: string, value: number) => {
   return TweetModel.updateOne({ _id: id }, { $inc: { [fieldName]: value } });
 };
 
-export const deleteOne = async (id: string) => {
+export const deleteOne = (id: string) => {
   return TweetModel.deleteOne({ _id: id });
 };

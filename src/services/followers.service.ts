@@ -7,7 +7,7 @@ import {
   listFollowers,
 } from "../repositories/followers.repository";
 
-export const getFollowers = async (req: Request) => {
+export const getFollowers = (req: Request) => {
   const [query, options] = new PaginationParameters(req).get();
   return listFollowers(query, options);
 };

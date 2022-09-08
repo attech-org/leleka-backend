@@ -10,12 +10,12 @@ import {
   updateOne,
 } from "../repositories/tweet.repository";
 
-export const getAllTweetsOfCurrentUser = async (req: Request) => {
+export const getAllTweetsOfCurrentUser = (req: Request) => {
   const [query, options] = new PaginationParameters(req).get();
   return getList({ ...query, author: req.user._id }, options);
 };
 
-export const getAllTweets = async (req: Request) => {
+export const getAllTweets = (req: Request) => {
   const [query, options] = new PaginationParameters(req).get();
   return getList(query, options);
 };
@@ -24,7 +24,7 @@ export const getTweetById = (id: string) => {
   return getOneById(id);
 };
 
-export const createTweet = async (
+export const createTweet = (
   author: string,
   content: string,
   repliedTo?: string
@@ -32,7 +32,7 @@ export const createTweet = async (
   return createOne(author, content, repliedTo);
 };
 
-export const updateTweet = async (
+export const updateTweet = (
   id: string,
   newData: {
     content?: string;
@@ -44,7 +44,7 @@ export const updateTweet = async (
 ) => {
   return updateOne(id, newData);
 };
-export const changeTweetStats = async (
+export const changeTweetStats = (
   id: string,
   fieldName: string,
   value: number
@@ -52,6 +52,6 @@ export const changeTweetStats = async (
   return changeStats(id, fieldName, value);
 };
 
-export const deleteTweet = async (id: string) => {
+export const deleteTweet = (id: string) => {
   return deleteOne(id);
 };
