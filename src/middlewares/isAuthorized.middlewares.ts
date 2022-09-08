@@ -32,7 +32,7 @@ export const isAuthorized = async (
   }
 
   const user: User = verifyJWT(token);
-  console.warn(user);
+
   if (!user) {
     throw {
       ...accessDenied,

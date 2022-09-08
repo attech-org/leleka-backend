@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { PaginationParameters } from "mongoose-paginate-v2";
 
 import {
@@ -9,10 +10,14 @@ import {
   updateOne,
 } from "../repositories/tweet.repository";
 
-export const getAllTweets = async (
-  paginationParameters: PaginationParameters<never, never>
-) => {
-  return getList(...paginationParameters.get());
+export const getAllTweetsOfCurrentUser = async (req: Request) => {
+  const [query, options] = new PaginationParameters(req).get();
+  return getList({ ...query, author: req.user._id }, options);
+};
+
+export const getAllTweets = async (req: Request) => {
+  const [query, options] = new PaginationParameters(req).get();
+  return getList(query, options);
 };
 
 export const getTweetById = (id: string) => {

@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { PaginationParameters } from "mongoose-paginate-v2";
 
 import {
@@ -9,8 +10,9 @@ import {
 } from "../repositories/likes.repository";
 import { changeTweetStats } from "./tweets.service";
 
-export const getLikes = (data: PaginationParameters<never, never>) => {
-  return getAll(...data.get());
+export const getLikes = (req: Request) => {
+  const [query, options] = new PaginationParameters(req).get();
+  return getAll(query, options);
 };
 
 export const changeLike = async (tweet: string, user: string) => {

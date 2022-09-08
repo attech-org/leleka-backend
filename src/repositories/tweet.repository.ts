@@ -1,6 +1,11 @@
-import { TweetModel } from "../models/Tweet.model";
+import { FilterQuery, PaginateOptions } from "mongoose";
 
-export const getList = async (query: never, options: object) => {
+import { Tweet, TweetModel } from "../models/Tweet.model";
+
+export const getList = async (
+  query: FilterQuery<Tweet>,
+  options: PaginateOptions
+) => {
   return TweetModel.paginate(query, { ...options, populate: "author" });
 };
 
