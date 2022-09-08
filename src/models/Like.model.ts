@@ -10,7 +10,7 @@ const LikeSchema: Schema = new Schema<Like>({
   user: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: "Users",
+    ref: "User",
   },
   tweet: {
     type: Schema.Types.ObjectId,

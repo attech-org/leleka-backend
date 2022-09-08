@@ -19,7 +19,7 @@ const TweetSchema: Schema = new Schema<Tweet>({
   author: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: "Users",
+    ref: "User",
   },
   content: {
     type: String,
