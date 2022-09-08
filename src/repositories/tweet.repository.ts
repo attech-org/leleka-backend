@@ -16,7 +16,7 @@ export const createOne = async (
     createdAt: date,
     updatedAt: date,
   });
-  return tweetModel.save();
+  return (await tweetModel.save()).populate("author");
 };
 export const deleteOne = async (id: string) => {
   return TweetModel.deleteOne({ _id: id });
