@@ -6,7 +6,7 @@ import { getTagById, getTagsList } from "../services/tags.service";
 const tagsRoutes = express.Router();
 
 tagsRoutes.route("/").get(isAuthorized, async (req: Request, res: Response) => {
-  const result = await getTagsList();
+  const result = await getTagsList(req);
   res.status(200).send(result);
 });
 

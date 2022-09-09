@@ -1,3 +1,6 @@
+import { Request } from "express";
+import { PaginationParameters } from "mongoose-paginate-v2";
+
 import { Tag } from "../models/Tag.model";
 import {
   create,
@@ -7,8 +10,9 @@ import {
   getById,
 } from "../repositories/tags.repository";
 
-export const getTagsList = () => {
-  return getList();
+export const getTagsList = (req: Request) => {
+  const [query, options] = new PaginationParameters(req).get();
+  return getList(query, options);
 };
 
 export const getTagById = (id: string) => {

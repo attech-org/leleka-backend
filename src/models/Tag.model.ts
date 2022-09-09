@@ -1,4 +1,5 @@
-import { model, Schema, Document } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
+import paginate from "mongoose-paginate-v2";
 
 export interface Tag extends Document {
   name: string;
@@ -25,4 +26,9 @@ const TagSchema: Schema = new Schema<Tag>({
     default: new Date().toISOString(),
   },
 });
-export const TagModel = model<Tag>("Tag", TagSchema);
+TagSchema.plugin(paginate);
+export const TagModel = mongoose.model<Tag, mongoose.PaginateModel<Tag>>(
+  "Tag",
+  TagSchema,
+  "Tag"
+);

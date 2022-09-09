@@ -8,8 +8,8 @@ export const create = (tagData: Partial<Tag>) => {
   return TagModel.create(tagData);
 };
 
-export const getList = () => {
-  return TagModel.find();
+export const getList = (query: object, options: object) => {
+  return TagModel.paginate(query, { ...options });
 };
 
 export const update = (tagId: string, newTagData: Partial<Tag>) => {
