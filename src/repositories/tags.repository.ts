@@ -1,18 +1,18 @@
 import { Tag, TagModel } from "../models/Tag.model";
 
-export const getById = async (tagId: string) => {
+export const getById = (tagId: string) => {
   return TagModel.findById(tagId);
 };
 
-export const create = async (tagData: Partial<Tag>) => {
+export const create = (tagData: Partial<Tag>) => {
   return TagModel.create(tagData);
 };
 
-export const getList = async () => {
+export const getList = () => {
   return TagModel.find();
 };
 
-export const update = async (tagId: string, newTagData: Partial<Tag>) => {
+export const update = (tagId: string, newTagData: Partial<Tag>) => {
   return TagModel.findByIdAndUpdate(
     tagId,
     { ...newTagData, updatedAt: new Date().toISOString() },
@@ -20,6 +20,6 @@ export const update = async (tagId: string, newTagData: Partial<Tag>) => {
   );
 };
 
-export const deleteById = async (tagId: string) => {
+export const deleteById = (tagId: string) => {
   return TagModel.findByIdAndDelete(tagId);
 };
