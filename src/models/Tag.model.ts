@@ -6,7 +6,7 @@ export interface Tag extends Document {
     tweets: number;
   };
   createdAt: string;
-  updatedAt?: string;
+  updatedAt: string;
 }
 
 const TagSchema: Schema = new Schema<Tag>({
@@ -17,7 +17,6 @@ const TagSchema: Schema = new Schema<Tag>({
   },
   createdAt: {
     type: String,
-    required: true,
     default: new Date().toISOString(),
   },
 

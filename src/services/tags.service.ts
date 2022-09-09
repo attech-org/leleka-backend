@@ -1,5 +1,3 @@
-import { ObjectId } from "mongoose";
-
 import { Tag } from "../models/Tag.model";
 import {
   create,
@@ -9,27 +7,23 @@ import {
   getById,
 } from "../repositories/tags.repository";
 
-export const getTagsList = async (): Promise<Array<Tag>> => {
+export const getTagsList = () => {
   return getList();
 };
 
-export const getTagById = async (id: string | ObjectId): Promise<Tag> => {
+export const getTagById = (id: string) => {
   return getById(id);
 };
 
-export const createTag = async (tagData: Partial<Tag>): Promise<Tag> => {
-  const createResult = await create(tagData);
-  return createResult;
+export const createTag = (tagData: Partial<Tag>) => {
+  return create(tagData);
 };
 
-export const updateTag = async (
-  id: ObjectId | string,
-  newData: Partial<Tag>
-): Promise<Tag> => {
+export const updateTag = (id: string, newData: Partial<Tag>) => {
   return update(id, newData);
 };
 
-export const deleteTagById = async (id: ObjectId | string) => {
+export const deleteTagById = async (id: string) => {
   await deleteById(id);
   return { succeed: true };
 };

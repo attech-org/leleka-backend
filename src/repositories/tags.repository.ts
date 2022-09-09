@@ -1,8 +1,6 @@
-import { ObjectId } from "mongoose";
-
 import { Tag, TagModel } from "../models/Tag.model";
 
-export const getById = async (tagId: string | ObjectId) => {
+export const getById = async (tagId: string) => {
   return TagModel.findById(tagId);
 };
 
@@ -14,10 +12,7 @@ export const getList = async () => {
   return TagModel.find();
 };
 
-export const update = async (
-  tagId: string | ObjectId,
-  newTagData: Partial<Tag>
-) => {
+export const update = async (tagId: string, newTagData: Partial<Tag>) => {
   return TagModel.findByIdAndUpdate(
     tagId,
     { ...newTagData, updatedAt: new Date().toISOString() },
@@ -25,6 +20,6 @@ export const update = async (
   );
 };
 
-export const deleteById = async (tagId: string | ObjectId) => {
+export const deleteById = async (tagId: string) => {
   return TagModel.findByIdAndDelete(tagId);
 };
