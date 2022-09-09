@@ -34,7 +34,7 @@
 
       7.3. Tweets (Pagination, query, aggregation of user)
 
-    - get tweets - get: 127.0.0.1:3001/api/tweets/?limit=1&page=2&query={"content": "bbb"}
+    - get tweets - get: 127.0.0.1:3001/api/tweets/?limit=1&page=2&query={"content": "bbb"}&sort=-createdAt
     - get tweet by id - get: 127.0.0.1:3001/api/tweets/id
     - create tweet - post: 127.0.0.1:3001/api/tweets/
     - modify tweet by id - put: 127.0.0.1:3001/api/tweets/id
@@ -97,3 +97,5 @@
     - add\delete like - post: `127.0.0.1:3001/api/likes`
     - get like by id - get: `127.0.0.1:3001/api/likes/id`
     - update like info - put: `127.0.0.1:3001/api/likes/id`
+    - get likes by userId - get: `127.0.0.1:3001/api/likes/?limit=&page=&query={"user": "USER_ID"}`
+    - get likes by tweetId - get: `127.0.0.1:3001/api/likes/?limit=&page=&query={"tweet": "TWEET_ID"}`

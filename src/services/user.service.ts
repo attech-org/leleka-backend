@@ -1,3 +1,6 @@
+import { Request } from "express";
+import { PaginationParameters } from "mongoose-paginate-v2";
+
 import { User } from "../models/User.model";
 import {
   create,
@@ -8,8 +11,9 @@ import {
   updateOne,
 } from "../repositories/user.repository";
 
-export const listUsers = (query: object) => {
-  return getList(query);
+export const listUsers = (req: Request) => {
+  const [query, options] = new PaginationParameters(req).get();
+  return getList(query, options);
 };
 
 export const getUser = (id: string) => {

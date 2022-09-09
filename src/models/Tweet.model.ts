@@ -1,13 +1,12 @@
-import { ObjectId } from "mongodb";
-import mongoose, { model, Schema, Document } from "mongoose";
+import mongoose, { model, Schema, Document, Types } from "mongoose";
 import paginate from "mongoose-paginate-v2";
 
 export interface Tweet extends Document {
   //reference
-  author: ObjectId;
+  author: Types.ObjectId;
+  repliedTo?: Types.ObjectId;
   content: string;
   createdAt: string;
-  repliedTo?: ObjectId;
   updatedAt: string;
   stats: {
     likes: number;
@@ -20,7 +19,7 @@ const TweetSchema: Schema = new Schema<Tweet>({
   author: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: "Users",
+    ref: "User",
   },
   content: {
     type: String,
@@ -48,7 +47,9 @@ const TweetSchema: Schema = new Schema<Tweet>({
   },
 });
 TweetSchema.plugin(paginate);
+
 export const TweetModel = model<Tweet, mongoose.PaginateModel<Tweet>>(
   "Tweet",
-  TweetSchema
+  TweetSchema,
+  "Tweet"
 );

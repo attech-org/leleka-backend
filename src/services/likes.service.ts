@@ -1,10 +1,19 @@
+import { Request } from "express";
+import { PaginationParameters } from "mongoose-paginate-v2";
+
 import {
   createOne,
   getOne,
   deleteOne,
   updateOne,
+  getAll,
 } from "../repositories/likes.repository";
 import { changeTweetStats } from "./tweets.service";
+
+export const getLikes = (req: Request) => {
+  const [query, options] = new PaginationParameters(req).get();
+  return getAll(query, options);
+};
 
 export const changeLike = async (tweet: string, user: string) => {
   const deleted = await deleteOne({ user, tweet });
@@ -19,7 +28,7 @@ export const changeLike = async (tweet: string, user: string) => {
 export const getLikeById = (id: string) => {
   return getOne({ _id: id });
 };
-export const updateLike = async (
+export const updateLike = (
   id: string,
   newData: { tweet?: string; user?: string }
 ) => {

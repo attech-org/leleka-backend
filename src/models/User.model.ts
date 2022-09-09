@@ -21,7 +21,9 @@ export interface User extends Document {
     firstName: string;
     lastName: string;
     avatar?: string;
+    banner?: string;
     bio?: string;
+    birthDate?: string;
     phone?: string;
     gender?: string;
   };
@@ -56,9 +58,17 @@ const UserSchema: Schema = new Schema<User>(
       select: false,
       minlength: [8, "Please use minimum of 8 characters"],
     },
+    email: {
+      type: String,
+      lowercase: true,
+      required: [true, "Can't be blank"],
+      match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Please use a valid address"],
+      unique: true,
+      index: true,
+    },
     name: {
       type: String,
-      required: true,
+      default: "",
     },
     location: {
       type: String,
@@ -104,19 +114,13 @@ const UserSchema: Schema = new Schema<User>(
       type: String,
       default: new Date().toISOString(),
     },
-    email: {
-      type: String,
-      lowercase: true,
-      required: [true, "Can't be blank"],
-      match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Please use a valid address"],
-      unique: true,
-      index: true,
-    },
     profile: {
       firstName: String,
       lastName: String,
       avatar: String,
+      banner: String,
       bio: String,
+      birthDate: String,
       phone: String,
       gender: String,
     },
@@ -158,7 +162,7 @@ const UserSchema: Schema = new Schema<User>(
 UserSchema.plugin(paginate);
 
 export const UserModel = mongoose.model<User, mongoose.PaginateModel<User>>(
-  "Users",
+  "User",
   UserSchema,
-  "Users"
+  "User"
 );
