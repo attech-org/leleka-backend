@@ -1,10 +1,21 @@
 import { Tag, TagModel } from "../models/Tag.model";
-
+interface CreateOptions {
+  initialIncrementStats?: boolean;
+}
 export const getById = (tagId: string) => {
   return TagModel.findById(tagId);
 };
 
-export const create = (tagData: Partial<Tag>) => {
+export const create = (
+  tagData: Partial<Tag>,
+  createOptions?: CreateOptions
+) => {
+  if (createOptions) {
+    //to be continued
+    if (createOptions?.initialIncrementStats) {
+      tagData.stats = { tweets: 1 };
+    }
+  }
   return TagModel.create(tagData);
 };
 
@@ -22,4 +33,8 @@ export const update = (tagId: string, newTagData: Partial<Tag>) => {
 
 export const deleteById = (tagId: string) => {
   return TagModel.findByIdAndDelete(tagId);
+};
+
+export const getByName = (name: string) => {
+  return TagModel.findOne({ name: name });
 };

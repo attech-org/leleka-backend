@@ -8,6 +8,7 @@ import {
   getList,
   update,
   getById,
+  getByName,
 } from "../repositories/tags.repository";
 
 export const getTagsList = (req: Request) => {
@@ -30,4 +31,18 @@ export const updateTag = (id: string, newData: Partial<Tag>) => {
 export const deleteTagById = async (id: string) => {
   await deleteById(id);
   return { succeed: true };
+};
+
+export const addTagsFromContent = (tagNames: Set<string>) => {
+  tagNames.forEach(async (name: string) => {
+    const findResult = await getByName(name);
+
+    if (findResult === null) {
+      await create({ name: name }, { initialIncrementStats: true });
+    } else {
+      await update(findResult._id, {
+        stats: { tweets: ++findResult.stats.tweets },
+      });
+    }
+  });
 };
