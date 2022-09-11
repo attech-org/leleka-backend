@@ -10,7 +10,7 @@ export const getList = (
 };
 
 export const getOneById = (id: string) => {
-  return TweetModel.findOne({ _id: id }).populate("author");
+  return TweetModel.findById(id).populate("author");
 };
 
 export const createOne = async (
