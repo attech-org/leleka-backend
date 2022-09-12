@@ -8,7 +8,7 @@ import errorHandler from "./middlewares/errorHandler.middlewares";
 import httpLogger from "./middlewares/httpLogger.middlewares";
 import apiRoutes from "./routes/index.route";
 
-const app = express();
+export const app = express();
 const PORT = process.env.PORT || 5000;
 
 //connect to db

@@ -21,7 +21,7 @@ export const changeLike = async (tweet: string, user: string) => {
     await changeTweetStats(tweet, "stats.likes", -1);
   } else {
     await changeTweetStats(tweet, "stats.likes", 1);
-    await createOne(tweet, user);
+    return createOne(tweet, user);
   }
 };
 
