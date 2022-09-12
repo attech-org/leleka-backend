@@ -8,7 +8,7 @@ import {
   getList,
   update,
   getById,
-  getByName,
+  incrementStatsByName,
 } from "../repositories/tags.repository";
 
 export const getTagsList = (req: Request) => {
@@ -35,14 +35,9 @@ export const deleteTagById = async (id: string) => {
 
 export const addTagsFromContent = (tagNames: Set<string>) => {
   tagNames.forEach(async (name: string) => {
-    const findResult = await getByName(name);
-
-    if (findResult === null) {
+    const tryIncrement = await incrementStatsByName(name);
+    if (!tryIncrement) {
       await create({ name: name }, { initialIncrementStats: true });
-    } else {
-      await update(findResult._id, {
-        stats: { tweets: ++findResult.stats.tweets },
-      });
     }
   });
 };

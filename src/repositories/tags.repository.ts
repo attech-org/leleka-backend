@@ -38,3 +38,10 @@ export const deleteById = (tagId: string) => {
 export const getByName = (name: string) => {
   return TagModel.findOne({ name: name });
 };
+
+export const incrementStatsByName = (name: string) => {
+  return TagModel.findOneAndUpdate(
+    { name: name },
+    { $inc: { "stats.tweets": 1 } }
+  );
+};

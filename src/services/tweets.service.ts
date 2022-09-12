@@ -36,7 +36,7 @@ export const createTweet = async (
 
   if (createResult) {
     const hashtags = TweeterUtils.extractHashtags(convert(content));
-    if (hashtags) {
+    if (hashtags.length) {
       await addTagsFromContent(new Set(hashtags));
     }
   }
@@ -62,7 +62,7 @@ export const updateTweet = async (
     );
     const newHashtags = TweeterUtils.extractHashtags(convert(newData.content));
     const hashtagsDiff = newHashtags.filter((x) => !oldHashtags.includes(x));
-    if (hashtagsDiff) {
+    if (hashtagsDiff.length) {
       await addTagsFromContent(new Set(hashtagsDiff));
     }
   }
