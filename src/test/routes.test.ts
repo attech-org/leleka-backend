@@ -25,15 +25,15 @@ const routes: (Route & {
 let refreshToken: string;
 let accessToken: string;
 let id: string;
-const sendRequest = (uri: string, data: object) => {
-  return request(app).post(uri).send(data);
+const register = (data: object) => {
+  return request(app).post("/api/auth/register").send(data);
 };
 describe("Routes tests", () => {
   describe("User routes", () => {
     describe("Auth routes", () => {
       describe("Register", () => {
         it("should work", async () => {
-          await sendRequest("/api/auth/register", {
+          await register({
             username: "ccc",
             password: "aaaaaaaa",
             email: "ccc@aaaaa.aaa",
@@ -41,7 +41,7 @@ describe("Routes tests", () => {
           }).expect(200);
         });
         it("should`nt work with less than 8 char. password", async () => {
-          await sendRequest("/api/auth/register", {
+          await register({
             username: "zzz",
             password: "1234567",
             email: "zzz@aaaaa.aaa",
@@ -50,19 +50,19 @@ describe("Routes tests", () => {
         });
 
         it("shouldn`t work with blank username/email/name", async () => {
-          await sendRequest("/api/auth/register", {
+          await register({
             username: "",
             password: "1234567",
             email: "zzz@aaaaa.aaa",
             name: "aaa",
           });
-          await sendRequest("/api/auth/register", {
+          await register({
             username: "zzz",
             password: "1234567",
             email: "",
             name: "aaa",
           }).expect(400);
-          await sendRequest("/api/auth/register", {
+          await register({
             username: "zz",
             password: "1234567",
             email: "zz@aaaaa.aaa",
@@ -72,10 +72,13 @@ describe("Routes tests", () => {
       });
       describe("Login", () => {
         it("should work with valid data", async () => {
-          const user = await sendRequest("/api/auth/login", {
-            username: "ccc",
-            password: "aaaaaaaa",
-          }).expect(200);
+          const user = await request(app)
+            .post("/api/auth/login")
+            .send({
+              username: "ccc",
+              password: "aaaaaaaa",
+            })
+            .expect(200);
           expect(user.body.refreshToken).not.toBeUndefined();
           expect(user.body.accessToken).not.toBeUndefined();
           expect(user.body.user._id).not.toBeUndefined();
@@ -84,16 +87,22 @@ describe("Routes tests", () => {
           id = user.body.user._id;
         });
         it("should`nt work with invalid username", async () => {
-          await sendRequest("/api/auth/login", {
-            username: "adsadsakdas;3123123123123231",
-            password: "aaaaaaaa",
-          }).expect(400);
+          await request(app)
+            .post("/api/auth/login")
+            .send({
+              username: "adsadsakdas;3123123123123231",
+              password: "aaaaaaaa",
+            })
+            .expect(400);
         });
         it("should`nt work with invalid password", async () => {
-          await sendRequest("/api/auth/login", {
-            username: "ccc",
-            password: "ccccccccasdadadsadasdsa",
-          }).expect(400);
+          await request(app)
+            .post("/api/auth/login")
+            .send({
+              username: "ccc",
+              password: "ccccccccasdadadsadasdsa",
+            })
+            .expect(400);
         });
       });
       describe("refresh", () => {
@@ -123,10 +132,11 @@ describe("Routes tests", () => {
       });
 
       it("getting user by id", async () => {
-        await request(app)
+        const res = await request(app)
           .get("/api/users/" + id)
           .set("Authorization", "Bearer " + accessToken)
           .expect(200);
+        expect(Object.keys(res.body).length).not.toEqual(0);
       });
       it("updating user", async () => {
         await request(app)
