@@ -14,47 +14,103 @@ interface Route {
   hasUpdate: boolean;
 }
 
-const routes: (Route & {
-  createdId?: string;
-})[] = _routesData.data;
 beforeAll(() => {
   jest.spyOn(console, "warn").mockImplementation(jest.fn());
 });
+
+const routes: (Route & {
+  createdId?: string;
+})[] = _routesData.data;
+
 let refreshToken: string;
 let accessToken: string;
 let id: string;
+const sendRequest = (uri: string, data: object) => {
+  return request(app).post(uri).send(data);
+};
 describe("Routes tests", () => {
   describe("User routes", () => {
     describe("Auth routes", () => {
-      it("register", async () => {
-        await request(app)
-          .post("/api/auth/register")
-          .send({
+      describe("Register", () => {
+        it("should work", async () => {
+          await sendRequest("/api/auth/register", {
             username: "ccc",
             password: "aaaaaaaa",
             email: "ccc@aaaaa.aaa",
             name: "aaa",
-          })
-          .expect(200);
+          }).expect(200);
+        });
+        it("should`nt work with less than 8 char. password", async () => {
+          await sendRequest("/api/auth/register", {
+            username: "zzz",
+            password: "1234567",
+            email: "zzz@aaaaa.aaa",
+            name: "aaa",
+          }).expect(400);
+        });
+
+        it("shouldn`t work with blank username/email/name", async () => {
+          await sendRequest("/api/auth/register", {
+            username: "",
+            password: "1234567",
+            email: "zzz@aaaaa.aaa",
+            name: "aaa",
+          });
+          await sendRequest("/api/auth/register", {
+            username: "zzz",
+            password: "1234567",
+            email: "",
+            name: "aaa",
+          }).expect(400);
+          await sendRequest("/api/auth/register", {
+            username: "zz",
+            password: "1234567",
+            email: "zz@aaaaa.aaa",
+            name: "",
+          }).expect(400);
+        });
       });
-      it("login", async () => {
-        const user = await request(app)
-          .post("/api/auth/login")
-          .send({ username: "ccc", password: "aaaaaaaa" })
-          .expect(200);
-        expect(user.body.refreshToken).not.toBeUndefined();
-        expect(user.body.accessToken).not.toBeUndefined();
-        expect(user.body.user._id).not.toBeUndefined();
-        refreshToken = user.body.refreshToken;
-        accessToken = user.body.accessToken;
-        id = user.body.user._id;
+      describe("Login", () => {
+        it("should work with valid data", async () => {
+          const user = await sendRequest("/api/auth/login", {
+            username: "ccc",
+            password: "aaaaaaaa",
+          }).expect(200);
+          expect(user.body.refreshToken).not.toBeUndefined();
+          expect(user.body.accessToken).not.toBeUndefined();
+          expect(user.body.user._id).not.toBeUndefined();
+          refreshToken = user.body.refreshToken;
+          accessToken = user.body.accessToken;
+          id = user.body.user._id;
+        });
+        it("should`nt work with invalid username", async () => {
+          await sendRequest("/api/auth/login", {
+            username: "adsadsakdas;3123123123123231",
+            password: "aaaaaaaa",
+          }).expect(400);
+        });
+        it("should`nt work with invalid password", async () => {
+          await sendRequest("/api/auth/login", {
+            username: "ccc",
+            password: "ccccccccasdadadsadasdsa",
+          }).expect(400);
+        });
       });
-      it("refresh", async () => {
-        const resp = await request(app)
-          .post("/api/auth/refresh")
-          .send({ refreshToken: refreshToken })
-          .expect(200);
-        expect(resp.body.accessToken).not.toBeUndefined();
+      describe("refresh", () => {
+        it("should work with valid token", async () => {
+          const resp = await request(app)
+            .post("/api/auth/refresh")
+            .send({ refreshToken: refreshToken })
+            .expect(200);
+          expect(resp.body.accessToken).not.toBeUndefined();
+        });
+        it("shouldn`t work with invalid token", async () => {
+          const resp = await request(app)
+            .post("/api/auth/refresh")
+            .send({ refreshToken: refreshToken + "a" })
+            .expect(400);
+          expect(resp.body.error).toEqual("invalid signature");
+        });
       });
     });
     describe("User rest", () => {
