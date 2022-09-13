@@ -90,7 +90,7 @@ const UserSchema: Schema = new Schema<User>(
       type: Number,
       default: 0,
     },
-    friendsCount: {
+    followingCount: {
       type: Number,
       default: 0,
     },
@@ -98,7 +98,7 @@ const UserSchema: Schema = new Schema<User>(
       type: Number,
       default: 0,
     },
-    followingCount: {
+    favouritesCount: {
       type: Number,
       default: 0,
     },
