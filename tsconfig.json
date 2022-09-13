@@ -16,5 +16,6 @@
 
     "resolveJsonModule": true
   },
-  "include": ["src/**/*", "src/*.json"]
+  "include": ["src/**/*", "src/*.json"],
+  "exclude": ["src/test/*"]
 }
