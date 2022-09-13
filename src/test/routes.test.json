@@ -1,20 +1,6 @@
 {
   "data": [
     {
-      "name": "Likes",
-      "postData": {
-        "tweet": "631e3aabaf9f9f6790d36e13"
-      },
-      "putData": {
-        "tweet": "931e3aabaf9f9f6790d36e13"
-      },
-      "hasDelete": false,
-      "hasGetAll": true,
-      "hasGetById": true,
-      "hasCreate": true,
-      "hasUpdate": true
-    },
-    {
       "name": "Tweets",
       "postData": {
         "content": "Post data"

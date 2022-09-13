@@ -295,7 +295,60 @@ describe("Routes tests", () => {
       }
     });
   }
+  describe("Likes routes", () => {
+    let likeId: string;
+    let tweetId: string;
+    describe("Post", () => {
+      it("should have create one", async () => {
+        const tweet = await request(app)
+          .post("/api/tweets")
+          .set("Authorization", "Bearer " + accessToken)
+          .send({ content: "Cool content" });
 
+        tweetId = tweet.body._id;
+        const result = await request(app)
+          .post("/api/likes")
+          .set("Authorization", "Bearer " + accessToken)
+          .send({ tweet: tweetId });
+        expect(result.statusCode).toEqual(201);
+        likeId = result.body._id;
+
+        const get = await request(app).get("/api/likes/" + likeId);
+        expect(get.body._id).toEqual(likeId);
+      });
+      it("should increase tweets like count after creation", async () => {
+        const result = await request(app).get("/api/tweets/" + tweetId);
+        expect(result.body.stats.likes).toEqual(1);
+      });
+    });
+    it("should have getting all with pagination", async () => {
+      const response = await request(app)
+        .get("/api/likes")
+        .set("Authorization", "Bearer " + accessToken)
+        .expect(200);
+      expect(response.body).toHaveProperty("docs");
+    });
+    it("should have delete likes(dislikes)", async () => {
+      const result = await request(app)
+        .post("/api/likes")
+        .set("Authorization", "Bearer " + accessToken)
+        .send({ tweet: tweetId });
+      expect(result.statusCode).toEqual(201);
+      likeId = result.body._id;
+
+      const get = await request(app).get("/api/likes/" + likeId);
+      expect(get.body._id).toBeUndefined();
+    });
+    it("should decrease tweet likes after dislike", async () => {
+      const result = await request(app).get("/api/tweets/" + tweetId);
+      expect(result.body.stats.likes).toEqual(0);
+    });
+    afterAll(async () => {
+      await request(app)
+        .delete("/api/tweets/" + tweetId)
+        .set("Authorization", "Bearer " + accessToken);
+    });
+  });
   afterAll(async () => {
     await request(app)
       .delete("/api/users/" + id)
