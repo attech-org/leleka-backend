@@ -1,6 +1,7 @@
+import mongoose from "mongoose";
 import request from "supertest";
 
-import { app } from "../index";
+import { app, server } from "../index";
 import * as _routesData from "./routes.test.json";
 
 interface Route {
@@ -300,5 +301,7 @@ describe("Routes tests", () => {
       .delete("/api/users/" + id)
       .set("Authorization", "Bearer " + accessToken)
       .expect(200);
+    server.close();
+    await mongoose.connection.close();
   });
 });

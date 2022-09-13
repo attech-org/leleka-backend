@@ -42,7 +42,7 @@ app.use(errorHandler);
 //   console.warn(`Server is running on port ${PORT}`);
 // });
 
-app.listen(PORT, () => {
+export const server = app.listen(PORT, () => {
   console.warn(`Server is running on port ${PORT}`);
 });
 
