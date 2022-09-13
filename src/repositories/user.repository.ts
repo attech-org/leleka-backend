@@ -34,7 +34,11 @@ export const updateLocalTokens = (
   );
 };
 
-export const updateOne = async (id: string, data: User) => {
+export const updateOne = async (
+  id: string,
+  data: User,
+  file: Express.Multer.File
+) => {
   if (data.password) {
     const encryptedPassword = hashPassword(data.password);
     await UserModel.updateOne(
@@ -46,10 +50,26 @@ export const updateOne = async (id: string, data: User) => {
       }
     );
   } else {
-    await UserModel.updateOne(
-      { _id: id },
-      { ...data, updatedAt: new Date().toISOString() }
-    );
+    const base64Image = file?.buffer.toString("base64");
+
+    if (base64Image) {
+      await UserModel.updateOne(
+        { _id: id },
+        {
+          ...data,
+          updatedAt: new Date().toISOString(),
+          profile: { avatar: base64Image },
+        }
+      );
+    } else {
+      await UserModel.updateOne(
+        { _id: id },
+        {
+          ...data,
+          updatedAt: new Date().toISOString(),
+        }
+      );
+    }
   }
   const result = await UserModel.findById({ _id: id });
   return result;

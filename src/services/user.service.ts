@@ -43,8 +43,12 @@ export const deleteUser = (id: string) => {
   return deleteOne(id);
 };
 
-export const updateUser = (id: string, data: User) => {
-  return updateOne(id, data);
+export const updateUser = (
+  id: string,
+  data: User,
+  file: Express.Multer.File
+) => {
+  return updateOne(id, data, file);
 };
 
 export const updateUserLocalTokens = (
