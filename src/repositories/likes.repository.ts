@@ -6,7 +6,9 @@ export const getAll = (query: object, options: object) => {
     populate: ["user", "tweet"],
   });
 };
-
+export const deleteMany = (data: { tweet?: string; user?: string }) => {
+  return LikeModel.deleteMany(data);
+};
 export const getOne = (
   data: { _id: string } | { user: string; tweet: string }
 ) => {

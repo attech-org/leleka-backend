@@ -39,9 +39,9 @@ tweetsRoutes.route("/:id").put(isAuthorized, async (req, res) => {
   res.status(200).send(modifyTweet);
 });
 
-tweetsRoutes.delete("/:id", async (req, res) => {
-  await tweetsService.deleteTweet(req.params.id);
-  res.sendStatus(200);
+tweetsRoutes.route("/:id").delete(isAuthorized, async (req, res) => {
+  const result = await tweetsService.deleteTweet(req.params.id, req.user._id);
+  res.status(200).send(result);
 });
 
 export default tweetsRoutes;
