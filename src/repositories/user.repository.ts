@@ -39,38 +39,18 @@ export const updateOne = async (
   data: User,
   file: Express.Multer.File
 ) => {
-  if (data.password) {
-    const encryptedPassword = hashPassword(data.password);
-    await UserModel.updateOne(
-      { _id: id },
-      {
-        ...data,
-        updatedAt: new Date().toISOString(),
-        password: encryptedPassword,
-      }
-    );
-  } else {
-    const base64Image = file?.buffer.toString("base64");
-
-    if (base64Image) {
-      await UserModel.updateOne(
-        { _id: id },
-        {
-          ...data,
-          updatedAt: new Date().toISOString(),
-          profile: { avatar: base64Image },
-        }
-      );
-    } else {
-      await UserModel.updateOne(
-        { _id: id },
-        {
-          ...data,
-          updatedAt: new Date().toISOString(),
-        }
-      );
+  await UserModel.updateOne(
+    { _id: id },
+    {
+      ...data,
+      updatedAt: new Date().toISOString(),
+      password: data.password && hashPassword(data.password),
+      profile: (data.profile || file) && {
+        ...data.profile,
+        avatar: file && file?.buffer.toString("base64"),
+      },
     }
-  }
+  );
   const result = await UserModel.findById({ _id: id });
   return result;
 };
