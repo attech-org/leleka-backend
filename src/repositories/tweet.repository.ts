@@ -10,7 +10,7 @@ export const getList = (
 };
 
 export const getOneById = (id: string) => {
-  return TweetModel.find({ _id: id }).populate("author");
+  return TweetModel.findById(id).populate("author");
 };
 
 export const createOne = async (
@@ -46,6 +46,6 @@ export const changeStats = (id: string, fieldName: string, value: number) => {
   return TweetModel.updateOne({ _id: id }, { $inc: { [fieldName]: value } });
 };
 
-export const deleteOne = (id: string) => {
-  return TweetModel.deleteOne({ _id: id });
+export const deleteOne = (id: string, author: string) => {
+  return TweetModel.deleteOne({ _id: id, author: author });
 };
