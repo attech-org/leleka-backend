@@ -1,5 +1,7 @@
 import { Request } from "express";
+import { convert } from "html-to-text";
 import { PaginationParameters } from "mongoose-paginate-v2";
+import TweeterUtils from "twitter-text";
 
 import { Tag } from "../models/Tag.model";
 import {
@@ -33,11 +35,30 @@ export const deleteTagById = async (id: string) => {
   return { succeed: true };
 };
 
-export const addTagsFromContent = (tagNames: Set<string>) => {
-  tagNames.forEach(async (name: string) => {
-    const tryIncrement = await incrementStatsByName(name);
-    if (!tryIncrement) {
-      await create({ name: name }, { initialIncrementStats: true });
-    }
-  });
+export const updateTagsFromContent = (content: string, oldContent?: string) => {
+  const hashTags = new Set<string>(
+    TweeterUtils.extractHashtags(convert(content))
+  );
+
+  if (hashTags) {
+    hashTags.forEach(async (name: string) => {
+      let result: Tag;
+      result = await incrementStatsByName(name);
+      if (!result) {
+        result = await create({ name: name }, { initialIncrementStats: true });
+      }
+    });
+  }
+  //decrementing tags if required
+  const tagsFromOldContent =
+    oldContent &&
+    new Set<string>(TweeterUtils.extractHashtags(convert(oldContent)));
+
+  if (tagsFromOldContent) {
+    tagsFromOldContent.forEach(async (tag) => {
+      if (!hashTags.has(tag)) {
+        await incrementStatsByName(tag, -1);
+      }
+    });
+  }
 };

@@ -39,9 +39,10 @@ export const getByName = (name: string) => {
   return TagModel.findOne({ name: name });
 };
 
-export const incrementStatsByName = (name: string) => {
+export const incrementStatsByName = (name: string, incrementValue = 1) => {
   return TagModel.findOneAndUpdate(
     { name: name },
-    { $inc: { "stats.tweets": 1 } }
+    { $inc: { "stats.tweets": incrementValue } },
+    { new: true }
   );
 };

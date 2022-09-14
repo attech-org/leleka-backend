@@ -1,7 +1,5 @@
 import { Request } from "express";
-import { convert } from "html-to-text";
 import { PaginationParameters } from "mongoose-paginate-v2";
-import TweeterUtils from "twitter-text";
 
 import {
   createOne,
@@ -11,7 +9,7 @@ import {
   changeStats,
   updateOne,
 } from "../repositories/tweet.repository";
-import { addTagsFromContent } from "./tags.service";
+import { updateTagsFromContent } from "./tags.service";
 
 export const getAllTweetsOfCurrentUser = (req: Request) => {
   const [query, options] = new PaginationParameters(req).get();
@@ -34,12 +32,7 @@ export const createTweet = async (
 ) => {
   const createResult = await createOne(author, content, repliedTo);
 
-  if (createResult) {
-    const hashtags = TweeterUtils.extractHashtags(convert(content));
-    if (hashtags.length) {
-      await addTagsFromContent(new Set(hashtags));
-    }
-  }
+  await updateTagsFromContent(content);
   return createResult;
 };
 
@@ -54,19 +47,11 @@ export const updateTweet = async (
   }
 ) => {
   const tweetOldData = await getOneById(id);
+
   const updateResult = await updateOne(id, newData);
-
-  if (updateResult) {
-    const oldHashtags = TweeterUtils.extractHashtags(
-      convert(tweetOldData.content)
-    );
-    const newHashtags = TweeterUtils.extractHashtags(convert(newData.content));
-    const hashtagsDiff = newHashtags.filter((x) => !oldHashtags.includes(x));
-    if (hashtagsDiff.length) {
-      await addTagsFromContent(new Set(hashtagsDiff));
-    }
+  if (tweetOldData.content !== updateResult.content) {
+    updateTagsFromContent(updateResult.content, tweetOldData.content);
   }
-
   return updateResult;
 };
 export const changeTweetStats = (
