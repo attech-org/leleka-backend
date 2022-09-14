@@ -10,7 +10,7 @@ export interface User extends Document {
   description?: string;
   verified: boolean;
   followersCount: number;
-  friendsCount: number;
+  followingCount: number;
   listedCount: number;
   favouritesCount: number;
   statusesCount: number;
@@ -90,7 +90,7 @@ const UserSchema: Schema = new Schema<User>(
       type: Number,
       default: 0,
     },
-    friendsCount: {
+    followingCount: {
       type: Number,
       default: 0,
     },

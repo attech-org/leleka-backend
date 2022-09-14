@@ -9,6 +9,7 @@ import {
   changeStats,
   updateOne,
 } from "../repositories/tweet.repository";
+import { deleteLikes } from "./likes.service";
 
 export const getAllTweetsOfCurrentUser = (req: Request) => {
   const [query, options] = new PaginationParameters(req).get();
@@ -52,6 +53,8 @@ export const changeTweetStats = (
   return changeStats(id, fieldName, value);
 };
 
-export const deleteTweet = (id: string) => {
-  return deleteOne(id);
+export const deleteTweet = async (id: string, author: string) => {
+  const result = await deleteOne(id, author);
+  await deleteLikes({ tweet: id });
+  return result;
 };

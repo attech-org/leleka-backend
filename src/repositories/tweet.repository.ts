@@ -46,6 +46,6 @@ export const changeStats = (id: string, fieldName: string, value: number) => {
   return TweetModel.updateOne({ _id: id }, { $inc: { [fieldName]: value } });
 };
 
-export const deleteOne = (id: string) => {
-  return TweetModel.deleteOne({ _id: id });
+export const deleteOne = (id: string, author: string) => {
+  return TweetModel.deleteOne({ _id: id, author: author });
 };

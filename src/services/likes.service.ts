@@ -7,6 +7,7 @@ import {
   deleteOne,
   updateOne,
   getAll,
+  deleteMany,
 } from "../repositories/likes.repository";
 import { changeTweetStats } from "./tweets.service";
 
@@ -21,7 +22,8 @@ export const changeLike = async (tweet: string, user: string) => {
     await changeTweetStats(tweet, "stats.likes", -1);
   } else {
     await changeTweetStats(tweet, "stats.likes", 1);
-    return createOne(tweet, user);
+    const res = await createOne(tweet, user);
+    return res;
   }
 };
 
@@ -33,4 +35,7 @@ export const updateLike = (
   newData: { tweet?: string; user?: string }
 ) => {
   return updateOne(id, newData);
+};
+export const deleteLikes = (data: { tweet?: string; user?: string }) => {
+  return deleteMany(data);
 };
