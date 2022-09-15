@@ -34,23 +34,23 @@ export const updateLocalTokens = (
   );
 };
 
-export const updateOne = async (id: string, data: User) => {
-  if (data.password) {
-    const encryptedPassword = hashPassword(data.password);
-    await UserModel.updateOne(
-      { _id: id },
-      {
-        ...data,
-        updatedAt: new Date().toISOString(),
-        password: encryptedPassword,
-      }
-    );
-  } else {
-    await UserModel.updateOne(
-      { _id: id },
-      { ...data, updatedAt: new Date().toISOString() }
-    );
-  }
+export const updateOne = async (
+  id: string,
+  data: User,
+  file: Express.Multer.File
+) => {
+  await UserModel.updateOne(
+    { _id: id },
+    {
+      ...data,
+      updatedAt: new Date().toISOString(),
+      password: data.password && hashPassword(data.password),
+      profile: (data.profile || file) && {
+        ...data.profile,
+        avatar: file && file?.buffer.toString("base64"),
+      },
+    }
+  );
   const result = await UserModel.findById({ _id: id });
   return result;
 };

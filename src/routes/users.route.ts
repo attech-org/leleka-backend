@@ -1,5 +1,6 @@
 import express from "express";
 
+import { uploadImageInMemory } from "../middlewares/fileUpload.middleware";
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
 import {
   createUser,
@@ -46,12 +47,16 @@ usersRoutes
     return res.sendStatus(500);
   });
 
-usersRoutes
-  .route("/:id")
-  .put(isAuthorized, validation(putUser), async (req, res) => {
-    const result = await updateUser(req.params.id, req.body);
+usersRoutes.route("/:id").put(
+  isAuthorized,
+  validation(putUser),
+  uploadImageInMemory.single("avatar"),
+
+  async (req, res) => {
+    const result = await updateUser(req.params.id, req.body, req.file);
     return res.send(result);
-  });
+  }
+);
 
 usersRoutes
   .route("/:id")
