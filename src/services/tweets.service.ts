@@ -9,6 +9,8 @@ import {
   changeStats,
   updateOne,
 } from "../repositories/tweet.repository";
+import { deleteLikes } from "./likes.service";
+import { updateTagsFromContent } from "./tags.service";
 
 export const getAllTweetsOfCurrentUser = (req: Request) => {
   const [query, options] = new PaginationParameters(req).get();
@@ -24,15 +26,18 @@ export const getTweetById = (id: string) => {
   return getOneById(id);
 };
 
-export const createTweet = (
+export const createTweet = async (
   author: string,
   content: string,
   repliedTo?: string
 ) => {
-  return createOne(author, content, repliedTo);
+  const createResult = await createOne(author, content, repliedTo);
+
+  await updateTagsFromContent(content);
+  return createResult;
 };
 
-export const updateTweet = (
+export const updateTweet = async (
   id: string,
   newData: {
     content?: string;
@@ -42,7 +47,13 @@ export const updateTweet = (
     updatedAt: string;
   }
 ) => {
-  return updateOne(id, newData);
+  const tweetOldData = await getOneById(id);
+
+  const updateResult = await updateOne(id, newData);
+  if (tweetOldData.content !== updateResult.content) {
+    updateTagsFromContent(updateResult.content, tweetOldData.content);
+  }
+  return updateResult;
 };
 export const changeTweetStats = (
   id: string,
@@ -52,6 +63,8 @@ export const changeTweetStats = (
   return changeStats(id, fieldName, value);
 };
 
-export const deleteTweet = (id: string) => {
-  return deleteOne(id);
+export const deleteTweet = async (id: string, author: string) => {
+  const result = await deleteOne(id, author);
+  await deleteLikes({ tweet: id });
+  return result;
 };

@@ -14,7 +14,7 @@ const TagSchema: Schema = new Schema<Tag>({
   name: { type: String, required: true, unique: true },
   stats: {
     type: Object,
-    tweets: { type: Number, default: 0 },
+    tweets: { type: Number, default: 1 },
   },
   createdAt: {
     type: String,
