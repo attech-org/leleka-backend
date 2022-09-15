@@ -39,7 +39,9 @@ export const updateOne = (
     updatedAt: string;
   }
 ) => {
-  return TweetModel.findOneAndUpdate({ _id: id }, newData).populate("author");
+  return TweetModel.findOneAndUpdate({ _id: id }, newData, {
+    new: true,
+  }).populate("author");
 };
 
 export const changeStats = (id: string, fieldName: string, value: number) => {

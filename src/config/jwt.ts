@@ -10,7 +10,7 @@ const verifyOptions: VerifyOptions = {
   algorithms: ["HS256"],
 };
 const signOptions: SignOptions = {
-  expiresIn: "15m",
+  expiresIn: process.env.JWT_EXPIRES_IN || "15m",
   algorithm: "HS256",
 };
 
