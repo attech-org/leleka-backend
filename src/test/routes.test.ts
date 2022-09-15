@@ -298,13 +298,16 @@ describe("Routes tests", () => {
         });
       }
 
-      if (routeObj.hasDelete && routeObj.createdId) {
+      if (routeObj.hasDelete) {
         it("should have delete one", async () => {
-          await request(app)
+          const res = await request(app)
             .delete(route + routeObj.createdId)
+            .set("Authorization", "Bearer " + accessToken)
             .expect(200);
 
           //chack if deleted
+
+          expect(res.body.deletedCount).not.toBe(0);
           if (routeObj.hasGetById) {
             const get = await request(app).get(route + routeObj.createdId);
             // eslint-disable-next-line jest/no-conditional-expect
