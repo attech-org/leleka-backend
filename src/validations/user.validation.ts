@@ -5,7 +5,7 @@ import { getPaginationSchema } from "./general.validation";
 
 const userSchema = yup.object({
   username: yup.string(),
-  name: yup.string().required(),
+  name: yup.string(),
   location: yup.string(),
   url: yup.string(),
   description: yup.string(),
@@ -19,7 +19,6 @@ const userSchema = yup.object({
   updatedAt: yup.string(),
   email: yup
     .string()
-    .required()
     .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Please use a valid address"),
   profile: yup.object({
     firstName: yup.string(),
