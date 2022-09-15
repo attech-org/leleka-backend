@@ -1,0 +1,53 @@
+{
+  "data": [
+    {
+      "name": "Tweets",
+      "postData": {
+        "content": "Post data"
+      },
+      "putData": {
+        "content": "Put data"
+      },
+      "hasDelete": true,
+      "hasGetAll": true,
+      "hasGetById": true,
+      "hasCreate": true,
+      "hasUpdate": true
+    },
+    {
+      "name": "Bookmarks",
+      "postData": {
+        "tweet": "631e3aabaf9f9f6790d36e13",
+        "owner": "631e3aabaf9f9f6790d36e13"
+      },
+      "putData": {
+        "tweet": "asdasdadasdadas"
+      },
+      "hasDelete": true,
+      "hasGetAll": true,
+      "hasGetById": false,
+      "hasCreate": true,
+      "hasUpdate": false
+    },
+    {
+      "name": "Followers",
+      "postData": {
+        "follower": "631e3aabaf9f9f6790d36e13",
+        "following": "631e3aabaf9f9f6790d36e13"
+      },
+      "hasDelete": true,
+      "hasGetAll": true,
+      "hasGetById": false,
+      "hasCreate": true,
+      "hasUpdate": false
+    },
+    {
+      "name": "Tags",
+      "hasDelete": false,
+      "hasGetAll": true,
+      "hasGetById": true,
+      "hasCreate": false,
+      "hasUpdate": false
+    }
+  ]
+}

@@ -12,7 +12,7 @@ import {
 import { changeTweetStats } from "./tweets.service";
 
 export const getLikes = (req: Request) => {
-  const [query, options] = new PaginationParameters(req).get();
+  const [query, options] = new PaginationParameters({ query: req.query }).get();
   return getAll(query, options);
 };
 
