@@ -8,7 +8,7 @@ import {
 } from "../repositories/bookmarks.repository";
 
 export const getBookmarks = (req: Request) => {
-  const [query, options] = new PaginationParameters(req).get();
+  const [query, options] = new PaginationParameters({ query: req.query }).get();
   return listBookmarks(query, options);
 };
 

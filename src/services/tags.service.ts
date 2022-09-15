@@ -11,7 +11,7 @@ import {
 } from "../repositories/tags.repository";
 
 export const getTagsList = (req: Request) => {
-  const [query, options] = new PaginationParameters(req).get();
+  const [query, options] = new PaginationParameters({ query: req.query }).get();
   return getList(query, options);
 };
 

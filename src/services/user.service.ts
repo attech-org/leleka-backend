@@ -12,7 +12,7 @@ import {
 } from "../repositories/user.repository";
 
 export const listUsers = (req: Request) => {
-  const [query, options] = new PaginationParameters(req).get();
+  const [query, options] = new PaginationParameters({ query: req.query }).get();
   return getList(query, options);
 };
 
