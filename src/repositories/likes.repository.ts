@@ -38,6 +38,6 @@ export const updateOne = (
   newData: { tweet?: string; user?: string }
 ) => {
   return LikeModel.findOneAndUpdate({ _id: id }, newData, {
-  new: true
-});
+    new: true,
+  });
 };
