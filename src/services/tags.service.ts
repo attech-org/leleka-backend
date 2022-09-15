@@ -42,10 +42,8 @@ export const updateTagsFromContent = (content: string, oldContent?: string) => {
 
   if (hashTags) {
     hashTags.forEach(async (name: string) => {
-      let result: Tag;
-      result = await incrementStatsByName(name);
-      if (!result) {
-        result = await create({ name: name }, { initialIncrementStats: true });
+      if (!(await incrementStatsByName(name))) {
+        await create({ name: name });
       }
     });
   }

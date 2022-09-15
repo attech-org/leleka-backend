@@ -1,21 +1,10 @@
 import { Tag, TagModel } from "../models/Tag.model";
-interface CreateOptions {
-  initialIncrementStats?: boolean;
-}
+
 export const getById = (tagId: string) => {
   return TagModel.findById(tagId);
 };
 
-export const create = (
-  tagData: Partial<Tag>,
-  createOptions?: CreateOptions
-) => {
-  if (createOptions) {
-    //to be continued
-    if (createOptions?.initialIncrementStats) {
-      tagData.stats = { tweets: 1 };
-    }
-  }
+export const create = (tagData: Partial<Tag>) => {
   return TagModel.create(tagData);
 };
 
