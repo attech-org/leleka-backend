@@ -13,12 +13,12 @@ import { deleteLikes } from "./likes.service";
 import { updateTagsFromContent } from "./tags.service";
 
 export const getAllTweetsOfCurrentUser = (req: Request) => {
-  const [query, options] = new PaginationParameters(req).get();
+  const [query, options] = new PaginationParameters({ query: req.query }).get();
   return getList({ ...query, author: req.user._id }, options);
 };
 
 export const getAllTweets = (req: Request) => {
-  const [query, options] = new PaginationParameters(req).get();
+  const [query, options] = new PaginationParameters({ query: req.query }).get();
   return getList(query, options);
 };
 
