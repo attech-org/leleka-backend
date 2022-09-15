@@ -29,46 +29,71 @@ let id: string;
 const register = (data: object) => {
   return request(app).post("/api/auth/register").send(data);
 };
+
+const deleteUser = (userId: string, token: string) => {
+  return request(app)
+    .delete("/api/users/" + userId)
+    .set("Authorization", "Bearer " + token);
+};
 describe("Routes tests", () => {
   describe("User routes", () => {
     describe("Auth routes", () => {
       describe("Register", () => {
         it("should work", async () => {
-          await register({
+          const res = await register({
             username: "ccc",
             password: "aaaaaaaa",
             email: "ccc@aaaaa.aaa",
             name: "aaa",
-          }).expect(200);
-        });
-        it("should`nt work with less than 8 char. password", async () => {
-          await register({
-            username: "zzz",
-            password: "1234567",
-            email: "zzz@aaaaa.aaa",
-            name: "aaa",
-          }).expect(400);
+          });
+
+          expect(res.status).toEqual(200);
         });
 
-        it("shouldn`t work with blank username/email/name", async () => {
-          await register({
-            username: "",
+        it("should`nt work with less than 8 char. password", async () => {
+          const res = await register({
+            username: "zzz",
             password: "1234567",
             email: "zzz@aaaaa.aaa",
             name: "aaa",
           });
-          await register({
+          if (res.status == 200) {
+            await deleteUser(res.body.user._id, res.body.accessToken);
+          }
+          expect(res.status).toEqual(400);
+        });
+
+        it("shouldn`t work with blank username/email/name", async () => {
+          const res1 = await register({
+            username: "",
+            password: "12345678",
+            email: "zzz@aaaaa.aaa",
+            name: "aaa",
+          });
+          const res2 = await register({
             username: "zzz",
-            password: "1234567",
+            password: "12345678",
             email: "",
             name: "aaa",
-          }).expect(400);
-          await register({
-            username: "zz",
-            password: "1234567",
-            email: "zz@aaaaa.aaa",
+          });
+          const res3 = await register({
+            username: "zzb",
+            password: "12345678",
+            email: "zzb@aaaaa.aaa",
             name: "",
-          }).expect(400);
+          });
+          if (res1.status == 200) {
+            await deleteUser(res1.body.user._id, res1.body.accessToken);
+          }
+          expect(res1.status).toEqual(400);
+          if (res2.status == 200) {
+            await deleteUser(res2.body.user._id, res2.body.accessToken);
+          }
+          expect(res2.status).toEqual(400);
+          if (res3.status == 200) {
+            await deleteUser(res3.body.user._id, res3.body.accessToken);
+          }
+          expect(res3.status).toEqual(400);
         });
       });
       describe("Login", () => {
@@ -117,8 +142,8 @@ describe("Routes tests", () => {
         it("shouldn`t work with invalid token", async () => {
           const resp = await request(app)
             .post("/api/auth/refresh")
-            .send({ refreshToken: refreshToken + "a" })
-            .expect(400);
+            .send({ refreshToken: refreshToken + "a" });
+          expect(resp.status).toEqual(400);
           expect(resp.body.error).toEqual("invalid signature");
         });
       });
@@ -310,7 +335,7 @@ describe("Routes tests", () => {
           .post("/api/likes")
           .set("Authorization", "Bearer " + accessToken)
           .send({ tweet: tweetId });
-        expect(result.statusCode).toEqual(201);
+        expect(result.status).toEqual(201);
         likeId = result.body._id;
 
         const get = await request(app).get("/api/likes/" + likeId);
@@ -333,11 +358,7 @@ describe("Routes tests", () => {
         .post("/api/likes")
         .set("Authorization", "Bearer " + accessToken)
         .send({ tweet: tweetId });
-      expect(result.statusCode).toEqual(201);
-      likeId = result.body._id;
-
-      const get = await request(app).get("/api/likes/" + likeId);
-      expect(get.body._id).toBeUndefined();
+      expect(result.status).toEqual(201);
     });
     it("should decrease tweet likes after dislike", async () => {
       const result = await request(app).get("/api/tweets/" + tweetId);

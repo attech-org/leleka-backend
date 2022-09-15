@@ -105,6 +105,9 @@
     "setupFiles": [
       "dotenv/config"
     ],
+    "testMatch": [
+      "**/*.test.ts"
+    ],
     "notifyMode": "success-change",
     "transformIgnorePatterns": [
       "node_modules/(?!variables/.*)"
