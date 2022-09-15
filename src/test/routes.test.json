@@ -6,7 +6,7 @@
         "content": "Post data"
       },
       "putData": {
-        "content": "Puo data"
+        "content": "Put data"
       },
       "hasDelete": true,
       "hasGetAll": true,
