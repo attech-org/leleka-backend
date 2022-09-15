@@ -5,7 +5,6 @@ import { getPaginationSchema } from "./general.validation";
 
 const userSchema = yup.object({
   username: yup.string(),
-  password: yup.string().min(8, "Please use minimum of 8 characters"),
   name: yup.string().required(),
   location: yup.string(),
   url: yup.string(),
@@ -61,6 +60,6 @@ export const putUser = yup.object({
   body: userSchema,
 });
 
-export const deleteUser = yup.object({
+export const deleteUserById = yup.object({
   params: yup.object({ id: yup.string() }),
 });

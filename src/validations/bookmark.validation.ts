@@ -9,7 +9,7 @@ const bookmarkSchema = yup.object({
   updatedAt: yup.string(),
 });
 
-export const getBookmark = yup.object({
+export const getBookmarkList = yup.object({
   query: getPaginationSchema(bookmarkSchema),
 });
 
@@ -18,6 +18,6 @@ export const postBookmark = yup.object({
   user: yup.object({ _id: yup.string() }),
 });
 
-export const deleteBookmark = yup.object({
+export const deleteBookmarkById = yup.object({
   params: yup.object({ id: yup.string() }),
 });

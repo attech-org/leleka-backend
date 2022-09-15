@@ -22,6 +22,10 @@ export const getTweetById = yup.object({
   params: yup.object({ id: yup.string() }),
 });
 
+export const getMyTweets = yup.object({
+  user: yup.object({ _id: yup.string() }),
+});
+
 export const postTweet = yup.object({
   body: tweetSchema,
 });

@@ -7,11 +7,11 @@ const likeSchema = yup.object({
   tweet: yup.string(),
 });
 
-export const getLikes = yup.object({
+export const getLikesList = yup.object({
   query: getPaginationSchema(likeSchema),
 });
 
-export const getLikeById = yup.object({
+export const getLikeByID = yup.object({
   params: yup.object({ id: yup.string() }),
 });
 
