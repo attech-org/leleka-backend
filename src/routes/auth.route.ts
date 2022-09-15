@@ -1,8 +1,9 @@
 import express from "express";
 
-import { loginSchema, registerSchema } from "../helpers/validation";
 import { validation } from "../middlewares/yup.middlewares";
 import { getNewAccessToken, login, register } from "../services/auth.service";
+import { loginUser } from "./../validations/login.validation";
+import { registerUser } from "./../validations/register.validation";
 
 const authRouter = express.Router();
 
@@ -21,13 +22,13 @@ const authRouter = express.Router();
 
 authRouter
   .route("/register")
-  .post(validation(registerSchema), async (req, res) => {
+  .post(validation(registerUser), async (req, res) => {
     const data = req.body;
     const result = await register(data);
     res.send(result);
   });
 
-authRouter.route("/login").post(validation(loginSchema), async (req, res) => {
+authRouter.route("/login").post(validation(loginUser), async (req, res) => {
   const data = req.body;
   const result = await login(data);
   res.send(result);
