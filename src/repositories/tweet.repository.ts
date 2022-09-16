@@ -10,7 +10,10 @@ export const getList = (
 };
 
 export const getOneById = (id: string) => {
-  return TweetModel.findById(id).populate("author");
+  return TweetModel.findById(id).populate([
+    { path: "author" },
+    { path: "repliedTo", populate: { path: "author" } },
+  ]);
 };
 
 export const createOne = async (
@@ -26,7 +29,10 @@ export const createOne = async (
     createdAt: date,
     updatedAt: date,
   });
-  return (await tweetModel.save()).populate("author");
+  return (await tweetModel.save()).populate([
+    { path: "author" },
+    { path: "repliedTo", populate: { path: "author" } },
+  ]);
 };
 
 export const updateOne = (
@@ -41,7 +47,10 @@ export const updateOne = (
 ) => {
   return TweetModel.findOneAndUpdate({ _id: id }, newData, {
     new: true,
-  }).populate("author");
+  }).populate([
+    { path: "author" },
+    { path: "repliedTo", populate: { path: "author" } },
+  ]);
 };
 
 export const changeStats = (id: string, fieldName: string, value: number) => {
