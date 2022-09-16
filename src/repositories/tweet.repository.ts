@@ -6,7 +6,13 @@ export const getList = (
   query: FilterQuery<Tweet>,
   options: PaginateOptions
 ) => {
-  return TweetModel.paginate(query, { ...options, populate: "author" });
+  return TweetModel.paginate(query, {
+    ...options,
+    populate: [
+      { path: "author" },
+      { path: "repliedTo", populate: { path: "author" } },
+    ],
+  });
 };
 
 export const getOneById = (id: string) => {
