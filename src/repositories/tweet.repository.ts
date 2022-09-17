@@ -6,11 +6,20 @@ export const getList = (
   query: FilterQuery<Tweet>,
   options: PaginateOptions
 ) => {
-  return TweetModel.paginate(query, { ...options, populate: "author" });
+  return TweetModel.paginate(query, {
+    ...options,
+    populate: [
+      { path: "author" },
+      { path: "repliedTo", populate: { path: "author" } },
+    ],
+  });
 };
 
 export const getOneById = (id: string) => {
-  return TweetModel.findById(id).populate("author");
+  return TweetModel.findById(id).populate([
+    { path: "author" },
+    { path: "repliedTo", populate: { path: "author" } },
+  ]);
 };
 
 export const createOne = async (
@@ -26,7 +35,10 @@ export const createOne = async (
     createdAt: date,
     updatedAt: date,
   });
-  return (await tweetModel.save()).populate("author");
+  return (await tweetModel.save()).populate([
+    { path: "author" },
+    { path: "repliedTo", populate: { path: "author" } },
+  ]);
 };
 
 export const updateOne = (
@@ -39,7 +51,12 @@ export const updateOne = (
     updatedAt: string;
   }
 ) => {
-  return TweetModel.findOneAndUpdate({ _id: id }, newData).populate("author");
+  return TweetModel.findOneAndUpdate({ _id: id }, newData, {
+    new: true,
+  }).populate([
+    { path: "author" },
+    { path: "repliedTo", populate: { path: "author" } },
+  ]);
 };
 
 export const changeStats = (id: string, fieldName: string, value: number) => {

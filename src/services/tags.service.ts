@@ -1,5 +1,7 @@
 import { Request } from "express";
+import { convert } from "html-to-text";
 import { PaginationParameters } from "mongoose-paginate-v2";
+import TweeterUtils from "twitter-text";
 
 import { Tag } from "../models/Tag.model";
 import {
@@ -8,10 +10,11 @@ import {
   getList,
   update,
   getById,
+  incrementStatsByName,
 } from "../repositories/tags.repository";
 
 export const getTagsList = (req: Request) => {
-  const [query, options] = new PaginationParameters(req).get();
+  const [query, options] = new PaginationParameters({ query: req.query }).get();
   return getList(query, options);
 };
 
@@ -30,4 +33,30 @@ export const updateTag = (id: string, newData: Partial<Tag>) => {
 export const deleteTagById = async (id: string) => {
   await deleteById(id);
   return { succeed: true };
+};
+
+export const updateTagsFromContent = (content: string, oldContent?: string) => {
+  const hashTags = new Set<string>(
+    TweeterUtils.extractHashtags(convert(content))
+  );
+
+  if (hashTags) {
+    hashTags.forEach(async (name: string) => {
+      if (!(await incrementStatsByName(name))) {
+        await create({ name: name });
+      }
+    });
+  }
+  //decrementing tags if required
+  const tagsFromOldContent =
+    oldContent &&
+    new Set<string>(TweeterUtils.extractHashtags(convert(oldContent)));
+
+  if (tagsFromOldContent) {
+    tagsFromOldContent.forEach(async (tag) => {
+      if (!hashTags.has(tag)) {
+        await incrementStatsByName(tag, -1);
+      }
+    });
+  }
 };

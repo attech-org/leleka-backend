@@ -23,7 +23,7 @@ const userSchema = yup.object({
   profile: yup.object({
     firstName: yup.string(),
     lastName: yup.string(),
-    avatar: yup.string(),
+    avatar: yup.mixed(),
     banner: yup.string(),
     bio: yup.string(),
     birthDate: yup.string(),

@@ -99,3 +99,9 @@
     - update like info - put: `/api/likes/id`
     - get likes by userId - get: `/api/likes/?limit=&page=&query={"user": "USER_ID"}`
     - get likes by tweetId - get: `/api/likes/?limit=&page=&query={"tweet": "TWEET_ID"}`
+
+      7.6 Tags
+
+    - get all tags - get: `/api/tags/`
+    - get tags by name - get: `/api/tags/?limit=&page=&query={"name": "TAG_NAME"}`
+    - get tag by id - get: `/api/tags/id`

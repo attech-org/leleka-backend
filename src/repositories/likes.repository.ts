@@ -37,5 +37,7 @@ export const updateOne = (
   id: string,
   newData: { tweet?: string; user?: string }
 ) => {
-  LikeModel.updateOne({ _id: id }, newData);
+  return LikeModel.findOneAndUpdate({ _id: id }, newData, {
+    new: true,
+  });
 };

@@ -8,7 +8,7 @@ import {
 } from "../repositories/followers.repository";
 
 export const getFollowers = (req: Request) => {
-  const [query, options] = new PaginationParameters(req).get();
+  const [query, options] = new PaginationParameters({ query: req.query }).get();
   return listFollowers(query, options);
 };
 
