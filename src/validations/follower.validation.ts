@@ -4,8 +4,8 @@ import * as yup from "yup";
 import { getPaginationSchema } from "./general.validation";
 
 const followersSchema = yup.object({
-  follower: yup.string().required("followerId can't be blank"),
-  following: yup.string().required("ownerId can't be blank"),
+  follower: yup.string(),
+  following: yup.string(),
   createdAt: yup.string(),
   updatedAt: yup.string(),
 });
