@@ -1,7 +1,13 @@
 import { BookmarkModel } from "../models/Bookmark.model";
 
 export const listBookmarks = (query: object, options: object) => {
-  return BookmarkModel.paginate(query, options);
+  return BookmarkModel.paginate(query, {
+    ...options,
+    populate: [
+      { path: "owner" },
+      { path: "tweet", populate: { path: "author" } },
+    ],
+  });
 };
 
 export const addOne = (tweet: string, owner: string) => {
