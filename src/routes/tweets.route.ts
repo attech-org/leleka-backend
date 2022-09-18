@@ -1,7 +1,13 @@
 import express from "express";
+import { Server } from "socket.io";
 
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
 import * as tweetsService from "../services/tweets.service";
+import http from "http";
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 
 const tweetsRoutes = express.Router();
 
@@ -21,6 +27,8 @@ tweetsRoutes.route("/:id").get(async (req, res) => {
 });
 
 tweetsRoutes.route("/").post(isAuthorized, async (req, res) => {
+  io.emit("tweet created");
+
   const newTweet = await tweetsService.createTweet(
     req.user._id,
     req.body.content,

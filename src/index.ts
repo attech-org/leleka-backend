@@ -1,15 +1,19 @@
 import cors from "cors";
 import express, { Request, Response } from "express";
 import "express-async-errors";
+import { Server } from "socket.io";
 
 import { connectDB } from "./config/db";
 import Logger from "./config/Logger";
 import errorHandler from "./middlewares/errorHandler.middlewares";
 import httpLogger from "./middlewares/httpLogger.middlewares";
 import apiRoutes from "./routes/index.route";
+import http from "http";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const server = http.createServer(app);
+const io = new Server(server);
 
 //connect to db
 connectDB();
@@ -41,6 +45,14 @@ app.use(errorHandler);
 // const server = app.listen(PORT, () => {
 //   console.warn(`Server is running on port ${PORT}`);
 // });
+
+io.on("connection", (socket) => {
+  console.warn("a user connected");
+  console.warn(socket);
+  socket.on("disconnect", () => {
+    console.warn("user disconnected");
+  });
+});
 
 app.listen(PORT, () => {
   console.warn(`Server is running on port ${PORT}`);
