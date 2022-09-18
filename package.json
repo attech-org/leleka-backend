@@ -56,9 +56,10 @@
     "mongoose": "^6.2.4",
     "mongoose-paginate-v2": "^1.7.0",
     "morgan": "^1.10.0",
-    "twitter-text": "^3.1.0",
     "multer": "^1.4.5-lts.1",
+    "twitter-text": "^3.1.0",
     "winston": "^3.8.1",
+    "ws": "^8.8.1",
     "yup": "^0.32.11"
   },
   "devDependencies": {
@@ -74,6 +75,7 @@
     "@types/multer": "^1.4.7",
     "@types/node": "^17.0.21",
     "@types/supertest": "^2.0.12",
+    "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
     "eslint": "^8.22.0",
