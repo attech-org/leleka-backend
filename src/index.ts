@@ -1,6 +1,7 @@
 import cors from "cors";
 import express, { Request, Response } from "express";
 import "express-async-errors";
+import WebSocket from "ws";
 
 import { connectDB } from "./config/db";
 import Logger from "./config/Logger";
@@ -10,6 +11,9 @@ import apiRoutes from "./routes/index.route";
 
 export const app = express();
 const PORT = process.env.PORT || 5000;
+const webSocketPort = process.env.WEBSOCKET_PORT || 5001;
+
+export const webSocketServer = new WebSocket.Server({ port: +webSocketPort });
 
 //connect to db
 connectDB();
@@ -51,4 +55,22 @@ process.on("unhandledRejection", (error: unknown) => {
   // console.error(`Logged Error: ${error}`);
   // this error will be caught in middlewares
   throw error;
+});
+
+webSocketServer.on("connection", (ws) => {
+  console.warn(`WebSocket server is running on port ${webSocketPort}`);
+  ws.on("message", (message: WebSocket.RawData) => {
+    webSocketServer.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
+    });
+  });
+  ws.send("{ connection: true }");
+});
+
+webSocketServer.on("error", (error) => {
+  console.warn(
+    `Error WebSocket server is running on port ${webSocketPort}: ${error}`
+  );
 });
