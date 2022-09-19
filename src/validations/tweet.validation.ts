@@ -5,7 +5,6 @@ import { getPaginationSchema } from "./general.validation";
 const tweetSchema = yup.object({
   author: yup.string(),
   repliedTo: yup.string(),
-  content: yup.string(),
   createdAt: yup.string(),
   updatedAt: yup.string(),
   stats: yup.object({
