@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-import { getPaginationSchema } from "./general.validation";
+// import { getPaginationSchema } from "./general.validation";
 
 const bookmarkSchema = yup.object({
   tweet: yup.string(),
@@ -10,7 +10,7 @@ const bookmarkSchema = yup.object({
 });
 
 export const getBookmarkList = yup.object({
-  query: getPaginationSchema(bookmarkSchema),
+  // query: getPaginationSchema(bookmarkSchema),
 });
 
 export const postBookmark = yup.object({

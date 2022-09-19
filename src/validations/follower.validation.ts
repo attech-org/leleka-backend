@@ -1,7 +1,7 @@
 // import { UserModel } from "src/models/User.model";
 import * as yup from "yup";
 
-import { getPaginationSchema } from "./general.validation";
+// import { getPaginationSchema } from "./general.validation";
 
 const followersSchema = yup.object({
   follower: yup.string(),
@@ -11,7 +11,7 @@ const followersSchema = yup.object({
 });
 
 export const getFollowersList = yup.object({
-  query: getPaginationSchema(followersSchema),
+  // query: getPaginationSchema(followersSchema),
 });
 
 export const postFollower = yup.object({

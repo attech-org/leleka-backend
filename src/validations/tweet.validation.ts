@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-import { getPaginationSchema } from "./general.validation";
+// import { getPaginationSchema } from "./general.validation";
 
 const tweetSchema = yup.object({
   author: yup.string(),
@@ -15,7 +15,7 @@ const tweetSchema = yup.object({
 });
 
 export const getTweets = yup.object({
-  query: getPaginationSchema(tweetSchema),
+  // query: getPaginationSchema(tweetSchema),
 });
 
 export const getTweetById = yup.object({

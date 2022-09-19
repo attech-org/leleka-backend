@@ -1,7 +1,7 @@
 // import { UserModel } from "src/models/User.model";
 import * as yup from "yup";
 
-import { getPaginationSchema } from "./general.validation";
+// import { getPaginationSchema } from "./general.validation";
 
 const userSchema = yup.object({
   username: yup.string(),
@@ -43,7 +43,7 @@ const userSchema = yup.object({
 });
 
 export const getUsers = yup.object({
-  query: getPaginationSchema(userSchema),
+  // query: getPaginationSchema(userSchema),
 });
 
 export const getUserById = yup.object({
