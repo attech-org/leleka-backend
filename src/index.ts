@@ -11,9 +11,6 @@ import apiRoutes from "./routes/index.route";
 
 export const app = express();
 const PORT = process.env.PORT || 5000;
-const webSocketPort = process.env.WEBSOCKET_PORT || 5001;
-
-export const webSocketServer = new WebSocket.Server({ port: +webSocketPort });
 
 //connect to db
 connectDB();
@@ -50,6 +47,8 @@ export const server = app.listen(PORT, () => {
   console.warn(`Server is running on port ${PORT}`);
 });
 
+export const webSocketServer = new WebSocket.Server({ server });
+
 process.on("unhandledRejection", (error: unknown) => {
   // server.close(() => process.exit(1));
   // console.error(`Logged Error: ${error}`);
@@ -58,7 +57,6 @@ process.on("unhandledRejection", (error: unknown) => {
 });
 
 webSocketServer.on("connection", (ws) => {
-  console.warn(`WebSocket server is running on port ${webSocketPort}`);
   ws.on("message", (message: WebSocket.RawData) => {
     webSocketServer.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
@@ -69,8 +67,10 @@ webSocketServer.on("connection", (ws) => {
   ws.send("{ connection: true }");
 });
 
+webSocketServer.on("listening", () => {
+  console.warn(`WebSocket server is running`);
+});
+
 webSocketServer.on("error", (error) => {
-  console.warn(
-    `Error WebSocket server is running on port ${webSocketPort}: ${error}`
-  );
+  console.warn(`Error WebSocket server is running: ${error}`);
 });
