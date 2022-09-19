@@ -4,7 +4,6 @@ import * as yup from "yup";
 import { getPaginationSchema } from "./general.validation";
 
 const followersSchema = yup.object({
-  follower: yup.string(),
   following: yup.string(),
   createdAt: yup.string(),
   updatedAt: yup.string(),

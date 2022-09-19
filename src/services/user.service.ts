@@ -3,6 +3,7 @@ import { PaginationParameters } from "mongoose-paginate-v2";
 
 import { User } from "../models/User.model";
 import {
+  changeStatsById,
   create,
   deleteOne,
   getList,
@@ -56,3 +57,11 @@ export const updateUserLocalTokens = (
   accessToken: string,
   refreshToken: string
 ) => updateLocalTokens(id, accessToken, refreshToken);
+
+export const changeUserStats = (
+  id: string,
+  fieldName: string,
+  value: number
+) => {
+  return changeStatsById(id, fieldName, value);
+};

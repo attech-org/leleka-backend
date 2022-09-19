@@ -105,4 +105,12 @@ export const findUserByUsername = async (
   }
 };
 
+export const changeStatsById = (
+  id: string,
+  fieldName: string,
+  value: number
+) => {
+  return UserModel.updateOne({ _id: id }, { $inc: { [fieldName]: value } });
+};
+
 export default UserModel;
