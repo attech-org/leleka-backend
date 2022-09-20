@@ -16,7 +16,7 @@ export const getFollowers = (req: Request) => {
 
 export const addFollower = async (following: string, follower: string) => {
   if (follower === following) {
-    throw new Error("You can't subscribe to your self");
+    throw new Error("You can't subscribe to yourself");
   }
   const existingFollower = await getOneFollower(following, follower);
   if (existingFollower) {
