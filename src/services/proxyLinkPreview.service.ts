@@ -27,6 +27,12 @@ export const getMetadata = async (url: string): Promise<APIOutput> => {
     output.image = og.image;
   } else if (images.length > 0) {
     output.image = images[0];
+    if (typeof images[0] === "object") {
+      const { src = "" } = { ...(images[0] as object) };
+      if (src) {
+        output.image = src;
+      }
+    }
   }
 
   if (output.image && output.image.startsWith("/")) {

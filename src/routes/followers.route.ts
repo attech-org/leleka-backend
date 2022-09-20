@@ -25,15 +25,14 @@ followersRouter
 followersRouter
   .route("/")
   .post(isAuthorized, validation(postFollower), async (req, res) => {
-    const { follower, following } = req.body;
-    const newFollower = await addFollower(follower, following);
+    const newFollower = await addFollower(req.body.following, req.user._id);
     res.status(201).send(newFollower);
   });
 
 followersRouter
-  .route("/:id")
+  .route("/:followingId")
   .delete(isAuthorized, validation(deleteFollowerById), async (req, res) => {
-    await deleteFollower(req.params.id);
+    await deleteFollower(req.params.followingId, req.user._id);
     res.sendStatus(200);
   });
 

@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-import { getPaginationSchema } from "./general.validation";
+// import { getPaginationSchema } from "./general.validation";
 
 const likeSchema = yup.object({
   user: yup.string(),
@@ -8,7 +8,7 @@ const likeSchema = yup.object({
 });
 
 export const getLikesList = yup.object({
-  query: getPaginationSchema(likeSchema),
+  // query: getPaginationSchema(likeSchema),
 });
 
 export const getLikeByID = yup.object({

@@ -6,14 +6,18 @@ export const listFollowers = (query: object, options: object) => {
 
 export const addOneFollower = (following: string, follower: string) => {
   const result = new FollowerModel({
-    follower: follower,
-    following: following,
+    follower,
+    following,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   });
   return result.save();
 };
 
-export const deleteFollowerById = (id: string) => {
-  return FollowerModel.deleteOne({ _id: id });
+export const deleteFollowerById = (following: string, follower: string) => {
+  return FollowerModel.deleteOne({ following, follower });
+};
+
+export const getOneFollower = (following: string, follower: string) => {
+  return FollowerModel.findOne({ following, follower });
 };
