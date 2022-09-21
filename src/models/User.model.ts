@@ -97,11 +97,26 @@ const UserSchema: Schema = new Schema<User>(
       default: new Date().toISOString(),
     },
     stats: {
-      listedCount: Number,
-      favouritesCount: Number,
-      statusesCount: Number,
-      followersCount: Number,
-      followingCount: Number,
+      listedCount: {
+        type: Number,
+        default: 0,
+      },
+      favouritesCount: {
+        type: Number,
+        default: 0,
+      },
+      statusesCount: {
+        type: Number,
+        default: 0,
+      },
+      followersCount: {
+        type: Number,
+        default: 0,
+      },
+      followingCount: {
+        type: Number,
+        default: 0,
+      },
     },
     profile: {
       firstName: String,
