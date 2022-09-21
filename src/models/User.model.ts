@@ -9,14 +9,16 @@ export interface User extends Document {
   url?: string;
   description?: string;
   verified: boolean;
-  followersCount: number;
-  followingCount: number;
-  listedCount: number;
-  favouritesCount: number;
-  statusesCount: number;
   createdAt?: string;
   updatedAt?: string;
   email: string;
+  stats: {
+    listedCount: number;
+    favouritesCount: number;
+    statusesCount: number;
+    followersCount: number;
+    followingCount: number;
+  };
   profile: {
     firstName: string;
     lastName: string;
@@ -86,26 +88,6 @@ const UserSchema: Schema = new Schema<User>(
       type: Boolean,
       default: false,
     },
-    followersCount: {
-      type: Number,
-      default: 0,
-    },
-    followingCount: {
-      type: Number,
-      default: 0,
-    },
-    listedCount: {
-      type: Number,
-      default: 0,
-    },
-    favouritesCount: {
-      type: Number,
-      default: 0,
-    },
-    statusesCount: {
-      type: Number,
-      default: 0,
-    },
     createdAt: {
       type: String,
       default: new Date().toISOString(),
@@ -113,6 +95,13 @@ const UserSchema: Schema = new Schema<User>(
     updatedAt: {
       type: String,
       default: new Date().toISOString(),
+    },
+    stats: {
+      listedCount: Number,
+      favouritesCount: Number,
+      statusesCount: Number,
+      followersCount: Number,
+      followingCount: Number,
     },
     profile: {
       firstName: String,
