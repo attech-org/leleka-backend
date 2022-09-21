@@ -13,11 +13,11 @@ export interface User extends Document {
   updatedAt?: string;
   email: string;
   stats: {
-    listedCount: number;
-    favouritesCount: number;
-    statusesCount: number;
-    followersCount: number;
-    followingCount: number;
+    listedCount?: number;
+    favouritesCount?: number;
+    statusesCount?: number;
+    followersCount?: number;
+    followingCount?: number;
   };
   profile: {
     firstName: string;
