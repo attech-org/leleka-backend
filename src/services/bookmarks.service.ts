@@ -9,7 +9,7 @@ import {
 
 export const getBookmarks = (req: Request) => {
   const [query, options] = new PaginationParameters({ query: req.query }).get();
-  return listBookmarks(query, options);
+  return listBookmarks({ ...query, owner: req.user._id }, options);
 };
 
 export const addBookmark = (owner: string, tweet: string) => {
@@ -20,6 +20,6 @@ export const addBookmark = (owner: string, tweet: string) => {
   }
 };
 
-export const deleteBookmark = (id: string) => {
-  return deleteById(id);
+export const deleteBookmark = (id: string, owner: string) => {
+  return deleteById(id, owner);
 };
