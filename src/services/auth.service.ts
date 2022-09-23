@@ -1,14 +1,17 @@
 import { generateJWT, updateAccessToken } from "../config/jwt";
 import { comparePassword } from "../helpers/password";
 import { User } from "../models/User.model";
-import { addAccessToken } from "../repositories/auth.repository";
-import { create, findUserByUsername } from "../repositories/user.repository";
-import { AccessToken } from "./../models/AccessToken";
+import {
+  addAccessToken,
+  create,
+  findUserByUsername,
+} from "../repositories/user.repository";
 
-export const accessToken = async (access_token: AccessToken) => {
-  const result = await addAccessToken(access_token);
+export const accessToken = async (access_token: string, id: string) => {
+  const result = await addAccessToken(access_token, id);
   return result;
 };
+
 export const register = async (data: User) => {
   // process input data
   // call repository method
