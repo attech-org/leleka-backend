@@ -9,19 +9,23 @@ export interface User extends Document {
   url?: string;
   description?: string;
   verified: boolean;
-  followersCount: number;
-  friendsCount: number;
-  listedCount: number;
-  favouritesCount: number;
-  statusesCount: number;
   createdAt?: string;
   updatedAt?: string;
   email: string;
+  stats: {
+    listedCount?: number;
+    favouritesCount?: number;
+    statusesCount?: number;
+    followersCount?: number;
+    followingCount?: number;
+  };
   profile: {
     firstName: string;
     lastName: string;
     avatar?: string;
+    banner?: string;
     bio?: string;
+    birthDate?: string;
     phone?: string;
     gender?: string;
   };
@@ -56,9 +60,17 @@ const UserSchema: Schema = new Schema<User>(
       select: false,
       minlength: [8, "Please use minimum of 8 characters"],
     },
+    email: {
+      type: String,
+      lowercase: true,
+      required: [true, "Can't be blank"],
+      match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Please use a valid address"],
+      unique: true,
+      index: true,
+    },
     name: {
       type: String,
-      required: true,
+      default: "",
     },
     location: {
       type: String,
@@ -76,26 +88,6 @@ const UserSchema: Schema = new Schema<User>(
       type: Boolean,
       default: false,
     },
-    followersCount: {
-      type: Number,
-      default: 0,
-    },
-    friendsCount: {
-      type: Number,
-      default: 0,
-    },
-    listedCount: {
-      type: Number,
-      default: 0,
-    },
-    favouritesCount: {
-      type: Number,
-      default: 0,
-    },
-    statusesCount: {
-      type: Number,
-      default: 0,
-    },
     createdAt: {
       type: String,
       default: new Date().toISOString(),
@@ -104,19 +96,35 @@ const UserSchema: Schema = new Schema<User>(
       type: String,
       default: new Date().toISOString(),
     },
-    email: {
-      type: String,
-      lowercase: true,
-      required: [true, "Can't be blank"],
-      match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Please use a valid address"],
-      unique: true,
-      index: true,
+    stats: {
+      listedCount: {
+        type: Number,
+        default: 0,
+      },
+      favouritesCount: {
+        type: Number,
+        default: 0,
+      },
+      statusesCount: {
+        type: Number,
+        default: 0,
+      },
+      followersCount: {
+        type: Number,
+        default: 0,
+      },
+      followingCount: {
+        type: Number,
+        default: 0,
+      },
     },
     profile: {
       firstName: String,
       lastName: String,
       avatar: String,
+      banner: String,
       bio: String,
+      birthDate: String,
       phone: String,
       gender: String,
     },
@@ -158,7 +166,7 @@ const UserSchema: Schema = new Schema<User>(
 UserSchema.plugin(paginate);
 
 export const UserModel = mongoose.model<User, mongoose.PaginateModel<User>>(
-  "Users",
+  "User",
   UserSchema,
-  "Users"
+  "User"
 );

@@ -12,6 +12,8 @@
     "inlineSources": true,
     "outDir": "dist",
     "baseUrl": ".",
+    "typeRoots": ["./src/types", "node_modules/@types"],
+
     "resolveJsonModule": true
   },
   "include": ["src/**/*", "src/*.json"]

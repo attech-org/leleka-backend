@@ -12,7 +12,7 @@ export const accessToken = async (access_token: AccessToken) => {
 export const register = async (data: User) => {
   // process input data
   // call repository method
-  const userInDataBase: User = await create(data);
+  const userInDataBase = await create(data);
   const tokens = await generateJWT(userInDataBase);
 
   return {

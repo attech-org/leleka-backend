@@ -1,23 +1,25 @@
-import { Bookmark } from "../models/Bookmark.model";
+import { Request } from "express";
+import { PaginationParameters } from "mongoose-paginate-v2";
+
 import {
   addOne,
   deleteById,
   listBookmarks,
 } from "../repositories/bookmarks.repository";
 
-export const getBookmarks = async () => {
-  const bookmarksList: Bookmark[] = await listBookmarks();
-  return bookmarksList;
+export const getBookmarks = (req: Request) => {
+  const [query, options] = new PaginationParameters({ query: req.query }).get();
+  return listBookmarks({ ...query, owner: req.user._id }, options);
 };
 
-export const addBookmark = async (ownerId: string, tweetId: string) => {
-  if (!ownerId || !tweetId) {
-    throw new Error("ownerId and tweetId are required");
+export const addBookmark = (owner: string, tweet: string) => {
+  if (!owner || !tweet) {
+    throw new Error("owner and tweet are required");
   } else {
-    return addOne(ownerId, tweetId);
+    return addOne(owner, tweet);
   }
 };
 
-export const deleteBookmark = (id: string) => {
-  return deleteById(id);
+export const deleteBookmark = (id: string, owner: string) => {
+  return deleteById(id, owner);
 };

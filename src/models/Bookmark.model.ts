@@ -1,21 +1,22 @@
 import { ObjectId } from "mongodb";
 import mongoose, { model, Schema, Document } from "mongoose";
+import paginate from "mongoose-paginate-v2";
 
 export interface Bookmark extends Document {
-  tweetId: ObjectId;
-  ownerId: ObjectId;
+  tweet: ObjectId;
+  owner: ObjectId;
   createdAt: string;
   updatedAt?: string;
 }
 
 const BookmarkSchema: Schema = new Schema<Bookmark>({
-  tweetId: {
+  tweet: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "Tweet",
   },
 
-  ownerId: {
+  owner: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "User",
@@ -32,4 +33,8 @@ const BookmarkSchema: Schema = new Schema<Bookmark>({
   },
 });
 
-export const BookmarkModel = model<Bookmark>("Bookmark", BookmarkSchema);
+BookmarkSchema.plugin(paginate);
+export const BookmarkModel = model<Bookmark, mongoose.PaginateModel<Bookmark>>(
+  "Bookmark",
+  BookmarkSchema
+);

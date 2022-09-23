@@ -1,5 +1,9 @@
+import { Request } from "express";
+import { PaginationParameters } from "mongoose-paginate-v2";
+
 import { User } from "../models/User.model";
 import {
+  changeStatsById,
   create,
   deleteOne,
   getList,
@@ -8,8 +12,9 @@ import {
   updateOne,
 } from "../repositories/user.repository";
 
-export const listUsers = (query: object) => {
-  return getList(query);
+export const listUsers = (req: Request) => {
+  const [query, options] = new PaginationParameters({ query: req.query }).get();
+  return getList(query, options);
 };
 
 export const getUser = (id: string) => {
@@ -39,8 +44,12 @@ export const deleteUser = (id: string) => {
   return deleteOne(id);
 };
 
-export const updateUser = (id: string, data: User) => {
-  return updateOne(id, data);
+export const updateUser = (
+  id: string,
+  data: User,
+  file: Express.Multer.File
+) => {
+  return updateOne(id, data, file);
 };
 
 export const updateUserLocalTokens = (
@@ -48,3 +57,11 @@ export const updateUserLocalTokens = (
   accessToken: string,
   refreshToken: string
 ) => updateLocalTokens(id, accessToken, refreshToken);
+
+export const changeUserStats = (
+  id: string,
+  fieldName: string,
+  value: number
+) => {
+  return changeStatsById(id, fieldName, value);
+};

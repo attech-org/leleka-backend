@@ -1,13 +1,8 @@
 import { hashPassword } from "../helpers/password";
 import { User, UserModel } from "../models/User.model";
 
-export const getList = async (queryParams: object) => {
-  const query = {};
-  const options = {
-    ...queryParams,
-  };
-  const result = await UserModel.paginate(query, options);
-  return result;
+export const getList = (query: object, options: object) => {
+  return UserModel.paginate(query, { ...options });
 };
 
 export const getUserById = async (id: string, additionalFields?: string) => {
@@ -19,9 +14,8 @@ export const getUserById = async (id: string, additionalFields?: string) => {
   return result;
 };
 
-export const deleteOne = async (id: string) => {
-  const result = await UserModel.findByIdAndDelete({ _id: id });
-  return result;
+export const deleteOne = (id: string) => {
+  return UserModel.findByIdAndDelete({ _id: id });
 };
 
 export const updateLocalTokens = (
@@ -40,23 +34,23 @@ export const updateLocalTokens = (
   );
 };
 
-export const updateOne = async (id: string, data: User) => {
-  if (data.password) {
-    const encryptedPassword = hashPassword(data.password);
-    await UserModel.updateOne(
-      { _id: id },
-      {
-        ...data,
-        updatedAt: new Date().toISOString(),
-        password: encryptedPassword,
-      }
-    );
-  } else {
-    await UserModel.updateOne(
-      { _id: id },
-      { ...data, updatedAt: new Date().toISOString() }
-    );
-  }
+export const updateOne = async (
+  id: string,
+  data: User,
+  file: Express.Multer.File
+) => {
+  await UserModel.updateOne(
+    { _id: id },
+    {
+      ...data,
+      updatedAt: new Date().toISOString(),
+      password: data.password && hashPassword(data.password),
+      profile: (data.profile || file) && {
+        ...data.profile,
+        avatar: file && file?.buffer.toString("base64"),
+      },
+    }
+  );
   const result = await UserModel.findById({ _id: id });
   return result;
 };
@@ -109,6 +103,14 @@ export const findUserByUsername = async (
     const userInDatabase = await UserModel.findOne({ username: username });
     return userInDatabase;
   }
+};
+
+export const changeStatsById = (
+  id: string,
+  fieldName: string,
+  value: number
+) => {
+  return UserModel.updateOne({ _id: id }, { $inc: { [fieldName]: value } });
 };
 
 export default UserModel;

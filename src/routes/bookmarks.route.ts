@@ -1,33 +1,39 @@
-import express, { Request, Response } from "express";
+import express from "express";
 
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
+import { validation } from "../middlewares/yup.middlewares";
 import {
   addBookmark,
   deleteBookmark,
   getBookmarks,
 } from "../services/bookmarks.service";
+import {
+  getBookmarkList,
+  postBookmark,
+  deleteBookmarkById,
+} from "../validations/bookmark.validation";
 
 const bookmarksRouter = express.Router();
 
 bookmarksRouter
   .route("/")
-  .get(isAuthorized, async (req: Request, res: Response) => {
-    const result = await getBookmarks();
+  .get(isAuthorized, validation(getBookmarkList), async (req, res) => {
+    const result = await getBookmarks(req);
     res.send(result);
   });
 
 bookmarksRouter
   .route("/")
-  .post(isAuthorized, async (req: Request, res: Response) => {
-    const { tweetId, ownerId } = req.body;
-    await addBookmark(tweetId, ownerId);
-    res.sendStatus(200);
+  .post(isAuthorized, validation(postBookmark), async (req, res) => {
+    const { tweet } = req.body;
+    const newBookmarks = await addBookmark(tweet, req.user._id);
+    return res.status(201).send(newBookmarks);
   });
 
 bookmarksRouter
   .route("/:id")
-  .delete(isAuthorized, async (req: Request, res: Response) => {
-    await deleteBookmark(req.params.id);
+  .delete(isAuthorized, validation(deleteBookmarkById), async (req, res) => {
+    await deleteBookmark(req.params.id, req.user._id);
     res.sendStatus(200);
   });
 

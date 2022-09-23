@@ -1,37 +1,75 @@
+import { Request } from "express";
+import { PaginationParameters } from "mongoose-paginate-v2";
+
+import sendMessageToWebSocket from "../helpers/sendMessageToWebSocket";
 import {
   createOne,
   deleteOne,
-  getAll,
+  getList,
   getOneById,
+  changeStats,
   updateOne,
 } from "../repositories/tweet.repository";
+import { deleteLikes } from "./likes.service";
+import { updateTagsFromContent } from "./tags.service";
+
+export const getAllTweetsOfCurrentUser = (req: Request) => {
+  const [query, options] = new PaginationParameters({ query: req.query }).get();
+  return getList({ ...query, author: req.user._id }, options);
+};
+
+export const getAllTweets = (req: Request) => {
+  const [query, options] = new PaginationParameters({ query: req.query }).get();
+  return getList(query, options);
+};
 
 export const getTweetById = (id: string) => {
   return getOneById(id);
 };
 
 export const createTweet = async (
-  authorId: string,
+  author: string,
   content: string,
   repliedTo?: string
 ) => {
-  return createOne(authorId, content, repliedTo);
-};
-export const deleteTweet = async (id: string) => {
-  return deleteOne(id);
+  const createResult = await createOne(author, content, repliedTo);
+
+  await updateTagsFromContent(content);
+  sendMessageToWebSocket({
+    event: "tweet",
+    payload: JSON.stringify(createResult),
+  });
+  return createResult;
 };
 
-export const getAllTweets = async () => {
-  return getAll();
-};
 export const updateTweet = async (
   id: string,
   newData: {
     content?: string;
-    authorId?: string;
+    author?: string;
     repliedTo?: string;
+    stats?: { likes?: number; retweets?: number };
     updatedAt: string;
   }
 ) => {
-  return updateOne(id, newData);
+  const tweetOldData = await getOneById(id);
+
+  const updateResult = await updateOne(id, newData);
+  if (tweetOldData.content !== updateResult.content) {
+    updateTagsFromContent(updateResult.content, tweetOldData.content);
+  }
+  return updateResult;
+};
+export const changeTweetStats = (
+  id: string,
+  fieldName: string,
+  value: number
+) => {
+  return changeStats(id, fieldName, value);
+};
+
+export const deleteTweet = async (id: string, author: string) => {
+  const result = await deleteOne(id, author);
+  await deleteLikes({ tweet: id });
+  return result;
 };
