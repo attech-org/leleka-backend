@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { isAuthorized } from "src/middlewares/isAuthorized.middlewares";
 import superagent from "superagent";
 
 import { validation } from "../middlewares/yup.middlewares";
@@ -27,7 +28,7 @@ authRouter.route("/twitter").get((_req: Request, res: Response) => {
 
 authRouter
   .route("/twitter-callback")
-  .get(async (req: Request, res: Response) => {
+  .get(isAuthorized, async (req: Request, res: Response) => {
     const code = req.query.code;
     res.sendStatus(200);
     if (code) {
@@ -46,7 +47,10 @@ authRouter
         .set("Content-Type", "application/x-www-form-urlencoded")
         .set("Authorization", `Basic ${base64secret}`)
         .send(authOptions);
-      const result = await accessToken(response.body.access_token);
+      const result = await accessToken(
+        response.body.access_token,
+        req.user._id
+      );
 
       res.send(result);
     }
