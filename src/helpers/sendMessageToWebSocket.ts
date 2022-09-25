@@ -1,11 +1,7 @@
 import WebSocket from "ws";
 
+import { WebSocketMessage } from "../config/ws";
 import { webSocketServer } from "../index";
-
-interface WebSocketMessage {
-  event: string;
-  payload: string;
-}
 
 const sendMessageToWebSocket = (message: WebSocketMessage) => {
   webSocketServer.clients.forEach((client) => {

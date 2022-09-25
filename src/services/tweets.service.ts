@@ -35,7 +35,10 @@ export const createTweet = async (
 ) => {
   const createResult = await createOne(author, content, repliedTo);
   if (repliedTo) {
-    sendNotify({ event: "reply", userId: repliedTo, tweet: createResult });
+    sendNotify(
+      { event: "reply", payload: JSON.stringify(createResult) },
+      repliedTo
+    );
   }
   await updateTagsFromContent(content);
   sendMessageToWebSocket({

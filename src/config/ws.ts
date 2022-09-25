@@ -1,5 +1,10 @@
 import WebSocket from "ws";
 
+export interface WebSocketMessage {
+  event: string;
+  payload: string;
+}
+
 import { getList } from "../repositories/user.repository";
 import { IncomingMessage } from "http";
 
