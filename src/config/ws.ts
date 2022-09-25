@@ -27,7 +27,7 @@ export const connection = async (ws: WebSocket, req: IncomingMessage) => {
         ws.close(3000, "User doesn`t exist");
       }
     } catch (error) {
-      console.log(error);
+      console.warn(error);
       ws.close(3000, error.message);
     }
   }
