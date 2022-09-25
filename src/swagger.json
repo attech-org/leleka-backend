@@ -1,0 +1,19 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "leleka-backend",
+    "description": "Students demo project for training purposes that mimic Twitter functionality",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "paths": {
+    "users": {
+      "name": "users",
+      "description": "ddsdqefew"
+    },
+    "tweets": {}
+  }
+}

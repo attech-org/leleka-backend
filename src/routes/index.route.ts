@@ -1,6 +1,8 @@
 import express from "express";
+import swaggerUi from "swagger-ui-express";
 
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
+import swaggerDocument from "../swagger.json";
 import authRoutes from "./auth.route";
 import bookmarksRoutes from "./bookmarks.route";
 import followersRoutes from "./followers.route";
@@ -22,6 +24,9 @@ router.post("/ping", (req, res) => {
 router.get("/testAuthorized", isAuthorized, (_req, res) => {
   res.send("You Authorized");
 });
+
+router.use("/docs", swaggerUi.serve);
+router.get("/docs", swaggerUi.setup(swaggerDocument));
 
 router.use("/auth", authRoutes);
 router.use("/bookmarks", bookmarksRoutes);

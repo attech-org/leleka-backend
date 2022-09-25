@@ -17,6 +17,7 @@ connectDB();
 app.use(express.json());
 app.use(httpLogger);
 app.use(cors());
+
 app.use("/api", apiRoutes);
 app.use((req: Request, res: Response) => {
   res.status(404);
