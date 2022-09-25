@@ -20,8 +20,8 @@ export const addOne = (tweet: string, owner: string) => {
   return result.save();
 };
 
-export const deleteById = (id: string) => {
-  return BookmarkModel.deleteOne({ _id: id });
+export const deleteById = (id: string, owner: string) => {
+  return BookmarkModel.deleteOne({ _id: id, owner });
 };
 
 export default BookmarkModel;

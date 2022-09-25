@@ -10,16 +10,18 @@ const userSchema = yup.object({
   url: yup.string(),
   description: yup.string(),
   verified: yup.boolean(),
-  followersCount: yup.number(),
-  friendsCount: yup.number(),
-  listedCount: yup.number(),
-  favouritesCount: yup.number(),
-  statusesCount: yup.number(),
   createdAt: yup.string(),
   updatedAt: yup.string(),
   email: yup
     .string()
     .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Please use a valid address"),
+  stats: yup.object({
+    listedCount: yup.number(),
+    favouritesCount: yup.number(),
+    statusesCount: yup.number(),
+    followersCount: yup.number(),
+    followingCount: yup.number(),
+  }),
   profile: yup.object({
     firstName: yup.string(),
     lastName: yup.string(),

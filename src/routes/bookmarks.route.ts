@@ -1,17 +1,17 @@
 import express from "express";
 
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
+import { validation } from "../middlewares/yup.middlewares";
 import {
   addBookmark,
   deleteBookmark,
   getBookmarks,
 } from "../services/bookmarks.service";
-import { validation } from "./../middlewares/yup.middlewares";
 import {
   getBookmarkList,
   postBookmark,
   deleteBookmarkById,
-} from "./../validations/bookmark.validation";
+} from "../validations/bookmark.validation";
 
 const bookmarksRouter = express.Router();
 
@@ -25,15 +25,15 @@ bookmarksRouter
 bookmarksRouter
   .route("/")
   .post(isAuthorized, validation(postBookmark), async (req, res) => {
-    const { tweet, owner } = req.body;
-    const newBookmarks = await addBookmark(tweet, owner);
+    const { tweet } = req.body;
+    const newBookmarks = await addBookmark(tweet, req.user._id);
     return res.status(201).send(newBookmarks);
   });
 
 bookmarksRouter
   .route("/:id")
   .delete(isAuthorized, validation(deleteBookmarkById), async (req, res) => {
-    await deleteBookmark(req.params.id);
+    await deleteBookmark(req.params.id, req.user._id);
     res.sendStatus(200);
   });
 
