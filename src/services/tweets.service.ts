@@ -1,6 +1,7 @@
 import { Request } from "express";
 import { PaginationParameters } from "mongoose-paginate-v2";
 
+import { sendNotify } from "../helpers/notifyReply";
 import sendMessageToWebSocket from "../helpers/sendMessageToWebSocket";
 import {
   createOne,
@@ -33,7 +34,9 @@ export const createTweet = async (
   repliedTo?: string
 ) => {
   const createResult = await createOne(author, content, repliedTo);
-
+  if (repliedTo) {
+    sendNotify({ event: "reply", userId: repliedTo, tweet: createResult });
+  }
   await updateTagsFromContent(content);
   sendMessageToWebSocket({
     event: "tweet",
