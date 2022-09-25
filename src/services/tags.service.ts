@@ -43,7 +43,7 @@ export const updateTagsFromContent = (content: string, oldContent?: string) => {
   if (hashTags) {
     hashTags.forEach(async (name: string) => {
       if (!(await incrementStatsByName(name))) {
-        await create({ name: name });
+        await create({ name: name, stats: { tweets: 1 } });
       }
     });
   }
