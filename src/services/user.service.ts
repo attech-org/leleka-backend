@@ -2,6 +2,7 @@ import { Request } from "express";
 import { PaginationParameters } from "mongoose-paginate-v2";
 
 import { User } from "../models/User.model";
+import { listFollowers } from "../repositories/followers.repository";
 import {
   changeStatsById,
   create,
@@ -12,9 +13,30 @@ import {
   updateOne,
 } from "../repositories/user.repository";
 
-export const listUsers = (req: Request) => {
+export const listUsers = async (req: Request) => {
   const [query, options] = new PaginationParameters({ query: req.query }).get();
-  return getList(query, options);
+  const currentUserId = req.user._id;
+  const list = await getList(query, options);
+  const listOfId = list.docs.map((doc) => doc.id);
+  const following = await listFollowers(
+    { following: currentUserId, follower: { $in: listOfId } },
+    {}
+  );
+
+  following.docs.forEach((record) => {
+    const index = listOfId.findIndex(
+      (currentId) => currentId == record.follower
+    );
+    list.docs[index].isFollowed = true;
+  });
+  // following.docs.forEach((record) => {
+  //   listOfId.forEach((currentId, index) => {
+  //     if (currentId == record.follower) {
+  //       list.docs[index].isFollowed = true;
+  //     }
+  //   });
+  // });
+  return list;
 };
 
 export const getUser = (id: string) => {

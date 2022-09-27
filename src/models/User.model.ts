@@ -39,6 +39,7 @@ export interface User extends Document {
       refreshToken?: string;
     };
   };
+  isFollowed?: boolean;
 }
 
 // define user schema
@@ -164,6 +165,28 @@ const UserSchema: Schema = new Schema<User>(
 );
 
 UserSchema.plugin(paginate);
+
+// UserSchema.virtual("isFollowed").get(() => {
+//   return false;
+// });
+
+//   // eslint-disable-next-line func-names
+// UserSchema.post("find", async function (docs) {
+//   // eslint-disable-next-line prefer-const
+//   for (let doc of docs) {
+//     // if (doc.isPublic) {
+//     await doc.populate("isFollowed");
+//     // }
+//   }
+// });
+
+// UserSchema.post("find", async (docs) => {
+//   console.warn(await docs);
+//   const docs.map(doc=>doc.id)
+//   // const allFollowed = await listFollowers();
+
+//   // docs.forEach((doc)=>{if (doc in allFollowed) doc.followed = true}
+// });
 
 export const UserModel = mongoose.model<User, mongoose.PaginateModel<User>>(
   "User",
