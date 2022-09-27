@@ -2,7 +2,10 @@ import { Request } from "express";
 import { PaginationParameters } from "mongoose-paginate-v2";
 
 import { User } from "../models/User.model";
-import { listFollowers } from "../repositories/followers.repository";
+import {
+  getOneFollower,
+  listFollowers,
+} from "../repositories/followers.repository";
 import {
   changeStatsById,
   create,
@@ -15,17 +18,19 @@ import {
 
 export const listUsers = async (req: Request) => {
   const [query, options] = new PaginationParameters({ query: req.query }).get();
+  options.leanWithId = true;
+  options.lean = true;
   const currentUserId = req.user._id;
   const list = await getList(query, options);
   const listOfId = list.docs.map((doc) => doc.id);
   const following = await listFollowers(
-    { following: currentUserId, follower: { $in: listOfId } },
+    { follower: currentUserId, following: { $in: listOfId } },
     {}
   );
 
   following.docs.forEach((record) => {
     const index = listOfId.findIndex(
-      (currentId) => currentId == record.follower
+      (currentId) => currentId == record.following
     );
     list.docs[index].isFollowed = true;
   });
@@ -39,8 +44,13 @@ export const listUsers = async (req: Request) => {
   return list;
 };
 
-export const getUser = (id: string) => {
-  return getUserById(id);
+export const getUser = async (id: string, currentUserId: string) => {
+  const searchUser = await getUserById(id);
+  const following = await getOneFollower(id, currentUserId);
+  if (following) {
+    searchUser.isFollowed = true;
+  }
+  return searchUser;
 };
 
 export const getUserLocalTokens = async (id: string) => {
