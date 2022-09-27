@@ -47,7 +47,8 @@ export const updateOne = async (
       password: data.password && hashPassword(data.password),
       profile: (data.profile || file) && {
         ...data.profile,
-        avatar: file && file?.buffer.toString("base64"),
+        avatar:
+          file && `data:image/png;base64,${file?.buffer.toString("base64")}`,
       },
     }
   );
