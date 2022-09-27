@@ -1,29 +1,29 @@
 import WebSocket from "ws";
 
+import { getUser } from "../services/user.service";
+import { IncomingMessage } from "http";
+
 export interface WebSocketMessage {
   event: string;
   payload: string;
 }
-
-import { getList } from "../repositories/user.repository";
-import { IncomingMessage } from "http";
 
 export const connectedUsers: Map<string, Set<WebSocket>> = new Map();
 const connections: Map<WebSocket, string> = new Map();
 
 export const connection = async (ws: WebSocket, req: IncomingMessage) => {
   if (!req.headers.userid) {
-    ws.close(401, "Id Required");
+    ws.close(3000, "Id Required");
     return;
   }
-  const userId: string = req.headers.userid as string;
+  const userId = `${req.headers.userid}`;
   const arrayOfConnections: Set<WebSocket> = connectedUsers.get(userId);
   if (arrayOfConnections) {
     arrayOfConnections.add(ws);
     connections.set(ws, userId);
   } else {
     try {
-      const user = (await getList({ _id: userId }, {})).docs[0];
+      const user = await getUser(userId);
 
       if (user) {
         connectedUsers.set(userId, new Set<WebSocket>([ws]));
@@ -37,8 +37,8 @@ export const connection = async (ws: WebSocket, req: IncomingMessage) => {
     }
   }
   ws.on("close", (code, reason) => {
-    ws.send(reason);
     if (code != 3000) {
+      ws.send(reason);
       const id: string = connections.get(ws);
       connections.delete(ws);
       const cu = connectedUsers.get(id);
