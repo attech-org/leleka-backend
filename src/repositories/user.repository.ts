@@ -24,10 +24,10 @@ export const getList = (query: object, options: object) => {
 
 export const getUserById = async (id: string, additionalFields?: string) => {
   if (additionalFields) {
-    const result = await UserModel.findById(id, additionalFields).lean();
+    const result = await UserModel.findById(id, additionalFields);
     return result;
   }
-  const result = await UserModel.findById(id).lean();
+  const result = await UserModel.findById(id);
   return result;
 };
 

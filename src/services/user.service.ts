@@ -18,32 +18,33 @@ import {
 
 export const listUsers = async (req: Request) => {
   const [query, options] = new PaginationParameters({ query: req.query }).get();
-  options.leanWithId = true;
-  options.lean = true;
-  const list = await getList(query, options);
-  const listOfId = list.docs.map((doc) => doc.id);
+  const users = await getList(query, options);
+  const userIds = users.docs.map((doc) => doc.id);
 
-  const following = await listFollowers(
-    { follower: req.user._id, following: { $in: listOfId } },
+  const followingUsers = await listFollowers(
+    { follower: req.user._id, following: { $in: userIds } },
     {}
   );
 
-  following.docs.forEach((record) => {
-    listOfId.forEach((currentId, index) => {
-      if (currentId == record.following) {
-        list.docs[index].isFollowed = true;
-      }
-    });
+  return users.docs.map((user) => {
+    if (followingUsers.docs.find(({ following }) => following === user.id)) {
+      return {
+        ...user,
+        isFollowed: true,
+      };
+    }
+    return user;
   });
-
-  return list;
 };
 
 export const getUser = async (id: string, currentUserId: string) => {
   const searchUser = await getUserById(id);
   const following = await getOneFollower(id, currentUserId);
   if (following) {
-    searchUser.isFollowed = true;
+    return {
+      ...searchUser,
+      isFollowed: true,
+    };
   }
   return searchUser;
 };
@@ -51,8 +52,7 @@ export const getUser = async (id: string, currentUserId: string) => {
 export const getUserLocalTokens = async (id: string) => {
   const result = await getUserById(
     id,
-    "+auth.local.refreshToken +auth.local.accessToken" +
-      " +auth.twitter.accessToken +auth.twitter.refreshToken"
+    `+auth.local.refreshToken +auth.local.accessToken +auth.twitter.accessToken +auth.twitter.refreshToken`
   );
   if (result) {
     return {
