@@ -27,9 +27,9 @@ export const listUsers = async (req: Request) => {
   );
 
   return users.docs.map((user) => {
-    if (followingUsers.docs.find(({ following }) => following === user.id)) {
+    if (followingUsers.docs.find(({ following }) => following == user.id)) {
       return {
-        ...user,
+        ...user.toObject({ getters: true }),
         isFollowed: true,
       };
     }
@@ -42,7 +42,7 @@ export const getUser = async (id: string, currentUserId: string) => {
   const following = await getOneFollower(id, currentUserId);
   if (following) {
     return {
-      ...searchUser,
+      ...searchUser.toObject({ getters: true }),
       isFollowed: true,
     };
   }
