@@ -53,7 +53,6 @@ export const updateOne = async (
       },
     }
   );
-  console.warn(file);
 
   const result = await UserModel.findById({ _id: id });
 
