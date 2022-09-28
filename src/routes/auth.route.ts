@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
-import { isAuthorized } from "src/middlewares/isAuthorized.middlewares";
 import superagent from "superagent";
 
+import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
 import { validation } from "../middlewares/yup.middlewares";
 import {
   accessToken,
