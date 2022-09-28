@@ -14,58 +14,49 @@ import {
 import { deleteLikes } from "./likes.service";
 import { updateTagsFromContent } from "./tags.service";
 
-export const getAllTweets = async (req: Request) => {
+export const getAllTweets = async (
+  req: Request,
+  currentUserId: string,
+  onlyCurrentUserTweets?: boolean
+) => {
   const [query, options] = new PaginationParameters({ query: req.query }).get();
   options.leanWithId = true;
   options.lean = true;
-  const list = await getList(query, options);
-  const listOfTweetId = list.docs.map((doc) => doc.id);
-  console.warn(listOfTweetId);
-  const liked = await getAll(
-    { user: req.user._id, tweet: { $in: listOfTweetId } },
-    {}
+  const list = await getList(
+    onlyCurrentUserTweets ? { ...query, author: currentUserId } : { ...query },
+    options
   );
+  if (currentUserId) {
+    const listOfTweetId = list.docs.map((doc) => doc.id);
 
-  liked.docs.forEach((record) => {
-    listOfTweetId.forEach((currentId, index) => {
-      if (currentId == record.tweet._id) {
-        list.docs[index].isLiked = true;
-      }
+    const liked = await getAll(
+      { user: currentUserId, tweet: { $in: listOfTweetId } },
+      {}
+    );
+
+    liked.docs.forEach((record) => {
+      listOfTweetId.forEach((currentId, index) => {
+        if (currentId == record.tweet._id) {
+          list.docs[index].isLiked = true;
+        }
+      });
     });
-  });
+  }
 
   return list;
 };
 
-export const getAllTweetsOfCurrentUser = async (req: Request) => {
-  const [query, options] = new PaginationParameters({ query: req.query }).get();
-  options.leanWithId = true;
-  options.lean = true;
-
-  const list = await getList({ ...query, author: req.user._id }, options);
-  const listOfTweetId = list.docs.map((doc) => doc.id);
-  console.warn(listOfTweetId);
-  const liked = await getAll(
-    { user: req.user._id, tweet: { $in: listOfTweetId } },
-    {}
-  );
-
-  liked.docs.forEach((record) => {
-    listOfTweetId.forEach((currentId, index) => {
-      if (currentId == record.tweet._id) {
-        list.docs[index].isLiked = true;
-      }
-    });
-  });
-
-  return list;
+export const getAllTweetsOfCurrentUser = (req: Request) => {
+  return getAllTweets(req, req.user._id, true);
 };
 
 export const getTweetById = async (id: string, currentUserId: string) => {
   const searchTweet = await getOneById(id);
-  const liked = await getOne({ user: currentUserId, tweet: id });
-  if (liked) {
-    searchTweet.isLiked = true;
+  if (currentUserId) {
+    const liked = await getOne({ user: currentUserId, tweet: id });
+    if (liked) {
+      searchTweet.isLiked = true;
+    }
   }
   return searchTweet;
 };

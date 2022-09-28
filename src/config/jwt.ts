@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { sign, SignOptions, verify, VerifyOptions } from "jsonwebtoken";
 
 import { User } from "../models/User.model";
@@ -66,4 +67,32 @@ export const updateAccessToken = async (refreshToken: string) => {
   await updateUserLocalTokens(verifyPayload._id, accessToken, refreshToken);
 
   return accessToken;
+};
+
+export const takeUserIdFromToken = (req: Request) => {
+  let token = req.headers.authorization;
+
+  console.warn(token, "token");
+
+  if (!token) {
+    return "";
+  }
+
+  if (token.startsWith("Bearer ")) {
+    token = token.slice(7, token.length);
+  }
+
+  if (!token || token === "" || token === "undefined") {
+    return "";
+  }
+
+  const user: User = verify(token, process.env.JWT_SECRET, {
+    ...verifyOptions,
+    ignoreExpiration: true,
+  }) as User;
+
+  if (!user) {
+    return "";
+  }
+  return user._id;
 };
