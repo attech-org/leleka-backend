@@ -14,10 +14,12 @@ import {
 
 const tweetsRoutes = express.Router();
 
-tweetsRoutes.route("/").get(validation(getTweets), async (req, res) => {
-  const tweets = await tweetsService.getAllTweets(req);
-  res.send(tweets);
-});
+tweetsRoutes
+  .route("/")
+  .get(isAuthorized, validation(getTweets), async (req, res) => {
+    const tweets = await tweetsService.getAllTweets(req);
+    res.send(tweets);
+  });
 
 tweetsRoutes
   .route("/my")
@@ -26,10 +28,12 @@ tweetsRoutes
     res.send(tweets);
   });
 
-tweetsRoutes.route("/:id").get(validation(getTweetById), async (req, res) => {
-  const tweet = await tweetsService.getTweetById(req.params.id);
-  res.send(tweet);
-});
+tweetsRoutes
+  .route("/:id")
+  .get(isAuthorized, validation(getTweetById), async (req, res) => {
+    const tweet = await tweetsService.getTweetById(req.params.id, req.user._id);
+    res.send(tweet);
+  });
 
 tweetsRoutes
   .route("/")

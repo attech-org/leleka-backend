@@ -2,6 +2,7 @@ import { Request } from "express";
 import { PaginationParameters } from "mongoose-paginate-v2";
 
 import sendMessageToWebSocket from "../helpers/sendMessageToWebSocket";
+import { getAll, getOne } from "../repositories/likes.repository";
 import {
   createOne,
   deleteOne,
@@ -13,18 +14,60 @@ import {
 import { deleteLikes } from "./likes.service";
 import { updateTagsFromContent } from "./tags.service";
 
-export const getAllTweetsOfCurrentUser = (req: Request) => {
+export const getAllTweets = async (req: Request) => {
   const [query, options] = new PaginationParameters({ query: req.query }).get();
-  return getList({ ...query, author: req.user._id }, options);
+  options.leanWithId = true;
+  options.lean = true;
+  const list = await getList(query, options);
+  const listOfTweetId = list.docs.map((doc) => doc.id);
+  console.warn(listOfTweetId);
+  const liked = await getAll(
+    { user: req.user._id, tweet: { $in: listOfTweetId } },
+    {}
+  );
+
+  liked.docs.forEach((record) => {
+    listOfTweetId.forEach((currentId, index) => {
+      if (currentId == record.tweet._id) {
+        list.docs[index].isLiked = true;
+      }
+    });
+  });
+
+  return list;
 };
 
-export const getAllTweets = (req: Request) => {
+export const getAllTweetsOfCurrentUser = async (req: Request) => {
   const [query, options] = new PaginationParameters({ query: req.query }).get();
-  return getList(query, options);
+  options.leanWithId = true;
+  options.lean = true;
+
+  const list = await getList({ ...query, author: req.user._id }, options);
+  const listOfTweetId = list.docs.map((doc) => doc.id);
+  console.warn(listOfTweetId);
+  const liked = await getAll(
+    { user: req.user._id, tweet: { $in: listOfTweetId } },
+    {}
+  );
+
+  liked.docs.forEach((record) => {
+    listOfTweetId.forEach((currentId, index) => {
+      if (currentId == record.tweet._id) {
+        list.docs[index].isLiked = true;
+      }
+    });
+  });
+
+  return list;
 };
 
-export const getTweetById = (id: string) => {
-  return getOneById(id);
+export const getTweetById = async (id: string, currentUserId: string) => {
+  const searchTweet = await getOneById(id);
+  const liked = await getOne({ user: currentUserId, tweet: id });
+  if (liked) {
+    searchTweet.isLiked = true;
+  }
+  return searchTweet;
 };
 
 export const createTweet = async (

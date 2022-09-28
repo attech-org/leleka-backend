@@ -20,27 +20,22 @@ export const listUsers = async (req: Request) => {
   const [query, options] = new PaginationParameters({ query: req.query }).get();
   options.leanWithId = true;
   options.lean = true;
-  const currentUserId = req.user._id;
   const list = await getList(query, options);
   const listOfId = list.docs.map((doc) => doc.id);
+
   const following = await listFollowers(
-    { follower: currentUserId, following: { $in: listOfId } },
+    { follower: req.user._id, following: { $in: listOfId } },
     {}
   );
 
   following.docs.forEach((record) => {
-    const index = listOfId.findIndex(
-      (currentId) => currentId == record.following
-    );
-    list.docs[index].isFollowed = true;
+    listOfId.forEach((currentId, index) => {
+      if (currentId == record.following) {
+        list.docs[index].isFollowed = true;
+      }
+    });
   });
-  // following.docs.forEach((record) => {
-  //   listOfId.forEach((currentId, index) => {
-  //     if (currentId == record.follower) {
-  //       list.docs[index].isFollowed = true;
-  //     }
-  //   });
-  // });
+
   return list;
 };
 

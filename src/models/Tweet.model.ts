@@ -13,6 +13,7 @@ export interface Tweet extends Document {
     retweets: number;
     //Comments - todo, comments base
   };
+  isLiked?: boolean;
 }
 
 const TweetSchema: Schema = new Schema<Tweet>({
