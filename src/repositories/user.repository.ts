@@ -48,11 +48,15 @@ export const updateOne = async (
       profile: (data.profile || file) && {
         ...data.profile,
         avatar:
-          file && `data:image/png;base64,${file?.buffer.toString("base64")}`,
+          file &&
+          `data:${file.mimetype};base64,${file?.buffer.toString("base64")}`,
       },
     }
   );
+  console.warn(file);
+
   const result = await UserModel.findById({ _id: id });
+
   return result;
 };
 
