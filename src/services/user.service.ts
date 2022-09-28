@@ -3,6 +3,10 @@ import { PaginationParameters } from "mongoose-paginate-v2";
 
 import { User } from "../models/User.model";
 import {
+  getOneFollower,
+  listFollowers,
+} from "../repositories/followers.repository";
+import {
   changeStatsById,
   create,
   deleteOne,
@@ -12,13 +16,36 @@ import {
   updateOne,
 } from "../repositories/user.repository";
 
-export const listUsers = (req: Request) => {
+export const listUsers = async (req: Request) => {
   const [query, options] = new PaginationParameters({ query: req.query }).get();
-  return getList(query, options);
+  options.leanWithId = true;
+  options.lean = true;
+  const list = await getList(query, options);
+  const listOfId = list.docs.map((doc) => doc.id);
+
+  const following = await listFollowers(
+    { follower: req.user._id, following: { $in: listOfId } },
+    {}
+  );
+
+  following.docs.forEach((record) => {
+    listOfId.forEach((currentId, index) => {
+      if (currentId == record.following) {
+        list.docs[index].isFollowed = true;
+      }
+    });
+  });
+
+  return list;
 };
 
-export const getUser = (id: string) => {
-  return getUserById(id);
+export const getUser = async (id: string, currentUserId: string) => {
+  const searchUser = await getUserById(id);
+  const following = await getOneFollower(id, currentUserId);
+  if (following) {
+    searchUser.isFollowed = true;
+  }
+  return searchUser;
 };
 
 export const getUserLocalTokens = async (id: string) => {

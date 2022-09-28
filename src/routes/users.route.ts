@@ -31,7 +31,7 @@ usersRoutes
   .route("/:id")
   .get(isAuthorized, validation(getUserById), async (req, res) => {
     if (req.params.id) {
-      const result = await getUser(req.params.id);
+      const result = await getUser(req.params.id, req.user._id);
       return res.send(result);
     }
     return res.sendStatus(500);

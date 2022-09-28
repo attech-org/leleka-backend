@@ -2,6 +2,7 @@ import express from "express";
 
 import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
 import * as tweetsService from "../services/tweets.service";
+import { takeUserIdFromToken } from "./../config/jwt";
 import { validation } from "./../middlewares/yup.middlewares";
 import {
   deleteTweet,
@@ -15,7 +16,10 @@ import {
 const tweetsRoutes = express.Router();
 
 tweetsRoutes.route("/").get(validation(getTweets), async (req, res) => {
-  const tweets = await tweetsService.getAllTweets(req);
+  const tweets = await tweetsService.getAllTweets(
+    req,
+    takeUserIdFromToken(req)
+  );
   res.send(tweets);
 });
 
@@ -27,7 +31,10 @@ tweetsRoutes
   });
 
 tweetsRoutes.route("/:id").get(validation(getTweetById), async (req, res) => {
-  const tweet = await tweetsService.getTweetById(req.params.id);
+  const tweet = await tweetsService.getTweetById(
+    req.params.id,
+    takeUserIdFromToken(req)
+  );
   res.send(tweet);
 });
 
