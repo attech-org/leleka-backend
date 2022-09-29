@@ -23,5 +23,8 @@ export const addOne = (tweet: string, owner: string) => {
 export const deleteById = (id: string, owner: string) => {
   return BookmarkModel.deleteOne({ _id: id, owner });
 };
+export const deleteByTweetAndOwner = (owner: string, tweet: string) => {
+  return BookmarkModel.deleteOne({ tweet, owner });
+};
 
 export default BookmarkModel;

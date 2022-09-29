@@ -5,12 +5,14 @@ import { validation } from "../middlewares/yup.middlewares";
 import {
   addBookmark,
   deleteBookmark,
+  deleteBookmarkByTweetAndOwner,
   getBookmarks,
 } from "../services/bookmarks.service";
 import {
   getBookmarkList,
   postBookmark,
   deleteBookmarkById,
+  deleteBookmarkByTweetAndOwnerValidation,
 } from "../validations/bookmark.validation";
 
 const bookmarksRouter = express.Router();
@@ -29,7 +31,19 @@ bookmarksRouter
     const newBookmarks = await addBookmark(tweet, req.user._id);
     return res.status(201).send(newBookmarks);
   });
-
+bookmarksRouter
+  .route("/")
+  .delete(
+    isAuthorized,
+    validation(deleteBookmarkByTweetAndOwnerValidation),
+    async (req, res) => {
+      const { tweet } = req.body;
+      await deleteBookmarkByTweetAndOwner(tweet, req.user._id);
+      console.log(tweet);
+      console.log(req.user._id);
+      res.sendStatus(200);
+    }
+  );
 bookmarksRouter
   .route("/:id")
   .delete(isAuthorized, validation(deleteBookmarkById), async (req, res) => {
