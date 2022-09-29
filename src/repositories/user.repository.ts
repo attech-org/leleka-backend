@@ -64,11 +64,15 @@ export const updateOne = async (
       password: data.password && hashPassword(data.password),
       profile: (data.profile || file) && {
         ...data.profile,
-        avatar: file && file?.buffer.toString("base64"),
+        avatar:
+          file &&
+          `data:${file.mimetype};base64,${file?.buffer.toString("base64")}`,
       },
     }
   );
+
   const result = await UserModel.findById({ _id: id });
+
   return result;
 };
 
