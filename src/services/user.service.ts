@@ -3,6 +3,10 @@ import { PaginationParameters } from "mongoose-paginate-v2";
 
 import { User } from "../models/User.model";
 import {
+  getOneFollower,
+  listFollowers,
+} from "../repositories/followers.repository";
+import {
   changeStatsById,
   create,
   deleteOne,
@@ -12,20 +16,46 @@ import {
   updateOne,
 } from "../repositories/user.repository";
 
-export const listUsers = (req: Request) => {
+export const listUsers = async (req: Request) => {
   const [query, options] = new PaginationParameters({ query: req.query }).get();
-  return getList(query, options);
+  const users = await getList(query, options);
+  const userIds = users.docs.map((doc) => doc.id);
+
+  const followingUsers = await listFollowers(
+    { follower: req.user._id, following: { $in: userIds } },
+    {}
+  );
+
+  return {
+    ...users,
+    docs: users.docs.map((user) => {
+      if (followingUsers.docs.find(({ following }) => following == user.id)) {
+        return {
+          ...user.toObject({ getters: true }),
+          isFollowed: true,
+        };
+      }
+      return user;
+    }),
+  };
 };
 
-export const getUser = (id: string) => {
-  return getUserById(id);
+export const getUser = async (id: string, currentUserId: string) => {
+  const searchUser = await getUserById(id);
+  const following = await getOneFollower(id, currentUserId);
+  if (following) {
+    return {
+      ...searchUser.toObject({ getters: true }),
+      isFollowed: true,
+    };
+  }
+  return searchUser;
 };
 
 export const getUserLocalTokens = async (id: string) => {
   const result = await getUserById(
     id,
-    "+auth.local.refreshToken +auth.local.accessToken" +
-      " +auth.twitter.accessToken +auth.twitter.refreshToken"
+    `+auth.local.refreshToken +auth.local.accessToken +auth.twitter.accessToken +auth.twitter.refreshToken`
   );
   if (result) {
     return {

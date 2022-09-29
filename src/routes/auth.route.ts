@@ -1,24 +1,64 @@
-import express from "express";
+import express, { Request, Response } from "express";
+import superagent from "superagent";
 
+import { isAuthorized } from "../middlewares/isAuthorized.middlewares";
 import { validation } from "../middlewares/yup.middlewares";
-import { getNewAccessToken, login, register } from "../services/auth.service";
+import {
+  accessToken,
+  getNewAccessToken,
+  login,
+  register,
+} from "../services/auth.service";
 import { loginUser } from "./../validations/login.validation";
 import { registerUser } from "./../validations/register.validation";
 
 const authRouter = express.Router();
 
-// authRouter.route("/twitter").get(
-// post request to Twitter API
-// receive redirectUri in response
-// redirect your user to received redirectUri res.redirect()
-// );
+const redirectUri = process.env.REDIRECT_URI;
+const twitterClientId = process.env.TWITTER_CLIENT_ID;
+const twitterClientSecret = process.env.TWITTER_CLIENT_SECRET;
+const state = {};
+const codeChallenge = process.env.CODE_CHALLENGE;
 
-// authRouter.route("/twitter_callback").get(
-// in query params: "code"
-// post request to Twitter API with received "code" and "twitter_client_id", "twitter_client_secret" from .env
+authRouter.route("/twitter").get((_req: Request, res: Response) => {
+  res.redirect(
+    `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${twitterClientId}&redirect_uri=${redirectUri}&scope=tweet.read%20users.read%20follows.read%20follows.write&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=plain`
+  );
+});
+
+authRouter
+  .route("/twitter-callback")
+  .get(isAuthorized, async (req: Request, res: Response) => {
+    const code = req.query.code;
+    res.sendStatus(200);
+    if (code) {
+      const authOptions = {
+        code: code,
+        grant_type: "authorization_code",
+        redirect_uri: redirectUri,
+        code_verifier: codeChallenge,
+      };
+
+      const base64secret = new Buffer(
+        `${twitterClientId}:${twitterClientSecret}`
+      ).toString("base64");
+      const response = await superagent
+        .post(process.env.POST_TWITTER_OAUTH2_TOKEN)
+        .set("Content-Type", "application/x-www-form-urlencoded")
+        .set("Authorization", `Basic ${base64secret}`)
+        .send(authOptions);
+      const result = await accessToken(
+        response.body.access_token,
+        req.user._id
+      );
+
+      res.send(result);
+    }
+  });
+// in query params: "code" +
+// post reuqest to Twitter API with received "code" and "twitter_client_id", "twitter_client_secret" from .env +
 // in response you'll have authToken and refreshAuthToken
 // save them to DB and send it to user
-// );
 
 authRouter
   .route("/register")

@@ -1,7 +1,16 @@
 import { generateJWT, updateAccessToken } from "../config/jwt";
 import { comparePassword } from "../helpers/password";
 import { User } from "../models/User.model";
-import { create, findUserByUsername } from "../repositories/user.repository";
+import {
+  addAccessToken,
+  create,
+  findUserByUsername,
+} from "../repositories/user.repository";
+
+export const accessToken = async (access_token: string, id: string) => {
+  const result = await addAccessToken(access_token, id);
+  return result;
+};
 
 export const register = async (data: User) => {
   // process input data

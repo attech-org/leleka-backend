@@ -3,6 +3,7 @@ import { PaginationParameters } from "mongoose-paginate-v2";
 
 import { sendNotify } from "../helpers/notifyReply";
 import sendMessageToWebSocket from "../helpers/sendMessageToWebSocket";
+import { getAll, getOne } from "../repositories/likes.repository";
 import {
   createOne,
   deleteOne,
@@ -14,18 +15,51 @@ import {
 import { deleteLikes } from "./likes.service";
 import { updateTagsFromContent } from "./tags.service";
 
+export const getAllTweets = async (
+  req: Request,
+  currentUserId: string,
+  onlyCurrentUserTweets?: boolean
+) => {
+  const [query, options] = new PaginationParameters({ query: req.query }).get();
+  options.leanWithId = true;
+  options.lean = true;
+  const list = await getList(
+    onlyCurrentUserTweets ? { ...query, author: currentUserId } : { ...query },
+    options
+  );
+  if (currentUserId) {
+    const listOfTweetId = list.docs.map((doc) => doc.id);
+
+    const liked = await getAll(
+      { user: currentUserId, tweet: { $in: listOfTweetId } },
+      {}
+    );
+
+    liked.docs.forEach((record) => {
+      listOfTweetId.forEach((currentId, index) => {
+        if (currentId == record.tweet._id) {
+          list.docs[index].isLiked = true;
+        }
+      });
+    });
+  }
+
+  return list;
+};
+
 export const getAllTweetsOfCurrentUser = (req: Request) => {
-  const [query, options] = new PaginationParameters({ query: req.query }).get();
-  return getList({ ...query, author: req.user._id }, options);
+  return getAllTweets(req, req.user._id, true);
 };
 
-export const getAllTweets = (req: Request) => {
-  const [query, options] = new PaginationParameters({ query: req.query }).get();
-  return getList(query, options);
-};
-
-export const getTweetById = (id: string) => {
-  return getOneById(id);
+export const getTweetById = async (id: string, currentUserId: string) => {
+  const searchTweet = await getOneById(id);
+  if (currentUserId) {
+    const liked = await getOne({ user: currentUserId, tweet: id });
+    if (liked) {
+      searchTweet.isLiked = true;
+    }
+  }
+  return searchTweet;
 };
 
 export const createTweet = async (

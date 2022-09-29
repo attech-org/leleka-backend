@@ -16,10 +16,12 @@ export const getList = (
 };
 
 export const getOneById = (id: string) => {
-  return TweetModel.findById(id).populate([
-    { path: "author" },
-    { path: "repliedTo", populate: { path: "author" } },
-  ]);
+  return TweetModel.findById(id)
+    .populate([
+      { path: "author" },
+      { path: "repliedTo", populate: { path: "author" } },
+    ])
+    .lean();
 };
 
 export const createOne = async (

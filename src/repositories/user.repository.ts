@@ -1,6 +1,23 @@
 import { hashPassword } from "../helpers/password";
 import { User, UserModel } from "../models/User.model";
 
+export const addAccessToken = async (access_token: string, id: string) => {
+  if (access_token) {
+    const result = await UserModel.updateOne(
+      { _id: id },
+      {
+        $set: {
+          "auth.twitter": {
+            accessToken: access_token,
+            // refreshToken: refreshToken,
+          },
+        },
+      }
+    );
+    return result;
+  }
+};
+
 export const getList = (query: object, options: object) => {
   return UserModel.paginate(query, { ...options });
 };
@@ -47,11 +64,15 @@ export const updateOne = async (
       password: data.password && hashPassword(data.password),
       profile: (data.profile || file) && {
         ...data.profile,
-        avatar: file && file?.buffer.toString("base64"),
+        avatar:
+          file &&
+          `data:${file.mimetype};base64,${file?.buffer.toString("base64")}`,
       },
     }
   );
+
   const result = await UserModel.findById({ _id: id });
+
   return result;
 };
 

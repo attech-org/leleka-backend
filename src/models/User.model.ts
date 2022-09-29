@@ -39,6 +39,7 @@ export interface User extends Document {
       refreshToken?: string;
     };
   };
+  isFollowed?: boolean;
 }
 
 // define user schema
