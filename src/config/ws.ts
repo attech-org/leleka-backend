@@ -1,7 +1,6 @@
 import WebSocket from "ws";
 
 import { getUser } from "../services/user.service";
-import { IncomingMessage } from "http";
 
 export interface WebSocketMessage {
   event: string;
@@ -11,19 +10,19 @@ export interface WebSocketMessage {
 export const connectedUsers: Map<string, Set<WebSocket>> = new Map();
 const connections: Map<WebSocket, string> = new Map();
 
-export const connection = async (ws: WebSocket, req: IncomingMessage) => {
-  if (!req.headers.userid) {
+export const connection = async (ws: WebSocket, userid: string | undefined) => {
+  if (!userid) {
     ws.close(3000, "Id Required");
     return;
   }
-  const userId = `${req.headers.userid}`;
+  const userId = userid;
   const arrayOfConnections: Set<WebSocket> = connectedUsers.get(userId);
   if (arrayOfConnections) {
     arrayOfConnections.add(ws);
     connections.set(ws, userId);
   } else {
     try {
-      const user = await getUser(userId);
+      const user = await getUser(userId, userId);
 
       if (user) {
         connectedUsers.set(userId, new Set<WebSocket>([ws]));
@@ -49,4 +48,13 @@ export const connection = async (ws: WebSocket, req: IncomingMessage) => {
     }
   });
   ws.send(JSON.stringify({ event: connection, payload: "Connected" }));
+};
+export const disconnect = (ws: WebSocket) => {
+  const id: string = connections.get(ws);
+  connections.delete(ws);
+  const cu = connectedUsers.get(id);
+  cu.delete(ws);
+  if (cu.size == 0) {
+    connectedUsers.delete(id);
+  }
 };
