@@ -21,3 +21,7 @@ export const postBookmark = yup.object({
 export const deleteBookmarkById = yup.object({
   params: yup.object({ id: yup.string() }),
 });
+export const deleteBookmarkByTweetAndOwnerValidation = yup.object({
+  body: yup.object({ tweet: yup.string() }),
+  user: yup.object({ _id: yup.string() }),
+});
