@@ -5,6 +5,7 @@ import WebSocket from "ws";
 
 import { connectDB } from "./config/db";
 import Logger from "./config/Logger";
+import { connection, disconnect } from "./config/ws";
 import errorHandler from "./middlewares/errorHandler.middlewares";
 import httpLogger from "./middlewares/httpLogger.middlewares";
 import apiRoutes from "./routes/index.route";
@@ -58,14 +59,16 @@ process.on("unhandledRejection", (error: unknown) => {
 });
 
 webSocketServer.on("connection", (ws) => {
-  ws.on("message", (message: WebSocket.RawData) => {
-    webSocketServer.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(message);
-      }
-    });
+  ws.on("message", async (message) => {
+    const msg = JSON.parse(message.toString());
+    ws.send(2);
+    if (msg.event == "connect") {
+      await connection(ws, msg.userid);
+    }
+    if (msg.event == "disconnect") {
+      await disconnect(ws);
+    }
   });
-  ws.send("{ connection: true }");
 });
 
 webSocketServer.on("listening", () => {
