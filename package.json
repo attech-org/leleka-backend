@@ -21,7 +21,11 @@
     {
       "name": "Paukov Nikita",
       "email": "nikpaukov8214@gmail.com"
-    }
+    },
+    {
+      "name": "David Korystov",
+      "email": "david.korystov@gmail.com"
+    },
   ],
   "description": "",
   "main": "index.js",
