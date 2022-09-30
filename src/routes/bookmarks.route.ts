@@ -39,8 +39,6 @@ bookmarksRouter
     async (req, res) => {
       const { tweet } = req.body;
       await deleteBookmarkByTweetAndOwner(tweet, req.user._id);
-      console.log(tweet);
-      console.log(req.user._id);
       res.sendStatus(200);
     }
   );
